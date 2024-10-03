@@ -15,10 +15,11 @@ public class UserDTO {
 
     private String firstName;
     private String lastName;
-    private LocationDTO location;
     private String password;
     private String confirmPassword;
     private String phone;
+    private LocationDTO location;
+    private CompanyDTO companyDTO;
 
 
 }
