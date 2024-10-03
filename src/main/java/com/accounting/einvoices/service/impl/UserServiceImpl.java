@@ -2,9 +2,11 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
 
