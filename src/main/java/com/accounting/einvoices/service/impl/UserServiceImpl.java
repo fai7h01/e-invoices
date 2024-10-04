@@ -1,7 +1,10 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
+import com.accounting.einvoices.entity.User;
+import com.accounting.einvoices.repository.UserRepository;
 import com.accounting.einvoices.service.UserService;
+import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,6 +12,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
+    private final MapperUtil mapperUtil;
+
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil) {
+        this.userRepository = userRepository;
+        this.mapperUtil = mapperUtil;
+    }
 
     @Override
     public List<UserDTO> findAll() {
@@ -22,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO user) {
-        return null;
+        User saved = userRepository.save(mapperUtil.convert(user, new User()));
+        return mapperUtil.convert(saved, new UserDTO());
     }
 }

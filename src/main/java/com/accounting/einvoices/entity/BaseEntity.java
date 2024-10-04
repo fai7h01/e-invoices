@@ -33,20 +33,20 @@ public class BaseEntity {
 
     private Boolean isDeleted = false;
 
-//
-//    @PrePersist
-//    private void onPrePersist(){
-//        this.insertDateTime = LocalDateTime.now();
-//        this.lastUpdateDateTime = LocalDateTime.now();
-//        this.insertUserId = 1L;
-//        this.lastUpdateUserId = 1L;
-//    }
-//
-//    @PreUpdate
-//    private void onPreUpdate(){
-//        this.lastUpdateDateTime = LocalDateTime.now();
-//        this.lastUpdateUserId = 1L;
-//    }
+
+    @PrePersist
+    private void onPrePersist(){
+        this.insertDateTime = LocalDateTime.now();
+        this.lastUpdateDateTime = LocalDateTime.now();
+        this.insertUserId = 1L;
+        this.lastUpdateUserId = 1L;
+    }
+
+    @PreUpdate
+    private void onPreUpdate(){
+        this.lastUpdateDateTime = LocalDateTime.now();
+        this.lastUpdateUserId = 1L;
+    }
 
 //    private Long getCurrentUserId() {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

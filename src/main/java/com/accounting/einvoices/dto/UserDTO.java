@@ -14,11 +14,12 @@ public class UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
+    private String username;
     private String password;
     private String confirmPassword;
     private String phone;
-    private LocationDTO location;
-    private CompanyDTO companyDTO;
+    //private LocationDTO location;
+    //private CompanyDTO companyDTO;
 
 
 }

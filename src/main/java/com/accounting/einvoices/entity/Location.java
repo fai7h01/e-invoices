@@ -13,14 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class Location extends BaseEntity{
 
-
-    private String firstName;
-    private String lastName;
-    private String username;
-    //private Location location;
-    private String password;
-    private String phone;
+    private String country;
+    private String city;
 
 }
