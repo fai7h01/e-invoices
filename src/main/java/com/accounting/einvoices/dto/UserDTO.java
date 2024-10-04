@@ -1,5 +1,6 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class UserDTO {
     private String password;
     private String confirmPassword;
     private String phone;
+    private Status status;
     //private LocationDTO location;
     //private CompanyDTO companyDTO;
 

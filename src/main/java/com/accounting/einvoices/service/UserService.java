@@ -8,6 +8,8 @@ public interface UserService {
 
     List<UserDTO> findAll();
 
+    UserDTO findByUsername(String username);
+
     UserDTO findById(Long id);
 
     UserDTO save(UserDTO user);
