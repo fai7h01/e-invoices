@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,13 +43,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO user) {
-        UserDTO foundUser = findByUsername(user.getUsername());
+        Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
 
-        if (foundUser.getStatus().equals(Status.ACTIVE)) {
+        if (foundUser.isPresent() && foundUser.get().getStatus().equals(Status.ACTIVE)) {
             throw new UserAlreadyExistsException("User already exists in a system.");
         }
 
-        user.setId(foundUser.getId());
+        foundUser.ifPresent(value -> user.setId(value.getId()));
 
         User saved = userRepository.save(mapperUtil.convert(user, new User()));
         return mapperUtil.convert(saved, new UserDTO());

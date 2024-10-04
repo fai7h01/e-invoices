@@ -1,5 +1,6 @@
 package com.accounting.einvoices.entity;
 
+import com.accounting.einvoices.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -27,5 +28,6 @@ public class User extends BaseEntity{
     //private Location location;
     private String password;
     private String phone;
+    private Status status;
 
 }
