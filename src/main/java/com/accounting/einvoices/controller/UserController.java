@@ -17,19 +17,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseWrapper> findById(@PathVariable("id") Long id) {
-        UserDTO user = userService.findById(id);
-        return ResponseEntity.ok(ResponseWrapper.builder().success(true).code(HttpStatus.OK.value())
-                .message("User is successfully retrieved.")
-                .data(user).build());
-    }
-
-    @PostMapping()
-    public ResponseEntity<ResponseWrapper> saveUser(@RequestBody UserDTO user) {
+    @PostMapping("/register")
+    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
         UserDTO saved = userService.save(user);
-        return ResponseEntity.ok(ResponseWrapper.builder().success(true).code(HttpStatus.OK.value())
-                .message("User is successfully created.")
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("User is successfully registered.")
                 .data(saved).build());
     }
 
