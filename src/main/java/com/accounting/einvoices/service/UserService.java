@@ -16,9 +16,4 @@ public interface UserService {
 
     boolean checkIfUserExists(String username);
 
-
-//    UserDTO update(Long id);
-//
-//    void delete(Long id);
-
 }
