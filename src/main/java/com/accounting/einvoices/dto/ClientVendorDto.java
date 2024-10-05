@@ -1,0 +1,43 @@
+package com.accounting.einvoices.dto;
+
+import com.accounting.einvoices.enums.ClientVendorType;
+import com.cydeo.enums.ClientVendorType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class ClientVendorDto {
+
+    @JsonIgnore
+    private Long id;
+
+    private String clientVendorName;
+
+    private String phone;
+
+    private String website;
+
+    private String email;
+
+    private ClientVendorType clientVendorType;
+
+    private AddressDTO address;
+
+    private CompanyDTO company;
+
+    @JsonIgnore
+    private boolean hasInvoice;
+
+}

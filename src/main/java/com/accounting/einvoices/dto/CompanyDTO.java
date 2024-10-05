@@ -16,6 +16,6 @@ public class CompanyDTO {
     private String name;
     private String industry;
     private String description;
-    private LocationDTO location;
+    private AddressDTO location;
     private Integer estimatedRevenue;
 }
