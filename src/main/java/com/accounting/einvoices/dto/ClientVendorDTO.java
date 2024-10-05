@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClientVendorDto {
+public class ClientVendorDTO {
 
     @JsonIgnore
     private Long id;
