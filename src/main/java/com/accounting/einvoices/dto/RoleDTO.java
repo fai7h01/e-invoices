@@ -5,15 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Currency;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RevenueDTO {
+public class RoleDTO {
 
-    private Currency currency;
-    private String estimated;
-
+    private Long id;
+    private String description;
 }

@@ -13,11 +13,9 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "locations")
+@Table(name = "roles")
 @SQLRestriction("is_deleted is false")
-public class Location extends BaseEntity{
+public class Role extends BaseEntity{
 
-    private String country;
-    private String city;
-
+    private String description;
 }

@@ -11,7 +11,6 @@ import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -42,16 +41,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO save(UserDTO user) {
-        Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
-
-        if (foundUser.isPresent() && foundUser.get().getStatus().equals(Status.ACTIVE)) {
-            throw new UserAlreadyExistsException("User already exists in a system.");
+    public UserDTO create(UserDTO user) {
+        if (checkIfUserExists(user.getUsername())) {
+            throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
         }
-
-        foundUser.ifPresent(value -> user.setId(value.getId()));
-
         User saved = userRepository.save(mapperUtil.convert(user, new User()));
         return mapperUtil.convert(saved, new UserDTO());
     }
+
+    @Override
+    public UserDTO register(UserDTO user) {
+        if (checkIfUserExists(user.getUsername())) {
+            throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
+        }
+        User saved = userRepository.save(mapperUtil.convert(user, new User()));
+        return mapperUtil.convert(saved, new UserDTO());
+    }
+
+    @Override
+    public void logIn(UserDTO user) {
+
+    }
+
+
+    @Override
+    public boolean checkIfUserExists(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.isPresent();
+    }
+
 }

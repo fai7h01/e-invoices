@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
-        UserDTO saved = userService.save(user);
+        UserDTO saved = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)

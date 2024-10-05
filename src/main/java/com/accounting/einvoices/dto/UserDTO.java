@@ -19,8 +19,8 @@ public class UserDTO {
     private String lastName;
     private String phone;
     private Status status = Status.NONACTIVE;
-    //private LocationDTO location;
-    //private CompanyDTO companyDTO;
+    private CompanyDTO companyDTO;
+    private RoleDTO role;
 
 
 }

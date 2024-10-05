@@ -12,7 +12,13 @@ public interface UserService {
 
     UserDTO findById(Long id);
 
-    UserDTO save(UserDTO user);
+    UserDTO create(UserDTO user);
+
+    UserDTO register(UserDTO user);
+
+    void logIn(UserDTO user);
+
+    boolean checkIfUserExists(String username);
 
 //    UserDTO update(Long id);
 //
