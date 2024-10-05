@@ -14,11 +14,8 @@ public interface UserService {
 
     UserDTO create(UserDTO user);
 
-    UserDTO register(UserDTO user);
-
-    void logIn(UserDTO user);
-
     boolean checkIfUserExists(String username);
+
 
 //    UserDTO update(Long id);
 //
