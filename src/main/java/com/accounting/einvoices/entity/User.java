@@ -1,5 +1,6 @@
 package com.accounting.einvoices.entity;
 
+import com.accounting.einvoices.enums.Gender;
 import com.accounting.einvoices.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,9 @@ public class User extends BaseEntity{
     private String phone;
     private String position;
     private boolean enabled;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
