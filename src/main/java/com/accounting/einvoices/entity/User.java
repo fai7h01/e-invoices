@@ -25,6 +25,7 @@ public class User extends BaseEntity{
     private String lastName;
     private String phone;
     private String position;
+    private boolean enabled;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

@@ -22,6 +22,7 @@ public class UserDTO {
     private String lastName;
     private String phone;
     private String position;
+    private boolean enabled;
     private Status status = Status.NONACTIVE;
     private CompanyDTO company;
     private RoleDTO role;
