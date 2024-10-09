@@ -20,11 +20,11 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'red tech', '
 
 
 insert into users(insert_date_time, insert_user_id, is_deleted, last_update_date_time,
-                  last_update_user_id, username, password, first_name, last_name, phone, role_id, status, company_id)
-values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'john@email.com', 'Abc1', 'John', 'Doe', '123', 1, 'ACTIVE', 1),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'melissa@email.com', 'Abc1', 'Melissa', 'Smith', '123', 2, 'ACTIVE', 1),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'ruby@email.com', 'Abc1', 'Ruby', 'Green', '123', 3, 'ACTIVE', 1),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'tom@email.com', 'Abc1', 'Tom', 'Hanks', '123', 3, 'ACTIVE', 1),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'steve@email.com', 'Abc1', 'Steve', 'Jobs', '123', 3, 'ACTIVE', 2);
+                  last_update_user_id, username, password, first_name, last_name, phone, position, role_id, status, company_id)
+values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'john@email.com', 'Abc1', 'John', 'Doe', '123', 'HR' 1, 'ACTIVE', 1),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'melissa@email.com', 'Abc1', 'Melissa', 'Smith', '123', 'PR', 2, 'ACTIVE', 1),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'ruby@email.com', 'Abc1', 'Ruby', 'Green', '123', 'IT spec', 3, 'ACTIVE', 1),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'tom@email.com', 'Abc1', 'Tom', 'Hanks', '123', 'Sales', 3, 'ACTIVE', 1),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'steve@email.com', 'Abc1', 'Steve', 'Jobs', '123', 'HR', 3, 'ACTIVE', 2);
 
 
