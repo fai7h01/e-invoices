@@ -2,14 +2,16 @@ package com.accounting.einvoices.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "addresses")
 public class Address extends BaseEntity {
 

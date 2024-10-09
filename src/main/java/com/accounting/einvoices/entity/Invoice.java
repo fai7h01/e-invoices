@@ -28,7 +28,9 @@ public class Invoice extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private InvoiceStatus invoiceStatus;
 
-    private LocalDateTime date;
+    private LocalDateTime dateOfIssue;
+
+    private LocalDateTime dueDate;
 
     @ManyToOne
     @JoinColumn(name = "client_vendor_id")

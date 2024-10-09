@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAll() {
-        return List.of();
+        List<User> users = userRepository.findAll();
+        return users.stream().map(user -> mapperUtil.convert(user, new UserDTO())).toList();
     }
 
     @Override
@@ -46,6 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO create(UserDTO user) {
+
+        //if logged in user != null, get company from logged in user and assign new user.
 
         if (checkIfUserExists(user.getUsername())) {
             throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");

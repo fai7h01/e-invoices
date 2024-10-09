@@ -1,8 +1,6 @@
 package com.accounting.einvoices.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +16,12 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted is false")
 public class Company extends BaseEntity{
 
-    private String name;
-    private String industry;
-    private String description;
-    private Integer estimatedRevenue;
+    private String title;
+    private String phone;
+    private String website;
 
-    @OneToOne
-    private Location location;
+    @OneToOne (cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
 }

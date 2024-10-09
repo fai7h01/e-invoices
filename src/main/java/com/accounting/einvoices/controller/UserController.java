@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/user")
@@ -28,5 +30,14 @@ public class UserController {
                 .data(saved).build());
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<ResponseWrapper> getAllUsers() {
+        List<UserDTO> users = userService.findAll();
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("User list is successfully registered.")
+                .data(users).build());
+    }
 
 }
