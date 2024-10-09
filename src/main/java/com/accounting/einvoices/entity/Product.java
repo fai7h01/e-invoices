@@ -1,11 +1,12 @@
 package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.ProductUnit;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

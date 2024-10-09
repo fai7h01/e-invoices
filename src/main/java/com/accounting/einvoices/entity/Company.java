@@ -1,11 +1,12 @@
 package com.accounting.einvoices.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -13,14 +14,14 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @Entity
 @Table(name = "companies")
-@SQLRestriction("is_deleted is false")
+@Where(clause = "is_deleted = false")
 public class Company extends BaseEntity{
 
     private String title;
     private String phone;
     private String website;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 

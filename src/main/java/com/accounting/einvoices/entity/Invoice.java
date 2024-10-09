@@ -2,13 +2,13 @@ package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.enums.InvoiceType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "invoices")
-@SQLRestriction("is_deleted is false")
+@Where(clause = "is_deleted = false")
 public class Invoice extends BaseEntity {
 
     private String invoiceNo;

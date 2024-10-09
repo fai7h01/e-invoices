@@ -1,12 +1,13 @@
 package com.accounting.einvoices.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @Entity
 @Table(name = "roles")
-@SQLRestriction("is_deleted is false")
+@Where(clause = "is_deleted = false")
 public class Role extends BaseEntity{
 
     private String description;

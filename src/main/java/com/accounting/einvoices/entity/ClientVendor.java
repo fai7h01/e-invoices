@@ -1,12 +1,13 @@
 package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.ClientVendorType;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "clients_vendors")
@@ -14,7 +15,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @Getter
 @Setter
-@SQLRestriction("is_deleted is false")
+@Where(clause = "is_deleted = false")
 public class ClientVendor extends BaseEntity {
 
 

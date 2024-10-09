@@ -1,12 +1,13 @@
 package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.Status;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-@SQLRestriction("is_deleted is false")
+@Where(clause = "is_deleted = false")
 public class User extends BaseEntity{
 
     @Column(unique = true)
