@@ -1,13 +1,17 @@
 package com.accounting.einvoices.service.impl;
 
+import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
 import com.accounting.einvoices.exceptiojn.UserAlreadyExistsException;
 import com.accounting.einvoices.exceptiojn.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
+import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.RoleService;
 import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.util.MapperUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +23,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MapperUtil mapperUtil;
     private final RoleService roleService;
+    private final CompanyService companyService;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.roleService = roleService;
+        this.companyService = companyService;
     }
 
     @Override
@@ -47,11 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO create(UserDTO user) {
 
-        //if logged in user != null, get company from logged in user and assign new user.
-
         if (checkIfUserExists(user.getUsername())) {
             throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
         }
+
+        //get logged in company and set it to user
+        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
 
         if (user.getRole() == null) roleService.setAdmin(user);
 

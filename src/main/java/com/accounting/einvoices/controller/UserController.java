@@ -30,6 +30,16 @@ public class UserController {
                 .data(saved).build());
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<ResponseWrapper> userCreate(@RequestBody UserDTO user) {
+        UserDTO saved = userService.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("User is successfully created.")
+                .data(saved).build());
+    }
+
     @GetMapping("/list")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
         List<UserDTO> users = userService.findAll();
