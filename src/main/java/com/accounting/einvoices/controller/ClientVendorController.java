@@ -1,8 +1,9 @@
 package com.accounting.einvoices.controller;
 
+import com.accounting.einvoices.dto.ClientVendorDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
-import com.accounting.einvoices.service.UserService;
+import com.accounting.einvoices.service.ClientVendorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,34 +14,33 @@ import java.util.List;
 @Slf4j
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/v1/user")
-public class UserController {
+@RequestMapping("/api/v1/clientVendor")
+public class ClientVendorController {
 
-    private final UserService userService;
+    private final ClientVendorService clientVendorService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public ClientVendorController(ClientVendorService clientVendorService) {
+        this.clientVendorService = clientVendorService;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
-        UserDTO saved = userService.create(user);
+    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody ClientVendorDTO clientVendor) {
+        ClientVendorDTO saved = clientVendorService.create(clientVendor);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
-                .message("User is successfully created.")
+                .message("Client/Vendor is successfully created.")
                 .data(saved).build());
     }
 
 
     @GetMapping("/list")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
-        List<UserDTO> users = userService.findAll();
+        List<ClientVendorDTO> list = clientVendorService.findAll();
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
-                .message("User list is successfully retrieved.")
-                .data(users).build());
+                .message("Client/Vendor list is successfully retrieved.")
+                .data(list).build());
     }
-
 }

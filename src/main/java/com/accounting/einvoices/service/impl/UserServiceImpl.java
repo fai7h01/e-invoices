@@ -1,13 +1,11 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
 import com.accounting.einvoices.exceptiojn.UserAlreadyExistsException;
 import com.accounting.einvoices.exceptiojn.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
 import com.accounting.einvoices.service.CompanyService;
-import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.RoleService;
 import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.util.MapperUtil;
@@ -47,7 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findById(Long id) {
-        return null;
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
+        return mapperUtil.convert(user, new UserDTO( ));
     }
 
     @Override

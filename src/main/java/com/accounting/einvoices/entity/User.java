@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -27,6 +28,8 @@ public class User extends BaseEntity{
     private String phone;
     private String position;
     private boolean enabled;
+
+    private LocalDate dateOfEmployment;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,8 +24,9 @@ public class UserDTO {
     private String lastName;
     private String phone;
     private String position;
+    private LocalDate dateOfEmployment;
     private boolean enabled;
-    private Status status = Status.NONACTIVE;
+    private Status status = Status.INACTIVE;
     private CompanyDTO company;
     private RoleDTO role;
 
