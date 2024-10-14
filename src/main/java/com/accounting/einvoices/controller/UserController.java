@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
-    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
+    public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
         UserDTO saved = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
@@ -42,11 +42,18 @@ public class UserController {
     @Operation(summary = "Get All Users")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
         List<UserDTO> users = userService.findAll();
+        log.info("users: {}", users);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
                 .message("User list is successfully retrieved.")
                 .data(users).build());
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user){
+        UserDTO updated = userService.update(user);
+    }
+
 
 }

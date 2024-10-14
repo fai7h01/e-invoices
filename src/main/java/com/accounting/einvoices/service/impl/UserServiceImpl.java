@@ -69,6 +69,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO update(UserDTO user) {
+        UserDTO foundUser = findByUsername(user.getUsername());
+        user.setId(foundUser.getId());
+        User converted = mapperUtil.convert(user, new User());
+        User saved = userRepository.save(converted);
+        return mapperUtil.convert(saved, new UserDTO());
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
     public boolean checkIfUserExists(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.isPresent();

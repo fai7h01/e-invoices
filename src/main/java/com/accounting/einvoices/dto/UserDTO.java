@@ -2,10 +2,7 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -13,9 +10,9 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserDTO {
 
-    @JsonIgnore
     private Long id;
     private String username;
     private String password;

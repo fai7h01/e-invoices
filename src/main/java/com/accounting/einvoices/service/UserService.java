@@ -14,6 +14,12 @@ public interface UserService {
 
     UserDTO create(UserDTO user);
 
+    UserDTO update(UserDTO user);
+
+    void delete(Long id);
+
     boolean checkIfUserExists(String username);
+
+
 
 }
