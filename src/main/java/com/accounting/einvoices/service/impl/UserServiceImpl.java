@@ -2,8 +2,8 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
-import com.accounting.einvoices.exceptiojn.UserAlreadyExistsException;
-import com.accounting.einvoices.exceptiojn.UserNotFoundException;
+import com.accounting.einvoices.exception.UserAlreadyExistsException;
+import com.accounting.einvoices.exception.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.RoleService;

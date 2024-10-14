@@ -1,4 +1,4 @@
-package com.accounting.einvoices.exceptiojn;
+package com.accounting.einvoices.exception;
 
 public class UserNotFoundException extends RuntimeException{
 
