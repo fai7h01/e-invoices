@@ -3,6 +3,8 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/v1/user")
+@Tag(name = "User Controller", description = "User CRUD Operations")
 public class UserController {
 
     private final UserService userService;
@@ -23,6 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
+    @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
         UserDTO saved = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -34,6 +38,7 @@ public class UserController {
 
 
     @GetMapping("/list")
+    @Operation(summary = "Get All Users")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
         List<UserDTO> users = userService.findAll();
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
