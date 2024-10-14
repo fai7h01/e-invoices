@@ -7,7 +7,6 @@ import com.accounting.einvoices.repository.ClientVendorRepository;
 import com.accounting.einvoices.service.ClientVendorService;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.util.MapperUtil;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

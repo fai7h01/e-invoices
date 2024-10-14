@@ -9,12 +9,14 @@ import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.RoleService;
 import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUsername(String username) {
+        log.info("username ->>>>>>>>>>>>>>>>>>>>>>>>: {}", username);
         User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         return mapperUtil.convert(foundUser, new UserDTO());
     }

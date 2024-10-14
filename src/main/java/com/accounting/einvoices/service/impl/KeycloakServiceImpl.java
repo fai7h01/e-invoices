@@ -4,18 +4,23 @@ import com.accounting.einvoices.config.KeycloakProperties;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.representations.AccessToken;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
@@ -33,6 +38,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         this.keycloakProperties = keycloakProperties;
         this.userService = userService;
     }
+
 
     @Override
     public Response userCreate(UserDTO dto) {
@@ -94,12 +100,23 @@ public class KeycloakServiceImpl implements KeycloakService {
     @Override
     public UserDTO getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SimpleKeycloakAccount details = (SimpleKeycloakAccount) authentication.getDetails();
-        String username = details.getKeycloakSecurityContext().getToken().getPreferredUsername();
-        return userService.findByUsername(username);
+
+        // Check if the principal is of type KeycloakPrincipal
+        if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
+            KeycloakPrincipal<KeycloakSecurityContext> principal =
+                    (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+            String username = principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
+            return userService.findByUsername(username);
+        } else if (authentication.getPrincipal() instanceof String) {
+            // Handle case where the principal is a username directly
+            String username = (String) authentication.getPrincipal();
+            return userService.findByUsername(username);
+        } else {
+            throw new IllegalStateException("Authentication principal is of an unexpected type.");
+        }
     }
 
-    private Keycloak getKeycloakInstance(){
+    private Keycloak getKeycloakInstance() {
         return Keycloak.getInstance(keycloakProperties.getAuthServerUrl(),
                 keycloakProperties.getMasterRealm(), keycloakProperties.getMasterUser()
                 , keycloakProperties.getMasterUserPswd(), keycloakProperties.getMasterClient());

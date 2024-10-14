@@ -23,7 +23,6 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String phone;
-    private String position;
     private LocalDate dateOfEmployment;
     private boolean enabled;
     private Status status = Status.INACTIVE;
