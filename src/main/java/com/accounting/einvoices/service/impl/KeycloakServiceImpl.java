@@ -106,6 +106,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             KeycloakPrincipal<KeycloakSecurityContext> principal =
                     (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
             String username = principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
+            log.info("logged in user: {}", username);
             return userService.findByUsername(username);
         } else if (authentication.getPrincipal() instanceof String) {
             // Handle case where the principal is a username directly

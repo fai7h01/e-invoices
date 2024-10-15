@@ -6,6 +6,7 @@ import com.accounting.einvoices.exception.UserAlreadyExistsException;
 import com.accounting.einvoices.exception.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
 import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.RoleService;
 import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.util.MapperUtil;
@@ -24,19 +25,23 @@ public class UserServiceImpl implements UserService {
     private final MapperUtil mapperUtil;
     private final RoleService roleService;
     private final CompanyService companyService;
+    private final KeycloakService keycloakService;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService) {
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService, @Lazy KeycloakService keycloakService) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.roleService = roleService;
         this.companyService = companyService;
+        this.keycloakService = keycloakService;
     }
 
     @Override
     public List<UserDTO> findAll() {
-        //getLoggedIn user, get company id, find based on company id.
+        UserDTO loggedInUser = keycloakService.getLoggedInUser();
         List<User> users = userRepository.findAll();
-        return users.stream().map(user -> mapperUtil.convert(user, new UserDTO())).toList();
+        return users.stream()
+                .filter(user -> user.getCompany().getId().equals(loggedInUser.getCompany().getId()))
+                .map(user -> mapperUtil.convert(user, new UserDTO())).toList();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class UserServiceImpl implements UserService {
         if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
 
         //get logged in company and set it to user
-//        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
+        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
 
         if (user.getRole() == null) roleService.setAdmin(user);
 

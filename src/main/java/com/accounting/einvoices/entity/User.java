@@ -41,6 +41,6 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Company company;
 }
