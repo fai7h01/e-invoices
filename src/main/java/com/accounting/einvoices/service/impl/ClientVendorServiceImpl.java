@@ -32,17 +32,14 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         Optional<ClientVendor> foundClientVendor = clientVendorRepository.findByName(clientVendor.getName());
         if (foundClientVendor.isPresent())
             throw new ClientVendorAlreadyExistsException("Client/Vendor already exists.");
-
-        CompanyDTO loggedInUserCompany = companyService.getByLoggedInUser();
-        clientVendor.setCompany(loggedInUserCompany);
+        clientVendor.setCompany(getLoggedInCompany());
         ClientVendor saved = clientVendorRepository.save(mapperUtil.convert(clientVendor, new ClientVendor()));
         return mapperUtil.convert(saved, new ClientVendorDTO());
     }
 
     @Override
     public List<ClientVendorDTO> findAll() {
-        CompanyDTO loggedInUserCompany = companyService.getByLoggedInUser();
-        List<ClientVendor> clientVendorList = clientVendorRepository.findAllByCompanyId(loggedInUserCompany.getId());
+        List<ClientVendor> clientVendorList = clientVendorRepository.findAllByCompanyId(getLoggedInCompany().getId());
         return clientVendorList.stream()
                 .map(clientVendor -> mapperUtil.convert(clientVendor, new ClientVendorDTO()))
                 .toList();
@@ -69,6 +66,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         clientVendor.setIsDeleted(true);
         clientVendor.setName(clientVendor.getId() + "-" + clientVendor.getName());
         clientVendorRepository.save(clientVendor);
+    }
+
+    private CompanyDTO getLoggedInCompany(){
+        return companyService.getByLoggedInUser();
     }
 
 }
