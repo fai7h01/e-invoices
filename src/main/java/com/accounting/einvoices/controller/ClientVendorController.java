@@ -44,7 +44,7 @@ public class ClientVendorController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateClientVendor(@PathVariable("id") Long id, ClientVendorDTO clientVendor) {
+    public ResponseEntity<ResponseWrapper> updateClientVendor(@PathVariable("id") Long id, @RequestBody ClientVendorDTO clientVendor) {
         ClientVendorDTO updated = clientVendorService.update(id, clientVendor);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())

@@ -9,6 +9,8 @@ import com.accounting.einvoices.repository.ClientVendorRepository;
 import com.accounting.einvoices.service.ClientVendorService;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.util.MapperUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Service
 public class ClientVendorServiceImpl implements ClientVendorService {
 
+    private static final Logger log = LoggerFactory.getLogger(ClientVendorServiceImpl.class);
     private final ClientVendorRepository clientVendorRepository;
     private final CompanyService companyService;
     private final MapperUtil mapperUtil;

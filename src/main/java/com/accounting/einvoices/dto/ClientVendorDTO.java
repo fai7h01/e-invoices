@@ -2,15 +2,13 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.ClientVendorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class ClientVendorDTO {
 
     private Long id;
