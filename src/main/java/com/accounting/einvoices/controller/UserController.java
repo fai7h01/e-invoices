@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Slf4j
@@ -42,9 +41,8 @@ public class UserController {
     @Operation(summary = "Get All Users")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
         List<UserDTO> users = userService.findAll();
-        log.info("users: {}", users);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
                 .success(true)
                 .message("User list is successfully retrieved.")
                 .data(users).build());
@@ -53,6 +51,17 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user){
         UserDTO updated = userService.update(user);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("User is successfully updated.")
+                .data(updated).build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("id") Long id){
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 

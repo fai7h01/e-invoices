@@ -4,6 +4,7 @@ import com.accounting.einvoices.config.KeycloakProperties;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
@@ -16,11 +17,9 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
+@Slf4j
 @Service
 public class KeycloakServiceImpl implements KeycloakService {
 
@@ -110,6 +110,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         } else if (authentication.getPrincipal() instanceof String) {
             // Handle case where the principal is a username directly
             String username = (String) authentication.getPrincipal();
+            log.info("logged in user: {}", username);
             return userService.findByUsername(username);
         } else {
             throw new IllegalStateException("Authentication principal is of an unexpected type.");

@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByUsername(String username) {
-        log.info("username ->>>>>>>>>>>>>>>>>>>>>>>>: {}", username);
         User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         return mapperUtil.convert(foundUser, new UserDTO());
     }
@@ -55,12 +54,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO create(UserDTO user) {
 
-        if (checkIfUserExists(user.getUsername())) {
-            throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
-        }
+        Optional<User> found = userRepository.findByUsername(user.getUsername());
+        if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
 
         //get logged in company and set it to user
-        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
+//        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
 
         if (user.getRole() == null) roleService.setAdmin(user);
 
@@ -79,14 +77,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-
+        Optional<User> foundUser = userRepository.findById(id);
+        if (foundUser.isPresent()){
+            User user = foundUser.get();
+            user.setUsername(user.getId() + "-" + user.getUsername());
+            user.setIsDeleted(true);
+            userRepository.save(user);
+        }
     }
 
-    @Override
-    public boolean checkIfUserExists(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        return user.isPresent();
-    }
 
 
 }
