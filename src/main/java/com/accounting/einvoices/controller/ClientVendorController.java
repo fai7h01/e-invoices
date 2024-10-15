@@ -52,4 +52,10 @@ public class ClientVendorController {
                 .message("Client/Vendor is successfully updated")
                 .data(updated).build());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseWrapper> deleteClientVendor(@PathVariable("id") Long id) {
+        clientVendorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

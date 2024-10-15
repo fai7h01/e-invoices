@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class ClientVendorDTO {
 
-    @JsonIgnore
     private Long id;
 
     private String name;
