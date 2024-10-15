@@ -1,7 +1,6 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.ClientVendorDTO;
-import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.ClientVendorService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ public class ClientVendorController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody ClientVendorDTO clientVendor) {
+    public ResponseEntity<ResponseWrapper> createClientVendor(@RequestBody ClientVendorDTO clientVendor) {
         ClientVendorDTO saved = clientVendorService.create(clientVendor);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
@@ -35,7 +34,7 @@ public class ClientVendorController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseWrapper> getAllUsers() {
+    public ResponseEntity<ResponseWrapper> getAllClientVendors() {
         List<ClientVendorDTO> list = clientVendorService.findAll();
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
