@@ -16,7 +16,7 @@ public class ClientVendorDTO {
     @JsonIgnore
     private Long id;
 
-    private String clientVendorName;
+    private String name;
 
     private String phone;
 
