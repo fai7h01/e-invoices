@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface ClientVendorService {
 
-    ClientVendorDTO create(ClientVendorDTO clientVendor);
-
     List<ClientVendorDTO> findAll();
+
+    ClientVendorDTO findById(Long id);
+
+    ClientVendorDTO create(ClientVendorDTO clientVendor);
 
     ClientVendorDTO update(Long id, ClientVendorDTO clientVendor);
 

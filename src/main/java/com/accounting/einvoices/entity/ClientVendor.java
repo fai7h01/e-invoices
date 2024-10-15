@@ -18,7 +18,6 @@ import javax.persistence.*;
 @Where(clause = "is_deleted = false")
 public class ClientVendor extends BaseEntity {
 
-
     @Column(nullable = false, unique = true)
     private String name;
 

@@ -1,5 +1,8 @@
 package com.accounting.einvoices.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ClientVendorType {
 
     VENDOR("Vendor"),
@@ -11,7 +14,4 @@ public enum ClientVendorType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

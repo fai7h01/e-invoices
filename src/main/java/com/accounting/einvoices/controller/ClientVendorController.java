@@ -36,10 +36,20 @@ public class ClientVendorController {
     @GetMapping("/list")
     public ResponseEntity<ResponseWrapper> getAllClientVendors() {
         List<ClientVendorDTO> list = clientVendorService.findAll();
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Client/Vendor list is successfully retrieved.")
                 .data(list).build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseWrapper> updateClientVendor(@PathVariable("id") Long id, ClientVendorDTO clientVendor) {
+        ClientVendorDTO updated = clientVendorService.update(id, clientVendor);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Client/Vendor is successfully updated")
+                .data(updated).build());
     }
 }
