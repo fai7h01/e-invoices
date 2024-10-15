@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.List;
 
 @Slf4j
@@ -48,9 +49,9 @@ public class UserController {
                 .data(users).build());
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user){
-        UserDTO updated = userService.update(user);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
+        UserDTO updated = userService.update(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)

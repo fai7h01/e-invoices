@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll() {
         UserDTO loggedInUser = keycloakService.getLoggedInUser();
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllByCompanyId(loggedInUser.getCompany().getId());
         return users.stream()
-                .filter(user -> user.getCompany().getId().equals(loggedInUser.getCompany().getId()))
+                .filter(user -> !user.getId().equals(loggedInUser.getId()))
                 .map(user -> mapperUtil.convert(user, new UserDTO())).toList();
     }
 
@@ -67,17 +67,22 @@ public class UserServiceImpl implements UserService {
 
         if (user.getRole() == null) roleService.setAdmin(user);
 
+        //keycloak
         User saved = userRepository.save(mapperUtil.convert(user, new User()));
         return mapperUtil.convert(saved, new UserDTO());
     }
 
     @Override
-    public UserDTO update(UserDTO user) {
-        UserDTO foundUser = findByUsername(user.getUsername());
-        user.setId(foundUser.getId());
-        User converted = mapperUtil.convert(user, new User());
-        User saved = userRepository.save(converted);
-        return mapperUtil.convert(saved, new UserDTO());
+    public UserDTO update(Long id, UserDTO user) {
+        User foundUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
+        user.setId(id);
+        user.getCompany().setId(foundUser.getCompany().getId());
+        user.setEnabled(true);
+
+        User userToUpdate = mapperUtil.convert(user, new User());
+        //keycloak
+        User updatedUser = userRepository.save(userToUpdate);
+        return mapperUtil.convert(updatedUser, new UserDTO());
     }
 
     @Override
@@ -87,6 +92,7 @@ public class UserServiceImpl implements UserService {
             User user = foundUser.get();
             user.setUsername(user.getId() + "-" + user.getUsername());
             user.setIsDeleted(true);
+            //keycloak
             userRepository.save(user);
         }
     }
