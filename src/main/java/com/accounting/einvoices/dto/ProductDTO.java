@@ -3,6 +3,9 @@ package com.accounting.einvoices.dto;
 import com.accounting.einvoices.enums.ProductUnit;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,9 +21,11 @@ public class ProductDTO {
 
     private Integer lowLimitAlert;
 
+    private LocalDate createdAt;
+
     private ProductUnit productUnit;
 
     private CategoryDTO category;
 
-    private boolean hasInvoiceProduct;
+//    private boolean hasInvoiceProduct;
 }
