@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllByCompanyId(loggedInUser.getCompany().getId());
         return users.stream()
                 .filter(user -> !user.getId().equals(loggedInUser.getId()))
-                .map(user -> mapperUtil.convert(user, new UserDTO())).toList();
+                .map(user -> mapperUtil.convert(user, new UserDTO())).collect(Collectors.toList());
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -26,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> findAll() {
         return categoryRepository.findAllByCompanyId(getLoggedInCompany().getId()).stream()
-                .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
+                .map(category -> mapperUtil.convert(category, new CategoryDTO())).collect(Collectors.toList());
     }
 
     @Override
