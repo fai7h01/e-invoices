@@ -1,10 +1,10 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.enums.ProductUnit;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,6 +24,8 @@ public class ProductDTO {
     private LocalDate createdAt;
 
     private ProductUnit productUnit;
+
+    private ProductStatus status;
 
     private CategoryDTO category;
 
