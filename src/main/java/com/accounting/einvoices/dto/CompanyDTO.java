@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CompanyDTO {
 
-    @JsonIgnore
     private Long id;
 
     private String title;
