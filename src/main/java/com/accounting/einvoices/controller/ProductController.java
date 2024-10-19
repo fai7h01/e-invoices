@@ -6,10 +6,7 @@ import com.accounting.einvoices.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +30,31 @@ public class ProductController {
                 .success(true)
                 .message("Product list is successfully retrieved.")
                 .data(products).build());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseWrapper> createProduct(@RequestBody ProductDTO product){
+        productService.create(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Product is successfully created.")
+                .data(product).build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseWrapper> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO product){
+        ProductDTO updated = productService.update(id, product);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Product is successfully updated.")
+                .data(updated).build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseWrapper> deleteProduct(@PathVariable("id") Long id){
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
