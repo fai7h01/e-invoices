@@ -10,5 +10,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByCompanyId(Long id);
 
-    Optional<Category> findByDescription(String desc);
+    Optional<Category> findByDescriptionIgnoreCase(String desc);
 }
