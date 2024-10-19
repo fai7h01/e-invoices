@@ -23,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseWrapper> getAllCategory(){
+    public ResponseEntity<ResponseWrapper> getAllCategory() {
         List<CategoryDTO> categories = categoryService.findAll();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -33,12 +33,28 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createCategory(@RequestBody CategoryDTO category){
+    public ResponseEntity<ResponseWrapper> createCategory(@RequestBody CategoryDTO category) {
         CategoryDTO saved = categoryService.create(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Category is successfully created.")
+                .data(saved).build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseWrapper> updateCategory(@PathVariable("id") Long id, @RequestBody CategoryDTO category) {
+        CategoryDTO updated = categoryService.update(id, category);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Category list is successfully retrieved.")
-                .data(saved).build());
+                .message("Category is successfully updated.")
+                .data(updated).build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseWrapper> deleteCategory(@PathVariable("id") Long id) {
+        categoryService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

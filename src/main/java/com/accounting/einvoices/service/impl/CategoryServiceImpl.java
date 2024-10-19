@@ -44,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO create(CategoryDTO category) {
         Optional<Category> found = categoryRepository.findByDescription(category.getDescription());
         if (found.isPresent()) throw new CategoryAlreadyExistsException("Category already exists.");
+        category.setCompany(getLoggedInCompany());
         Category saved = categoryRepository.save(mapperUtil.convert(category, new Category()));
         return mapperUtil.convert(saved, new CategoryDTO());
     }
@@ -51,7 +52,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO update(Long id, CategoryDTO category) {
         Category found = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found."));
-        Category saved = categoryRepository.save(found);
+        Category converted = mapperUtil.convert(category, new Category());
+        converted.setId(id);
+        converted.setCompany(found.getCompany());
+        Category saved = categoryRepository.save(converted);
         return mapperUtil.convert(saved, new CategoryDTO());
     }
 
