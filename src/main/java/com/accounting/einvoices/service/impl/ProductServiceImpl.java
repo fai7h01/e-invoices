@@ -39,6 +39,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDTO findByName(String name) {
+        Product foundProduct = productRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ProductNotFoundException("Product not found."));
+        return mapperUtil.convert(foundProduct, new ProductDTO());
+    }
+
+    @Override
     public ProductDTO create(ProductDTO product) {
         Optional<Product> foundProduct = productRepository.findByNameIgnoreCase(product.getName());
         if (foundProduct.isPresent()) throw new ProductAlreadyExistsException("Product already exists.");

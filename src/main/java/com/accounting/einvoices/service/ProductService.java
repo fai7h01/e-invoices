@@ -8,6 +8,8 @@ public interface ProductService {
 
     List<ProductDTO> findAll();
 
+    ProductDTO findByName(String name);
+
     ProductDTO create(ProductDTO product);
 
     ProductDTO update(Long id, ProductDTO product);

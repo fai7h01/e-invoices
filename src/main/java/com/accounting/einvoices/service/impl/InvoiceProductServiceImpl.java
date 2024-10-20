@@ -2,6 +2,9 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.ProductDTO;
+import com.accounting.einvoices.entity.InvoiceProduct;
+import com.accounting.einvoices.exception.InvoiceProductNotFoundException;
 import com.accounting.einvoices.repository.InvoiceProductRepository;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -42,13 +45,19 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     @Override
     public InvoiceProductDTO create(Long invoiceId, InvoiceProductDTO invoiceProduct) {
         InvoiceDTO foundInvoice = invoiceService.findById(invoiceId);
-
-        return null;
+        ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());
+        invoiceProduct.setInvoice(foundInvoice);
+        invoiceProduct.setProduct(foundProduct);
+        InvoiceProduct saved = invoiceProductRepository.save(mapperUtil.convert(invoiceProduct, new InvoiceProduct()));
+        return mapperUtil.convert(saved, new InvoiceProductDTO());
     }
 
     @Override
     public void delete(Long id) {
-
+        InvoiceProduct foundInvoiceProduct = invoiceProductRepository.findById(id)
+                .orElseThrow(() -> new InvoiceProductNotFoundException("Invoice product not found."));
+        foundInvoiceProduct.setIsDeleted(true);
+        invoiceProductRepository.save(foundInvoiceProduct);
     }
 
     @Override
