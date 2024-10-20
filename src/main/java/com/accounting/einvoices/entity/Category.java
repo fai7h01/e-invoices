@@ -1,14 +1,12 @@
 package com.accounting.einvoices.entity;
 
+import com.accounting.einvoices.enums.CategoryIcon;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -23,6 +21,9 @@ public class Category extends BaseEntity {
 
     @ManyToOne
     private Company company;
+
+    @Enumerated(EnumType.STRING)
+    private CategoryIcon icon;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;

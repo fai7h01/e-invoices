@@ -1,5 +1,7 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.CategoryIcon;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -15,9 +17,11 @@ public class CategoryDTO {
 
     private String description;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonIgnore
     private CompanyDTO company;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private CategoryIcon icon;
+
+    @JsonIgnore
     private boolean hasProduct;
 }
