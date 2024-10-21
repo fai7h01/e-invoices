@@ -52,13 +52,13 @@ VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samsung', '0
 
 INSERT INTO categories(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                        description, icon, company_id)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Accessories', 'SHOPPING', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Cosmetics', 'AIRPLAY', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Beverages', 'APERTURE', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Books', 'BOOK' ,1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Dairy', 'CAKE' ,1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Electronics', 'HOME' ,1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Services', 'BOX' ,1);
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Accessories', 'ShoppingBag', 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Cosmetics', 'Airplay', 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Beverages', 'Aperture', 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Books', 'Book' ,1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Dairy', 'Cake' ,1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Electronics', 'Home' ,1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Services', 'Box' ,1);
 
 INSERT INTO products(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                      name, quantity_in_stock, low_limit_alert, created_at, product_unit, status, category_id)
