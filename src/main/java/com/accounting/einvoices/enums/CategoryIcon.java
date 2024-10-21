@@ -5,6 +5,6 @@ import lombok.Getter;
 @Getter
 public enum CategoryIcon {
 
-    AIRPLAY, SHOPPING, APERTURE, BOOK, BOX, CAKE, CAR, COFFEE, DROPLET, HOME;
+    Airplay, ShoppingBag, Aperture, Book, Box, Cake, Car, Coffee, Droplet, Home;
 
 }
