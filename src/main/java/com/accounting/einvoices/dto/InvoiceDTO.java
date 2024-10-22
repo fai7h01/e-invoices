@@ -2,6 +2,8 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.enums.InvoiceType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class InvoiceDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String invoiceNo;
@@ -26,6 +29,7 @@ public class InvoiceDTO {
 
     private LocalDateTime dueDate;
 
+    @JsonIgnore
     private CompanyDTO company;
 
     private ClientVendorDTO clientVendor;

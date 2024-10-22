@@ -2,6 +2,7 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.ClientVendorType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @NoArgsConstructor
@@ -11,6 +12,7 @@ import lombok.*;
 @ToString
 public class ClientVendorDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String name;

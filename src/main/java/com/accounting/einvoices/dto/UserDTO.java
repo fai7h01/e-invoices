@@ -1,6 +1,7 @@
 package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @ToString
 public class UserDTO {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     private String username;
     private String password;
