@@ -1,10 +1,10 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +44,45 @@ public class InvoiceController {
                 .success(true)
                 .message("Invoice list is successfully retrieved.")
                 .data(invoices).build());
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoice){
+        InvoiceDTO updatedInvoice = invoiceService.update(id, invoice);
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Invoice is successfully updated.")
+                .data(updatedInvoice).build());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseWrapper> deleteInvoice(@PathVariable Long id){
+        invoiceService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/add/invoiceProduct/{invoiceId}")
+    public ResponseEntity<ResponseWrapper> addInvoiceProductToInvoice(@PathVariable("invoiceId") Long id,
+                                                                      @RequestBody InvoiceProductDTO invoiceProduct){
+        InvoiceProductDTO added = invoiceProductService.save(id, invoiceProduct);
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Product is successfully added to invoice.")
+                .data(added).build());
+    }
+
+    @DeleteMapping("/remove/invoiceProduct/{id}")
+    public ResponseEntity<ResponseWrapper> removeInvoiceProductFromInvoice(@PathVariable Long id){
+        invoiceProductService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/approve/{id}")
+    public ResponseEntity<ResponseWrapper> approveInvoice(@PathVariable Long id){
+        invoiceService.approve(id);
+        invoiceProductService.lowQuantityAlert(id);
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Purchase invoice is successfully approved.").build());
     }
 }
