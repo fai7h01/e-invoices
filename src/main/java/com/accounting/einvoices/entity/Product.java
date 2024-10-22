@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -25,6 +26,8 @@ public class Product extends BaseEntity {
     private int lowLimitAlert;
 
     private LocalDate createdAt;
+
+    private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
     private ProductUnit productUnit;

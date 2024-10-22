@@ -5,6 +5,7 @@ import com.accounting.einvoices.enums.ProductUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -22,6 +23,8 @@ public class ProductDTO {
     private Integer quantityInStock;
 
     private Integer lowLimitAlert;
+
+    private BigDecimal price;
 
     private LocalDate createdAt;
 

@@ -4,6 +4,7 @@ import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.InvoiceProduct;
+import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.exception.InvoiceProductNotFoundException;
 import com.accounting.einvoices.repository.InvoiceProductRepository;
 import com.accounting.einvoices.service.InvoiceProductService;
@@ -74,7 +75,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public void updateQuantityInStock(Long id) {
-
+        List<Product> products = invoiceProductRepository.findProductsByInvoiceId(id);
+        products.forEach(product -> {
+            int sumQuantityOfProducts = invoiceProductRepository.sumQuantityOfProducts(id, product.getId());
+            product.setQuantityInStock(product.getQuantityInStock() - sumQuantityOfProducts);
+            productService.create(mapperUtil.convert(product, new ProductDTO()));
+        });
     }
 
     @Override
