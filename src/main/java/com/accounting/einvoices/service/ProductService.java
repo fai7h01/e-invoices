@@ -10,7 +10,7 @@ public interface ProductService {
 
     ProductDTO findByName(String name);
 
-    ProductDTO create(ProductDTO product);
+    ProductDTO save(ProductDTO product);
 
     ProductDTO update(Long id, ProductDTO product);
 

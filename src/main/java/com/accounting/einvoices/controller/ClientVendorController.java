@@ -24,7 +24,7 @@ public class ClientVendorController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWrapper> createClientVendor(@RequestBody ClientVendorDTO clientVendor) {
-        ClientVendorDTO saved = clientVendorService.create(clientVendor);
+        ClientVendorDTO saved = clientVendorService.save(clientVendor);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)

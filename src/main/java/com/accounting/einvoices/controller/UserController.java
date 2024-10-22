@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
-        UserDTO saved = userService.create(user);
+        UserDTO saved = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)

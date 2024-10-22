@@ -10,7 +10,7 @@ public interface ClientVendorService {
 
     ClientVendorDTO findById(Long id);
 
-    ClientVendorDTO create(ClientVendorDTO clientVendor);
+    ClientVendorDTO save(ClientVendorDTO clientVendor);
 
     ClientVendorDTO update(Long id, ClientVendorDTO clientVendor);
 

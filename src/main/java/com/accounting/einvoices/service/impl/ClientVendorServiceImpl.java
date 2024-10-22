@@ -32,7 +32,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
-    public ClientVendorDTO create(ClientVendorDTO clientVendor) {
+    public ClientVendorDTO save(ClientVendorDTO clientVendor) {
         Optional<ClientVendor> foundClientVendor = clientVendorRepository.findByName(clientVendor.getName());
         if (foundClientVendor.isPresent())
             throw new ClientVendorAlreadyExistsException("Client/Vendor already exists.");

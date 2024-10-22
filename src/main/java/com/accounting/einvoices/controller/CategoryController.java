@@ -34,7 +34,7 @@ public class CategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWrapper> createCategory(@RequestBody CategoryDTO category) {
-        CategoryDTO saved = categoryService.create(category);
+        CategoryDTO saved = categoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)

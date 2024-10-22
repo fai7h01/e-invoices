@@ -9,7 +9,7 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByInvoiceId(Long id);
 
-    InvoiceProductDTO create(Long invoiceId, InvoiceProductDTO invoiceProduct);
+    InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct);
 
     void delete(Long id);
 

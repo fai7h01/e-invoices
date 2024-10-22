@@ -44,7 +44,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public InvoiceProductDTO create(Long invoiceId, InvoiceProductDTO invoiceProduct) {
+    public InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct) {
         InvoiceDTO foundInvoice = invoiceService.findById(invoiceId);
         ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());
         invoiceProduct.setInvoice(foundInvoice);
@@ -79,7 +79,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         products.forEach(product -> {
             int sumQuantityOfProducts = invoiceProductRepository.sumQuantityOfProducts(id, product.getId());
             product.setQuantityInStock(product.getQuantityInStock() - sumQuantityOfProducts);
-            productService.create(mapperUtil.convert(product, new ProductDTO()));
+            productService.save(mapperUtil.convert(product, new ProductDTO()));
         });
     }
 

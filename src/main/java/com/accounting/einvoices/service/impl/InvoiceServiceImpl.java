@@ -30,7 +30,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceDTO create(InvoiceDTO invoice) {
+    public InvoiceDTO save(InvoiceDTO invoice) {
         return null;
     }
 

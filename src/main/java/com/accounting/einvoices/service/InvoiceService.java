@@ -10,7 +10,7 @@ public interface InvoiceService {
 
     InvoiceDTO findById(Long id);
 
-    InvoiceDTO create(InvoiceDTO invoice);
+    InvoiceDTO save(InvoiceDTO invoice);
 
     InvoiceDTO update(Long id, InvoiceDTO invoice);
 

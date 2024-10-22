@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO create(CategoryDTO category) {
+    public CategoryDTO save(CategoryDTO category) {
         Optional<Category> found = categoryRepository.findByDescriptionIgnoreCase(category.getDescription());
         if (found.isPresent()) throw new CategoryAlreadyExistsException("Category already exists.");
         category.setCompany(getLoggedInCompany());

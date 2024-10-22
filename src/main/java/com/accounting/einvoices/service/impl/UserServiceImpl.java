@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO create(UserDTO user) {
+    public UserDTO save(UserDTO user) {
 
         Optional<User> found = userRepository.findByUsername(user.getUsername());
         if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");

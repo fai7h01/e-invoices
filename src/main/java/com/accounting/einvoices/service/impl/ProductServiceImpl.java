@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO create(ProductDTO product) {
+    public ProductDTO save(ProductDTO product) {
         Optional<Product> foundProduct = productRepository.findByNameIgnoreCase(product.getName());
         if (foundProduct.isPresent()) throw new ProductAlreadyExistsException("Product already exists.");
         CategoryDTO foundCategory = categoryService.findByDescription(product.getCategory().getDescription());

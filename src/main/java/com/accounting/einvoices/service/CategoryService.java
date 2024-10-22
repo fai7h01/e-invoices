@@ -10,7 +10,7 @@ public interface CategoryService {
 
     CategoryDTO findByDescription(String desc);
 
-    CategoryDTO create(CategoryDTO category);
+    CategoryDTO save(CategoryDTO category);
 
     CategoryDTO update(Long id, CategoryDTO category);
 

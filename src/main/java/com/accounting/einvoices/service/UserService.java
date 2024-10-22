@@ -12,7 +12,7 @@ public interface UserService {
 
     UserDTO findById(Long id);
 
-    UserDTO create(UserDTO user);
+    UserDTO save(UserDTO user);
 
     UserDTO update(Long id, UserDTO user);
 
