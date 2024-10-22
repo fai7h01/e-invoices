@@ -16,6 +16,8 @@ public interface InvoiceService {
 
     void delete(Long id);
 
+    void setPriceTaxAndTotal(InvoiceDTO invoice);
+
     void approve(Long id);
 
 }

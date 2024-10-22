@@ -19,7 +19,9 @@ public interface InvoiceProductService {
 
     void updateQuantityInStock(Long id);
 
-    void calculateProfitLoss(Long id);
+    void calculateTotalSales(Long id);
 
     void lowQuantityAlert(Long id);
+
+    List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id);
 }

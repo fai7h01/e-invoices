@@ -21,8 +21,6 @@ public class InvoiceProductDTO {
 
     private BigDecimal total;
 
-    private BigDecimal profitLoss;
-
     private Integer remainingQuantity;
 
     private InvoiceDTO invoice;

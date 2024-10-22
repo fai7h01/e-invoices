@@ -22,7 +22,7 @@ public class InvoiceProduct extends BaseEntity {
     private int quantity;
     private BigDecimal price;
     private int tax;
-    private BigDecimal profitLoss;
+    private BigDecimal totalSale;
     private int remainingQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)

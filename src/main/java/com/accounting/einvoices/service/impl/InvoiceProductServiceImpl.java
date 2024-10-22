@@ -84,11 +84,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         });
     }
 
-
     @Override
-    public void calculateProfitLoss(Long id) {
+    public void calculateTotalSales(Long id) {
+        //find invoiceProducts by invoice id
 
     }
+
 
     @Override
     public void lowQuantityAlert(Long id) {
@@ -99,5 +100,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                 throw new ProductLowLimitAlertException("Stock of " + each.getName() + " decreased below low limit!");
             }
         }
+    }
+
+    @Override
+    public List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id) {
+        return invoiceProductRepository.findAllByInvoiceId(id).stream()
+                .map(invoiceProduct -> {
+                    InvoiceProductDTO dto = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
+                    dto.setTotal(getTotalWithTax(dto));
+                    return dto;
+                }).collect(Collectors.toList());
     }
 }
