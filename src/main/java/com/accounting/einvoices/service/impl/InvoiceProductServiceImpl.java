@@ -6,6 +6,7 @@ import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.InvoiceProduct;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.exception.InvoiceProductNotFoundException;
+import com.accounting.einvoices.exception.ProductLowLimitAlertException;
 import com.accounting.einvoices.repository.InvoiceProductRepository;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -83,10 +84,6 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         });
     }
 
-    @Override
-    public void updateRemainingQuantityUponApproval(Long id) {
-
-    }
 
     @Override
     public void calculateProfitLoss(Long id) {
@@ -95,6 +92,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public void lowQuantityAlert(Long id) {
-
+        List<Product> products = invoiceProductRepository.findProductsByInvoiceId(id);
+        for (Product each : products) {
+            int stock = each.getQuantityInStock();
+            if (stock < each.getLowLimitAlert()){
+                throw new ProductLowLimitAlertException("Stock of " + each.getName() + " decreased below low limit!");
+            }
+        }
     }
 }

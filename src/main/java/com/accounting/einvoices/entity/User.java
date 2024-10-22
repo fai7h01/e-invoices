@@ -1,7 +1,7 @@
 package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.Gender;
-import com.accounting.einvoices.enums.Status;
+import com.accounting.einvoices.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +39,7 @@ public class User extends BaseEntity{
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private UserStatus userStatus;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Company company;

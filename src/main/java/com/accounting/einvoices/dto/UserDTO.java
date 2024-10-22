@@ -1,7 +1,6 @@
 package com.accounting.einvoices.dto;
 
-import com.accounting.einvoices.enums.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.accounting.einvoices.enums.UserStatus;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -22,7 +21,7 @@ public class UserDTO {
     private String phone;
     private LocalDate dateOfEmployment;
     private boolean enabled;
-    private Status status = Status.INACTIVE;
+    private UserStatus userStatus = UserStatus.INACTIVE;
     private CompanyDTO company;
     private RoleDTO role;
 

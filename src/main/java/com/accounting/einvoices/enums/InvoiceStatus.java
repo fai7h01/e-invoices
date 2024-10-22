@@ -1,5 +1,8 @@
 package com.accounting.einvoices.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum InvoiceStatus {
 
 AWAITING_APPROVAL("Awaiting Approval"), APPROVED("Approved");
@@ -10,7 +13,4 @@ private final String value;
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

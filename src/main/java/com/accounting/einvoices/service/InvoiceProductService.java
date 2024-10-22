@@ -19,8 +19,6 @@ public interface InvoiceProductService {
 
     void updateQuantityInStock(Long id);
 
-    void updateRemainingQuantityUponApproval(Long id);
-
     void calculateProfitLoss(Long id);
 
     void lowQuantityAlert(Long id);
