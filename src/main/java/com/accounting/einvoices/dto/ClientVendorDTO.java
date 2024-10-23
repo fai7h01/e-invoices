@@ -27,6 +27,7 @@ public class ClientVendorDTO {
 
     private AddressDTO address;
 
+    @JsonIgnore
     private CompanyDTO company;
 
     @JsonIgnore
