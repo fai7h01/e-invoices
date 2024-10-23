@@ -56,6 +56,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public InvoiceDTO generateInvoice() {
+        InvoiceDTO invoice = new InvoiceDTO();
+        int currentInvNo = findAll().size();
+        LocalDateTime dateOfIssue = LocalDateTime.now();
+        invoice.setInvoiceNo(String.format("INV%03d", currentInvNo + 1));
+        invoice.setDateOfIssue(dateOfIssue);
+        return invoice;
+    }
+
+    @Override
     public InvoiceDTO save(InvoiceDTO invoice) {
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         ClientVendorDTO client = clientVendorService.findByName(invoice.getClientVendor().getName());

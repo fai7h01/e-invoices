@@ -2,6 +2,7 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.enums.ProductUnit;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

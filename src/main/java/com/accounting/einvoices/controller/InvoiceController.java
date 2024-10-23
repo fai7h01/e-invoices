@@ -46,6 +46,16 @@ public class InvoiceController {
                 .data(invoices).build());
     }
 
+    @GetMapping("/generate")
+    public ResponseEntity<ResponseWrapper> generateInvoice() {
+        InvoiceDTO generated = invoiceService.generateInvoice();
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Invoice is successfully generated.")
+                .data(generated).build());
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoice){
         InvoiceDTO updatedInvoice = invoiceService.update(id, invoice);
