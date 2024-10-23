@@ -56,6 +56,12 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     }
 
     @Override
+    public ClientVendorDTO findByName(String name) {
+        ClientVendor clientVendor = clientVendorRepository.findByName(name).orElseThrow(() -> new ClientVendorNotFoundException("Client not found"));
+        return mapperUtil.convert(clientVendor, new ClientVendorDTO());
+    }
+
+    @Override
     public ClientVendorDTO update(Long id, ClientVendorDTO clientVendor) {
         ClientVendorDTO foundClientVendor = findById(id);
         clientVendor.setId(id);
