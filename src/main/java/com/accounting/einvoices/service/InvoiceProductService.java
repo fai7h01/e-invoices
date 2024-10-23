@@ -19,7 +19,7 @@ public interface InvoiceProductService {
 
     void updateQuantityInStock(Long id);
 
-    void calculateTotalSales(Long id);
+    void calculateProfitLoss(Long id);
 
     void lowQuantityAlert(Long id);
 

@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler({UserNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class, ProductNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class, ProductNotFoundException.class,
+            InvoiceProductNotFoundException.class})
     public ResponseEntity<ExceptionWrapper> handleNotFoundExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
@@ -43,7 +44,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
 
-    @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class})
+    @ExceptionHandler(ProductLowLimitAlertException.class)
+    public ResponseEntity<ExceptionWrapper> lowLimitAlertException(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.OK)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(exceptionWrapper);
+    }
+
+
+        @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class})
     public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()

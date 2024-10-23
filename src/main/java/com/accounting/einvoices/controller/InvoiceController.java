@@ -71,7 +71,7 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/add/invoiceProduct/{invoiceId}")
+    @PostMapping("/add/product/{invoiceId}")
     public ResponseEntity<ResponseWrapper> addInvoiceProductToInvoice(@PathVariable("invoiceId") Long id,
                                                                       @RequestBody InvoiceProductDTO invoiceProduct){
         InvoiceProductDTO added = invoiceProductService.save(id, invoiceProduct);
@@ -81,7 +81,19 @@ public class InvoiceController {
                 .data(added).build());
     }
 
-    @DeleteMapping("/remove/invoiceProduct/{id}")
+
+    @GetMapping("/product/list/{invoiceId}")
+    public ResponseEntity<ResponseWrapper> getInvoiceProductsByInvoice(@PathVariable("invoiceId") Long id) {
+        List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Invoice products is successfully retrieved.")
+                .data(invoiceProducts).build());
+    }
+
+
+    @DeleteMapping("/remove/product/{id}")
     public ResponseEntity<ResponseWrapper> removeInvoiceProductFromInvoice(@PathVariable Long id){
         invoiceProductService.delete(id);
         return ResponseEntity.noContent().build();
@@ -93,6 +105,6 @@ public class InvoiceController {
         invoiceProductService.lowQuantityAlert(id);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
-                .message("Purchase invoice is successfully approved.").build());
+                .message("Invoice is successfully approved.").build());
     }
 }
