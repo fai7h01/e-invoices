@@ -2,6 +2,7 @@ package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface InvoiceService {
@@ -21,5 +22,11 @@ public interface InvoiceService {
     void setPriceTaxAndTotal(InvoiceDTO invoice);
 
     void approve(Long id);
+
+    BigDecimal countTotalCost();
+
+    BigDecimal countTotalSales();
+
+    BigDecimal sumProfitLoss();
 
 }

@@ -24,4 +24,7 @@ public interface InvoiceProductService {
     void lowQuantityAlert(Long id);
 
     List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id);
+
+    int findSumQuantityOfSoldProducts();
+
 }

@@ -1,17 +1,11 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.dto.ClientVendorDTO;
-import com.accounting.einvoices.dto.CompanyDTO;
-import com.accounting.einvoices.dto.InvoiceDTO;
-import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.entity.Invoice;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.repository.InvoiceRepository;
-import com.accounting.einvoices.service.ClientVendorService;
-import com.accounting.einvoices.service.CompanyService;
-import com.accounting.einvoices.service.InvoiceProductService;
-import com.accounting.einvoices.service.InvoiceService;
+import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -30,13 +24,15 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
+    private final ProductService productService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService, CompanyService companyService, ClientVendorService clientVendorService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService, CompanyService companyService, ClientVendorService clientVendorService, ProductService productService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
+        this.productService = productService;
     }
 
     @Override
@@ -113,5 +109,34 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(id);
         invoiceProductService.calculateProfitLoss(id);
+    }
+
+    @Override
+    public BigDecimal countTotalCost() {
+        List<ProductDTO> products = productService.findAll();
+        BigDecimal totalCost = BigDecimal.ZERO;
+        for (ProductDTO each : products) {
+            BigDecimal price = each.getPrice();
+            int quantity = each.getQuantityInStock();
+            BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
+            totalCost = totalCost.add(cost);
+        }
+        return totalCost;
+    }
+
+    @Override
+    public BigDecimal countTotalSales() {
+        return findAll().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+                .map(InvoiceDTO::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal sumProfitLoss() {
+        return findAll().stream()
+                .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+                .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
+                        .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

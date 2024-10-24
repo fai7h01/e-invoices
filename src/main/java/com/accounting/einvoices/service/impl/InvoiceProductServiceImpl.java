@@ -150,4 +150,9 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                     return dto;
                 }).collect(Collectors.toList());
     }
+
+    @Override
+    public int findSumQuantityOfSoldProducts() {
+        return invoiceProductRepository.sumQuantityOfSoldProducts(companyService.getByLoggedInUser().getId());
+    }
 }

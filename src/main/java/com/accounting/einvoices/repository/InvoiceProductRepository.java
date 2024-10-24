@@ -22,5 +22,7 @@ public interface InvoiceProductRepository extends JpaRepository<InvoiceProduct, 
             "AND ip.invoice.company.id = ?2 ORDER BY ip.id asc")
     List<InvoiceProduct> findByApprovedInvoices(Long productId, Long companyId);
 
-
+    @Query("SELECT sum(ip.quantity) FROM InvoiceProduct ip WHERE ip.invoice.invoiceStatus = 'APPROVED' " +
+            "AND ip.invoice.company.id = ?1")
+    int sumQuantityOfSoldProducts(Long companyId);
 }
