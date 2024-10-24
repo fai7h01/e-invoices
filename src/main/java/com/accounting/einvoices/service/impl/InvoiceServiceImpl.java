@@ -110,8 +110,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void approve(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
+        invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(id);
         invoiceProductService.calculateProfitLoss(id);
-        invoiceRepository.save(invoice);
     }
 }

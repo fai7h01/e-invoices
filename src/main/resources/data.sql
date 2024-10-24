@@ -61,11 +61,11 @@ VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Accessories'
        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Services', 'Box' ,1);
 
 INSERT INTO products(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
-                     name, quantity_in_stock, low_limit_alert, created_at, product_unit, status, category_id)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Apple', 20, 5, '2024-01-05', 'PCS', 'ACTIVE', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Peach', 20, 5, '2024-01-05', 'PCS', 'DRAFT', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Chocolate', 20, 5, '2024-01-05', 'PCS', 'ACTIVE', 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Ice-cream', 20, 5, '2024-01-05', 'PCS', 'DRAFT', 1);
+                     name, quantity_in_stock, low_limit_alert, price, created_at, product_unit, status, category_id)
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Apple', 20, 5, 10, '2024-01-05', 'PCS', 'ACTIVE', 1);
+--        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Peach', 20, 5, 7 , '2024-01-05', 'PCS', 'DRAFT', 1),
+--        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Chocolate', 20, 5, 8, '2024-01-05', 'PCS', 'ACTIVE', 1),
+--        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Ice-cream', 20, 5, 9, '2024-01-05', 'PCS', 'DRAFT', 1);
 
 INSERT INTO invoices(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                      invoice_no, invoice_type, invoice_status, date_of_issue, due_date, client_vendor_id, company_id)
@@ -76,10 +76,10 @@ VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV001', 'SA
        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV005', 'SALES', 'APPROVED', '2024-10-23 00:00:00', '2024-12-23 00:00:00', 1 , 1);
 
 INSERT INTO invoice_products(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
-                             price, quantity, remaining_quantity, tax, total_sale, invoice_id, product_id)
+                             price, quantity, remaining_quantity, tax, total, profit_loss, invoice_id, product_id)
 VALUES
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 250, 5, 3, 10, 0, 1, 1),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 250, 5, 5, 10, 0, 1, 1),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 2, 0, 10, 0, 1, 1),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 200, 2, 0, 10, 0, 1, 1),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 5, 0, 10, 0, 1, 1);
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 20, 20, 20, 10, 0, 0, 1, 1);
+-- ('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 250, 5, 0, 10, 0, 0, 1, 2),
+-- ('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 2, 0, 10, 0, 0, 1, 3),
+-- ('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 200, 2, 0, 10, 0, 0, 1, 3),
+-- ('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 5, 0, 10, 0, 0, 1, 3);

@@ -110,18 +110,18 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         BigDecimal totalCost = BigDecimal.ZERO;
         for (InvoiceProduct invoiceProduct : invoiceProducts) {
             int remainingQuantity = invoiceProduct.getRemainingQuantity() - salesQuantity;
-            BigDecimal costWithoutTax = invoiceProduct.getPrice().multiply(BigDecimal.valueOf(invoiceProduct.getRemainingQuantity()));
-            BigDecimal tax = costWithoutTax.multiply(invoiceProduct.getTax()).divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP);
-            BigDecimal costWithTax = costWithoutTax.add(tax);
+            BigDecimal cost = invoiceProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(salesQuantity));
+//            BigDecimal tax = costWithoutTax.multiply(invoiceProduct.getTax()).divide(BigDecimal.valueOf(100), RoundingMode.DOWN);
+            //BigDecimal costWithTax = costWithoutTax.add(tax);
             if (remainingQuantity <= 0) {
                 salesQuantity -= invoiceProduct.getRemainingQuantity();
                 invoiceProduct.setRemainingQuantity(0);
-                totalCost = totalCost.add(costWithTax);
+                totalCost = totalCost.add(cost);
                 invoiceProductRepository.save(invoiceProduct);
                 if (remainingQuantity == 0) break;
             } else {
                 invoiceProduct.setRemainingQuantity(remainingQuantity);
-                totalCost = totalCost.add(costWithTax);
+                totalCost = totalCost.add(cost);
                 invoiceProductRepository.save(invoiceProduct);
                 break;
             }
