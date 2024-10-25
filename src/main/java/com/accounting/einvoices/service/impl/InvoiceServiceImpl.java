@@ -6,11 +6,13 @@ import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.repository.InvoiceRepository;
 import com.accounting.einvoices.service.*;
+import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -97,9 +99,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         BigDecimal totalPrice = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithoutTax).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalWithTax = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithTax).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalTax = invoiceProductDtoList.stream().map(InvoiceProductDTO::getTax).reduce(BigDecimal.ZERO, BigDecimal::add); //get total tax
-        invoice.setPrice(totalPrice);
-        invoice.setTax(totalTax);
-        invoice.setTotal(totalWithTax);
+        invoice.setPrice(BigDecimalUtil.format(totalPrice));
+        invoice.setTax(BigDecimalUtil.format(totalTax));
+        invoice.setTotal(BigDecimalUtil.format(totalWithTax));
     }
 
     @Override
@@ -121,7 +123,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
             totalCost = totalCost.add(cost);
         }
-        return totalCost;
+        return BigDecimalUtil.format(totalCost);
     }
 
     @Override
