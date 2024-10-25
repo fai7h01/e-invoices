@@ -17,6 +17,8 @@ public interface InvoiceProductService {
 
     BigDecimal getTotalWithoutTax(InvoiceProductDTO invoiceProduct);
 
+    BigDecimal getTotalTax(InvoiceProductDTO invoiceProduct);
+
     void updateQuantityInStock(Long id);
 
     void calculateProfitLoss(Long id);

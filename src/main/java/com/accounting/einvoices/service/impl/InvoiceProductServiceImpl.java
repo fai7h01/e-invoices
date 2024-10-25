@@ -80,6 +80,11 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public BigDecimal getTotalTax(InvoiceProductDTO invoiceProduct) {
+        return invoiceProduct.getTax();
+    }
+
+    @Override
     public void updateQuantityInStock(Long id) {
         List<Product> products = invoiceProductRepository.findProductsByInvoiceId(id);
         products.forEach(product -> {
