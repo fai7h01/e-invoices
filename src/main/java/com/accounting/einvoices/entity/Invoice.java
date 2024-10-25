@@ -32,6 +32,10 @@ public class Invoice extends BaseEntity {
 
     private LocalDateTime dueDate;
 
+    private String paymentTerms;
+
+    private String notes;
+
     @ManyToOne
     @JoinColumn(name = "client_vendor_id")
     private ClientVendor clientVendor;

@@ -31,6 +31,10 @@ public class InvoiceDTO {
 
     private LocalDateTime dueDate;
 
+    private String paymentTerms;
+
+    private String notes;
+
     @JsonIgnore
     private CompanyDTO company;
 
