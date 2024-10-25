@@ -35,6 +35,8 @@ public class InvoiceDTO {
 
     private String notes;
 
+    private String signature;
+
     @JsonIgnore
     private CompanyDTO company;
 

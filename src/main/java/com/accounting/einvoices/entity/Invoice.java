@@ -36,6 +36,8 @@ public class Invoice extends BaseEntity {
 
     private String notes;
 
+    private String signature;
+
     @ManyToOne
     @JoinColumn(name = "client_vendor_id")
     private ClientVendor clientVendor;
