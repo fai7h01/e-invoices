@@ -21,6 +21,8 @@ public class Product extends BaseEntity {
 
     private String name;
 
+    private String description;
+
     private int quantityInStock;
 
     private int lowLimitAlert;

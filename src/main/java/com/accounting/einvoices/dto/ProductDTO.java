@@ -22,6 +22,8 @@ public class ProductDTO {
 
     private String name;
 
+    private String description;
+
     private Integer quantityInStock;
 
     private Integer lowLimitAlert;
