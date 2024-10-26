@@ -21,6 +21,7 @@ public class CompanyDTO {
     private String title;
     private String phone;
     private String website;
+    private String email;
     private AddressDTO address;
     //private Integer estimatedRevenue;
 }

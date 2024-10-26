@@ -21,6 +21,7 @@ public class Company extends BaseEntity{
     private String title;
     private String phone;
     private String website;
+    private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")

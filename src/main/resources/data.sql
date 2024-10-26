@@ -7,7 +7,7 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Admin'),
 
 insert into addresses(insert_date_time, insert_user_id, is_deleted, last_update_date_time,
                       last_update_user_id, address_line1, address_line2, city, state, country, zip_code)
-values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'red street', 'red avenue 23', 'Tbilisi', 'Tbilisi', 'Georgia', '0163'),
+values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, '123 Main Street', 'apt 4B San Diego CA, 91911', 'Los Angeles', 'California', 'United States Of America', '91911'),
        ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'blue street', 'blue avenue 24', 'Tbilisi', 'Tbilisi', 'Georgia', '0164'),
        ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'green street', 'green avenue 25', 'Tbilisi', 'Tbilisi', 'Georgia', '0165'),
        ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'purple street', 'purple avenue 25', 'Tbilisi', 'Tbilisi', 'Georgia', '0166'),
@@ -17,10 +17,10 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'red street',
 
 
 insert into companies(insert_date_time, insert_user_id, is_deleted, last_update_date_time,
-                      last_update_user_id, title, phone, website, address_id)
-values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'red tech', '345', 'redtech@email.com', 1),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'blue tech', '345', 'bluetech@email.com', 2),
-       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'green tech', '345', 'greentech@email.com', 3);
+                      last_update_user_id, title, phone, website, email, address_id)
+values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '+(12)-345-678', 'www.redtech.com','redtech@email.com', 1),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'blue tech', '+(12)-345-678', 'www.bluetech.com','bluetech@email.com', 2),
+       ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'green tech', '345', 'www.greentech.com' ,'greentech@email.com', 3);
 
 
 INSERT INTO users(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
