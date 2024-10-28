@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @Where(clause = "is_deleted = false")
 public class InvoiceProduct extends BaseEntity {
 
+    private String description;
     private int quantity;
     private BigDecimal price;
     private BigDecimal tax;

@@ -17,6 +17,8 @@ public class InvoiceProductDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
+    private String description;
+
     private Integer quantity;
 
     private BigDecimal price;
