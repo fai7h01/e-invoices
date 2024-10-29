@@ -25,9 +25,19 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping("/summary")
+    @GetMapping("/summaryNumbers")
     public ResponseEntity<ResponseWrapper> getSummaryNumbers() {
         Map<String, BigDecimal> summary = dashboardService.summaryNumbers();
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Summary numbers are successfully retrieved.")
+                .data(summary).build());
+    }
+
+    @GetMapping("/summaryQuantities")
+    public ResponseEntity<ResponseWrapper> getSummaryQuantities() {
+        Map<String, Integer> summary = dashboardService.summaryQuantities();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)

@@ -12,9 +12,15 @@ import java.util.Map;
 public class DashboardServiceImpl implements DashboardService {
 
     private final InvoiceService invoiceService;
+    private final UserService userService;
+    private final ClientVendorService clientVendorService;
+    private final ProductService productService;
 
-    public DashboardServiceImpl(InvoiceService invoiceService) {
+    public DashboardServiceImpl(InvoiceService invoiceService, UserService userService, ClientVendorService clientVendorService, ProductService productService) {
         this.invoiceService = invoiceService;
+        this.userService = userService;
+        this.clientVendorService = clientVendorService;
+        this.productService = productService;
     }
 
     @Override
@@ -25,4 +31,14 @@ public class DashboardServiceImpl implements DashboardService {
         map.put("total_profit_loss", invoiceService.sumProfitLoss());
         return map;
     }
+
+    @Override
+    public Map<String, Integer> summaryQuantities() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("total_employees", userService.findAll().size());
+        map.put("total_clients", clientVendorService.findAll().size());
+        map.put("total_products", productService.findAll().size());
+        return map;
+    }
+
 }

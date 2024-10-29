@@ -27,12 +27,8 @@ public interface DashboardService {
 //    //top product
 //    //find approved invoices, find top quantity of sold products
 //    ProductDTO getTopSellingProduct();
-//
-//    //employees number
-//    int getTotalNumberOfEmployees();
-//
-//    //clients number
-//    int getTotalNumberOfClients();
+
+    Map<String, Integer> summaryQuantities();
 //
 //    //last 3 approved invoices
 //    List<InvoiceDTO> getLast3ApprovedInvoices();
