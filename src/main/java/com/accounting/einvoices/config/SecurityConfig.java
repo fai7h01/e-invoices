@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -30,21 +31,20 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
+        http.cors().and().authorizeRequests()
                // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
                // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
                // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
-                .anyRequest().permitAll()
-                .and().cors();
+                .anyRequest().permitAll();
         http.csrf().disable();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Allow specific origin
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Allow specific origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
