@@ -29,19 +29,19 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void setAdmin(UserDTO user) {
-        RoleDTO admin = findById(2L);
+        RoleDTO admin = findById(1L);
         user.setRole(admin);
     }
 
     @Override
     public void setManager(UserDTO user) {
-        RoleDTO manager = findById(3L);
+        RoleDTO manager = findById(2L);
         user.setRole(manager);
     }
 
     @Override
     public void setEmployee(UserDTO user) {
-        RoleDTO employee = findById(4L);
+        RoleDTO employee = findById(3L);
         user.setRole(employee);
     }
 }
