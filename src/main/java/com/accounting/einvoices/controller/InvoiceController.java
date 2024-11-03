@@ -49,8 +49,8 @@ public class InvoiceController {
     @GetMapping("/generate")
     public ResponseEntity<ResponseWrapper> generateInvoice() {
         InvoiceDTO generated = invoiceService.generateInvoice();
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Invoice is successfully generated.")
                 .data(generated).build());

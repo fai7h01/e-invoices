@@ -34,12 +34,12 @@ public class ProductController {
 
     @PostMapping("/create")
     public ResponseEntity<ResponseWrapper> createProduct(@RequestBody ProductDTO product){
-        productService.save(product);
+        ProductDTO saved = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Product is successfully created.")
-                .data(product).build());
+                .data(saved).build());
     }
 
     @PutMapping("/update/{id}")
