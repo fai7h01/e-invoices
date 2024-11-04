@@ -1,8 +1,8 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.RoleDTO;
 import com.accounting.einvoices.dto.UserDTO;
-import com.accounting.einvoices.entity.Company;
 import com.accounting.einvoices.entity.User;
 import com.accounting.einvoices.exception.UserAlreadyExistsException;
 import com.accounting.einvoices.exception.UserNotFoundException;
@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,7 +64,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> found = userRepository.findByUsername(user.getUsername());
         if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
 
-        if (user.getRole() == null) roleService.setAdmin(user);
+        if (user.getRole() == null) {
+            RoleDTO admin = roleService.findById(1L);
+            user.setRole(admin);
+        } else {
+            RoleDTO foundRole = roleService.findByDescription(user.getRole().getDescription());
+            user.getRole().setId(foundRole.getId());
+        }
 
         if (user.getCompany() == null) {
             CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
@@ -78,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
         User convertedUser = mapperUtil.convert(user, new User());
 
+       // keycloakService.userCreate(user);
         User saved = userRepository.save(convertedUser);
         return mapperUtil.convert(saved, new UserDTO());
     }
@@ -102,7 +108,7 @@ public class UserServiceImpl implements UserService {
             User user = foundUser.get();
             user.setUsername(user.getId() + "-" + user.getUsername());
             user.setIsDeleted(true);
-            //keycloak
+            //keycloakService.delete(user.getUsername())
             userRepository.save(user);
         }
     }
