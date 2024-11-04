@@ -41,6 +41,7 @@ public class User extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     private Company company;
 }

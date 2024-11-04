@@ -1,6 +1,8 @@
 package com.accounting.einvoices.service.impl;
 
+import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.UserDTO;
+import com.accounting.einvoices.entity.Company;
 import com.accounting.einvoices.entity.User;
 import com.accounting.einvoices.exception.UserAlreadyExistsException;
 import com.accounting.einvoices.exception.UserNotFoundException;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,17 +62,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO user) {
-
         Optional<User> found = userRepository.findByUsername(user.getUsername());
         if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
 
-        //get logged in company and set it to user
-        if (user.getCompany() == null) user.setCompany(companyService.getByLoggedInUser());
-
         if (user.getRole() == null) roleService.setAdmin(user);
 
-        //keycloak
-        User saved = userRepository.save(mapperUtil.convert(user, new User()));
+        if (user.getCompany() == null) {
+            CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+            user.setCompany(loggedInCompany);
+        } else {
+            CompanyDTO company = user.getCompany();
+            CompanyDTO savedCompany = companyService.save(company);
+            user.getCompany().setId(savedCompany.getId()); // Set the existing managed company
+        }
+
+        User convertedUser = mapperUtil.convert(user, new User());
+
+        User saved = userRepository.save(convertedUser);
         return mapperUtil.convert(saved, new UserDTO());
     }
 
