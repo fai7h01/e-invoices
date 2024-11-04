@@ -1,7 +1,6 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.RoleDTO;
-import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.Role;
 import com.accounting.einvoices.repository.RoleRepository;
 import com.accounting.einvoices.service.RoleService;
