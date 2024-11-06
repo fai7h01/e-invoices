@@ -25,12 +25,16 @@ public class InvoiceProductDTO {
 
     private BigDecimal tax;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal total;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal profitLoss;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer remainingQuantity;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private InvoiceDTO invoice;
 
     private ProductDTO product;

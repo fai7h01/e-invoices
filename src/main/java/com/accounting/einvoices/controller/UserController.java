@@ -2,6 +2,7 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,9 +21,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final KeycloakService keycloakService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, KeycloakService keycloakService) {
         this.userService = userService;
+        this.keycloakService = keycloakService;
     }
 
     @PostMapping("/create")
@@ -62,6 +65,16 @@ public class UserController {
     public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("id") Long id){
         userService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("loggedInUser")
+    public ResponseEntity<ResponseWrapper> getLoggedInUser() {
+        UserDTO loggedInUser = keycloakService.getLoggedInUser();
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Logged in user is successfully retrieved.")
+                .data(loggedInUser).build());
     }
 
 
