@@ -46,6 +46,16 @@ public class InvoiceController {
                 .data(invoices).build());
     }
 
+    @GetMapping("/list/{companyId}")
+    public ResponseEntity<ResponseWrapper> getAllInvoicesByCompanyId(@PathVariable("companyId") Long id) {
+        List<InvoiceDTO> invoices = invoiceService.findAllByCompanyId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Invoice list is successfully retrieved.")
+                .data(invoices).build());
+    }
+
     @GetMapping("/generate")
     public ResponseEntity<ResponseWrapper> generateInvoice() {
         InvoiceDTO generated = invoiceService.generateInvoice();

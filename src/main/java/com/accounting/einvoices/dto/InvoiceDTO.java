@@ -37,7 +37,7 @@ public class InvoiceDTO {
 
     private String signature;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private CompanyDTO company;
 
     private ClientVendorDTO clientVendor;
