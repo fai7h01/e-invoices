@@ -49,7 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAllByIngested(boolean ingested) {
-        return List.of();
+        return userRepository.findAllByIngested(ingested).stream()
+                .map(user -> mapperUtil.convert(user, new UserDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

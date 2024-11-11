@@ -39,8 +39,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findAllByIngested() {
-        return List.of();
+    public List<ProductDTO> findAllByIngested(boolean ingested) {
+        return productRepository.findAllByIngested(ingested).stream()
+                .map(product -> mapperUtil.convert(product, new ProductDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

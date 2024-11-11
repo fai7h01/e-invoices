@@ -51,7 +51,9 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public List<InvoiceProductDTO> findAllByIngested(boolean ingested) {
-        return List.of();
+        return invoiceProductRepository.findAllByIngested(ingested).stream()
+                .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDTO()))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -8,7 +8,7 @@ public interface ProductService {
 
     List<ProductDTO> findAll();
 
-    List<ProductDTO> findAllByIngested();
+    List<ProductDTO> findAllByIngested(boolean ingested);
 
     ProductDTO findByName(String name);
 
