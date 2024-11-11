@@ -1,6 +1,8 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.InvoiceProductService;
@@ -36,7 +38,35 @@ public class AssistantController {
     //users
     @GetMapping("/user/list/all")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
-        List<UserDTO> users = userService.findAll();
+        List<UserDTO> users = userService.findAllByIngested(false);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Non-ingested User list is successfully retrieved.")
+                .data(users).build());
+    }
+
+
+    //products
+    @GetMapping("/product/list/all")
+    public ResponseEntity<ResponseWrapper> getAllProducts() {
+        List<ProductDTO> products = productService.findAllByIngested(false);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Non-ingested Product list is successfully retrieved.")
+                .data(products).build());
+    }
+
+    //invoice products
+    @GetMapping("/invoiceProduct/list/all")
+    public ResponseEntity<ResponseWrapper> getAllInvoiceProducts() {
+        List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByIngested(false);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Non-ingested InvoiceProduct list is successfully retrieved.")
+                .data(invoiceProducts).build());
     }
 
     //invoices
@@ -46,7 +76,7 @@ public class AssistantController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Invoice list is successfully retrieved.")
+                .message("Non-ingested Invoice list is successfully retrieved.")
                 .data(invoices).build());
     }
 
