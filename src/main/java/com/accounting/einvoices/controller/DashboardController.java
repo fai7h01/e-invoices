@@ -3,12 +3,10 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.DashboardService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -43,5 +41,14 @@ public class DashboardController {
                 .success(true)
                 .message("Summary numbers are successfully retrieved.")
                 .data(summary).build());
+    }
+
+    @GetMapping("/soldProductBy/{year}/{month}")
+    private ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
+        Map<String, Integer> productsMap = dashboardService.totalProductsSoldEachDayMonth(year, month);
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Sold products each day of month.")
+                .data(productsMap).build());
     }
 }

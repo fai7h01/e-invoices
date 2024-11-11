@@ -60,4 +60,7 @@ public class BaseEntity {
 //        }
 //        return null; // Or handle this case according application's requirements.
 //    }
+
+
+
 }

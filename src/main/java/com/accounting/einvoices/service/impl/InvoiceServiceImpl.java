@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -126,6 +127,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void approve(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
+        invoice.setAcceptDate(LocalDate.now());
         invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(id);
         invoiceProductService.calculateProfitLoss(id);
@@ -158,5 +160,12 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
                         .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public List<InvoiceDTO> findAllByAcceptDate(LocalDate date) {
+        return invoiceRepository.findAllByAcceptDateIs(date).stream()
+                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
+                .collect(Collectors.toList());
     }
 }

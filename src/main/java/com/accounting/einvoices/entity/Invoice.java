@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,7 +33,7 @@ public class Invoice extends BaseEntity {
 
     private LocalDateTime dueDate;
 
-    private LocalDateTime acceptDate;
+    private LocalDate acceptDate;
 
     private String paymentTerms;
 

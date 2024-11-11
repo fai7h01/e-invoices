@@ -1,16 +1,17 @@
 package com.accounting.einvoices.service;
 
-import com.accounting.einvoices.dto.InvoiceDTO;
-import com.accounting.einvoices.dto.ProductDTO;
+import org.springframework.data.util.Pair;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 public interface DashboardService {
 
     //get summary numbers
     Map<String, BigDecimal> summaryNumbers();
+
+
+    Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month);
 
 //    //total products sold
 //    //find approved invoices, find invoice products, find sum quantity of products

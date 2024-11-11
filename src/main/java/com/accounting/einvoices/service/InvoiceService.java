@@ -3,6 +3,8 @@ package com.accounting.einvoices.service;
 import com.accounting.einvoices.dto.InvoiceDTO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface InvoiceService {
@@ -33,4 +35,5 @@ public interface InvoiceService {
 
     BigDecimal sumProfitLoss();
 
+    List<InvoiceDTO> findAllByAcceptDate(LocalDate date);
 }
