@@ -32,6 +32,8 @@ public class ProductDTO {
 
     private LocalDate createdAt;
 
+    private boolean ingested;
+
     private ProductUnit productUnit;
 
     private ProductStatus status;

@@ -28,6 +28,7 @@ public class User extends BaseEntity{
     private String phone;
     private String position;
     private boolean enabled;
+    private boolean ingested;
 
     private LocalDate dateOfEmployment;
 

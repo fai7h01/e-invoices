@@ -39,4 +39,6 @@ public class InvoiceProductDTO {
 
     private ProductDTO product;
 
+    private boolean ingested;
+
 }

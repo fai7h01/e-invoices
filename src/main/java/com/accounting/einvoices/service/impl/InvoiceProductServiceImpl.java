@@ -50,6 +50,11 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public List<InvoiceProductDTO> findAllByIngested(boolean ingested) {
+        return List.of();
+    }
+
+    @Override
     public InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct) {
         InvoiceDTO foundInvoice = invoiceService.findById(invoiceId);
         ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());

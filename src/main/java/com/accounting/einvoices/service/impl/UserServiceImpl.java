@@ -48,6 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDTO> findAllByIngested(boolean ingested) {
+        return List.of();
+    }
+
+    @Override
     public UserDTO findByUsername(String username) {
         User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         return mapperUtil.convert(foundUser, new UserDTO());
