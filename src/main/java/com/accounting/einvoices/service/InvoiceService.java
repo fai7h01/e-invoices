@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface InvoiceService {
 
-    List<InvoiceDTO> findAll();
+    List<InvoiceDTO> findAllByLoggedInUser();
 
-    List<InvoiceDTO> findAllByCompanyIdAndIngested(Long id, boolean ingested);
+    List<InvoiceDTO> findAllByIngested(boolean ingested);
+
+    void setIngested(boolean ingested);
 
     InvoiceDTO findById(Long id);
 

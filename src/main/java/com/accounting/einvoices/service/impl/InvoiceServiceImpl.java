@@ -37,7 +37,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> findAll() {
+    public List<InvoiceDTO> findAllByLoggedInUser() {
         return invoiceRepository.findAllByCompanyId(companyService.getByLoggedInUser().getId()).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
@@ -47,13 +47,22 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> findAllByCompanyIdAndIngested(Long id, boolean ingested) {
-        return invoiceRepository.findAllByCompanyId(id).stream()
+    public List<InvoiceDTO> findAllByIngested(boolean ingested) {
+        return invoiceRepository.findAllByIngested(ingested).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
                     setPriceTaxAndTotal(invoiceDTO);
                     return invoiceDTO;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void setIngested(boolean ingested) {
+        findAllByIngested(false).forEach(invoiceDTO -> {
+            Invoice converted = mapperUtil.convert(invoiceDTO, new Invoice());
+            converted.setIngested(ingested);
+            invoiceRepository.save(converted);
+        });
     }
 
     @Override
@@ -65,7 +74,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDTO generateInvoice() {
         InvoiceDTO invoice = new InvoiceDTO();
-        int currentInvNo = findAll().size();
+        int currentInvNo = this.findAllByLoggedInUser().size();
         LocalDateTime dateOfIssue = LocalDateTime.now();
         invoice.setInvoiceNo(String.format("INV%03d", currentInvNo + 1));
         invoice.setDateOfIssue(dateOfIssue);
@@ -137,14 +146,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public BigDecimal countTotalSales() {
-        return findAll().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+        return this.findAllByLoggedInUser().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
                 .map(InvoiceDTO::getTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumProfitLoss() {
-        return findAll().stream()
+        return this.findAllByLoggedInUser().stream()
                 .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
                 .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
                         .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
