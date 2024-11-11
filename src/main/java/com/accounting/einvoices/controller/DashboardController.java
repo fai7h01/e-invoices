@@ -43,7 +43,7 @@ public class DashboardController {
                 .data(summary).build());
     }
 
-    @GetMapping("/soldProductBy/{year}/{month}")
+    @GetMapping("/soldProductsBy/{year}/{month}")
     private ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
         Map<String, Integer> productsMap = dashboardService.totalProductsSoldEachDayMonth(year, month);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
