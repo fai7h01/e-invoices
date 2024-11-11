@@ -68,12 +68,12 @@ VALUES ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Apple', 'Re
        ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Ice-cream', 'White' ,20, 5, 9, '2024-01-05', 'PCS', 'DRAFT', 1, false);
 
 INSERT INTO invoices(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
-                     invoice_no, invoice_type, invoice_status, date_of_issue, due_date,payment_terms, notes, client_vendor_id, company_id, ingested)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV001', 'SALES', 'APPROVED', '2024-10-23 00:00:00', '2024-11-23 00:00:00', 'terms', 'notes', 1 , 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV002', 'PURCHASE', 'APPROVED', '2024-10-23 00:00:00', '2024-07-23 00:00:00','terms', 'notes', 1 , 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-10-23 00:00:00', '2024-09-12 00:00:00','terms', 'notes', 1 , 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV004', 'PURCHASE', 'APPROVED', '2024-10-23 00:00:00', '2024-11-14 00:00:00','terms', 'notes', 1 , 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV005', 'SALES', 'APPROVED', '2024-10-23 00:00:00', '2024-12-23 00:00:00','terms', 'notes', 1 , 2, false);
+                     invoice_no, invoice_type, invoice_status, date_of_issue, due_date,payment_terms, notes, client_vendor_id, company_id, ingested, accept_date)
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV001', 'SALES', 'APPROVED', '2024-11-10 00:00:00', '2024-11-30 00:00:00', 'terms', 'notes', 1 , 1, false, '2024-11-12 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV002', 'SALES', 'APPROVED', '2024-11-11 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 1, false, '2024-11-13 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-11-09 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-14 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV004', 'SALES', 'APPROVED', '2024-11-08 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-15 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV005', 'SALES', 'APPROVED', '2024-11-07 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-15 00:00:00');
 
 INSERT INTO invoice_products(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
                              price, quantity, remaining_quantity, tax, total, profit_loss, invoice_id, product_id, ingested)

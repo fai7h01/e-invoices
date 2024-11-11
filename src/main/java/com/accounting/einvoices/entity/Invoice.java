@@ -32,6 +32,8 @@ public class Invoice extends BaseEntity {
 
     private LocalDateTime dueDate;
 
+    private LocalDateTime acceptDate;
+
     private String paymentTerms;
 
     private String notes;

@@ -31,6 +31,8 @@ public class InvoiceDTO {
 
     private LocalDateTime dueDate;
 
+    private LocalDateTime acceptDate;
+
     private String paymentTerms;
 
     private String notes;
