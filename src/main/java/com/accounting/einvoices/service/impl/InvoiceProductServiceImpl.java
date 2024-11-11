@@ -79,10 +79,6 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         return invoiceProduct.getPrice().multiply(BigDecimal.valueOf(invoiceProduct.getQuantity()));
     }
 
-    @Override
-    public BigDecimal getTotalTax(InvoiceProductDTO invoiceProduct) {
-        return invoiceProduct.getTax();
-    }
 
     @Override
     public void updateQuantityInStock(Long id) {
@@ -156,8 +152,4 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                 }).collect(Collectors.toList());
     }
 
-    @Override
-    public int findSumQuantityOfSoldProducts() {
-        return invoiceProductRepository.sumQuantityOfSoldProducts(companyService.getByLoggedInUser().getId());
-    }
 }

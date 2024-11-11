@@ -17,8 +17,6 @@ public interface InvoiceProductService {
 
     BigDecimal getTotalWithoutTax(InvoiceProductDTO invoiceProduct);
 
-    BigDecimal getTotalTax(InvoiceProductDTO invoiceProduct);
-
     void updateQuantityInStock(Long id);
 
     void calculateProfitLoss(Long id);
@@ -26,7 +24,5 @@ public interface InvoiceProductService {
     void lowQuantityAlert(Long id);
 
     List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id);
-
-    int findSumQuantityOfSoldProducts();
 
 }
