@@ -9,7 +9,7 @@ public interface InvoiceService {
 
     List<InvoiceDTO> findAll();
 
-    List<InvoiceDTO> findAllByCompanyId(Long id);
+    List<InvoiceDTO> findAllByCompanyIdAndIngested(Long id, boolean ingested);
 
     InvoiceDTO findById(Long id);
 

@@ -48,13 +48,14 @@ public class InvoiceController {
 
     @GetMapping("/list/{companyId}")
     public ResponseEntity<ResponseWrapper> getAllInvoicesByCompanyId(@PathVariable("companyId") Long id) {
-        List<InvoiceDTO> invoices = invoiceService.findAllByCompanyId(id);
+        List<InvoiceDTO> invoices = invoiceService.findAllByCompanyIdAndIngested(id, false);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Invoice list is successfully retrieved.")
                 .data(invoices).build());
     }
+
 
     @GetMapping("/generate")
     public ResponseEntity<ResponseWrapper> generateInvoice() {

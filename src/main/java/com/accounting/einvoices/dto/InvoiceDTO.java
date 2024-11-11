@@ -48,4 +48,6 @@ public class InvoiceDTO {
 
     private BigDecimal total;
 
+    private boolean ingested;
+
 }
