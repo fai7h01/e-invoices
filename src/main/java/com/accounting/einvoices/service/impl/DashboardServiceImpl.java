@@ -42,6 +42,8 @@ public class DashboardServiceImpl implements DashboardService {
         return map;
     }
 
+
+    //@ExecutionTime
     @Override
     public Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month) {
 
@@ -59,7 +61,6 @@ public class DashboardServiceImpl implements DashboardService {
             LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonthValue(), firstDay);
 
             List<InvoiceDTO> invoicesByDate = invoiceService.findAllByAcceptDate(initialDate);
-
 
             int finalFirstDay = firstDay;
             invoicesByDate.forEach(invoiceDTO -> {
