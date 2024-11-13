@@ -31,8 +31,6 @@ public class Product extends BaseEntity {
 
     private BigDecimal price;
 
-    private boolean ingested;
-
     @Enumerated(EnumType.STRING)
     private ProductUnit productUnit;
 

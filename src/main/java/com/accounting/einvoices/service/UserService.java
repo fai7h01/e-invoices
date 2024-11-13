@@ -8,8 +8,6 @@ public interface UserService {
 
     List<UserDTO> findAll();
 
-    List<UserDTO> findAllByIngested(boolean ingested);
-
     UserDTO findByUsername(String username);
 
     UserDTO findById(Long id);

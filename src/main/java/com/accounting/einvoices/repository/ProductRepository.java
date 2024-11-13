@@ -12,6 +12,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<Product> findByNameIgnoreCase(String name);
 
-    List<Product> findAllByIngested(boolean ingested);
-
 }

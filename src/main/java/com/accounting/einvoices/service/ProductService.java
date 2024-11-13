@@ -8,8 +8,6 @@ public interface ProductService {
 
     List<ProductDTO> findAll();
 
-    List<ProductDTO> findAllByIngested(boolean ingested);
-
     ProductDTO findByName(String name);
 
     ProductDTO save(ProductDTO product);

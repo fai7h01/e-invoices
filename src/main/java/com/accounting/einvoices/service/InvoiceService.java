@@ -11,10 +11,6 @@ public interface InvoiceService {
 
     List<InvoiceDTO> findAllByLoggedInUser();
 
-    List<InvoiceDTO> findAllByIngested(boolean ingested);
-
-    void setIngested(boolean ingested);
-
     InvoiceDTO findById(Long id);
 
     InvoiceDTO generateInvoice();

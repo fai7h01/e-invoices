@@ -27,8 +27,6 @@ public class InvoiceProduct extends BaseEntity {
     private BigDecimal profitLoss;
     private int remainingQuantity;
 
-    private boolean ingested;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Invoice invoice;
 

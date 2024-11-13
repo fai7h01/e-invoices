@@ -39,13 +39,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findAllByIngested(boolean ingested) {
-        return productRepository.findAllByIngested(ingested).stream()
-                .map(product -> mapperUtil.convert(product, new ProductDTO()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public ProductDTO findByName(String name) {
         Product foundProduct = productRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ProductNotFoundException("Product not found."));
         return mapperUtil.convert(foundProduct, new ProductDTO());

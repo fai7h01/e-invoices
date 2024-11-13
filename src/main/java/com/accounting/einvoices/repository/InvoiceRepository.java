@@ -11,8 +11,6 @@ import java.util.List;
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findAllByCompanyId(Long id);
-    List<Invoice> findAllByIngested(boolean ingested);
-
 
     List<Invoice> findAllByAcceptDateIs(LocalDate date);
 

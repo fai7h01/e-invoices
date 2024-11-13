@@ -24,23 +24,23 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '
 
 
 INSERT INTO users(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
-                  first_name, last_name, username, password, enabled, phone, gender, date_of_employment, role_id, company_id, ingested)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Harold', 'Finch', 'haroldfinch@email.com', 'Abc1', true, '0123456789', 'MALE', '2022-01-05' ,1, 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'John', 'Reese', 'johnreese@email.com', 'Abc1', true, '9876543210', 'MALE','2022-01-05' , 1, 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Lionel', 'Fusco', 'lionelfusco@email.com', 'Abc1', true, '0987612345', 'MALE', '2022-01-05' ,3, 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Sameen', 'Shaw', 'sameenshaw@email.com', 'Abc1', true, '1234509876', 'FEMALE','2022-01-05' , 2, 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samantha', 'Groves', 'samanthagroves@email.com', 'Abc1', true, '0192837465', 'FEMALE', '2022-01-05' ,1, 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Joselyn', 'Carter', 'joselyncarter@email.com', 'Abc1', true, '0198237645', 'FEMALE','2022-01-05' , 3, 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Carl', 'Elias', 'carlelias@email.com', 'Abc1', true, '5610298473', 'MALE','2022-01-05' , 3, 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Patrick', 'Jane', 'patrickjane@email.com', 'Abc1', true, '6758492013', 'MALE','2022-01-05' , 1, 3, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Wayne', 'Rigsby', 'waynerigsby@email.com', 'Abc1', true, '0934871256', 'MALE','2022-01-05' , 3, 3, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Kimball', 'Cho', 'kimballcho@email.com', 'Abc1', true, '9078653124', 'MALE','2022-01-05' , 2, 3, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Teresa', 'Lisbon', 'teresalisbon@email.com', 'Abc1', true, '5674019283', 'FEMALE','2022-01-05' , 1, 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Grace', 'Van Pelt', 'gracevanpelt@email.com', 'Abc1', true, '1386709254', 'FEMALE','2022-01-05' , 2, 3, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Dennis', 'Abbott', 'dennisabbott@email.com', 'Abc1', true, '0642871359', 'MALE','2022-01-05' , 1, 2, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Jason', 'Wylie', 'jasonwylie@email.com', 'Abc1', true, '9081263547', 'MALE','2022-01-05' , 2, 3, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Michelle', 'Vega', 'michellevega@email.com', 'Abc1', true, '0912537648', 'FEMALE','2022-01-05' , 3, 1, false),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Kim', 'Fischer', 'kimfischer@email.com', 'Abc1', true, '1209786345', 'FEMALE','2022-01-05' , 2, 1, false);
+                  first_name, last_name, username, password, enabled, phone, gender, date_of_employment, role_id, company_id)
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Harold', 'Finch', 'haroldfinch@email.com', 'Abc1', true, '0123456789', 'MALE', '2022-01-05' ,1, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'John', 'Reese', 'johnreese@email.com', 'Abc1', true, '9876543210', 'MALE','2022-01-05' , 1, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Lionel', 'Fusco', 'lionelfusco@email.com', 'Abc1', true, '0987612345', 'MALE', '2022-01-05' ,3, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Sameen', 'Shaw', 'sameenshaw@email.com', 'Abc1', true, '1234509876', 'FEMALE','2022-01-05' , 2, 2),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samantha', 'Groves', 'samanthagroves@email.com', 'Abc1', true, '0192837465', 'FEMALE', '2022-01-05' ,1, 2),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Joselyn', 'Carter', 'joselyncarter@email.com', 'Abc1', true, '0198237645', 'FEMALE','2022-01-05' , 3, 2),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Carl', 'Elias', 'carlelias@email.com', 'Abc1', true, '5610298473', 'MALE','2022-01-05' , 3, 2),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Patrick', 'Jane', 'patrickjane@email.com', 'Abc1', true, '6758492013', 'MALE','2022-01-05' , 1, 3),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Wayne', 'Rigsby', 'waynerigsby@email.com', 'Abc1', true, '0934871256', 'MALE','2022-01-05' , 3, 3),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Kimball', 'Cho', 'kimballcho@email.com', 'Abc1', true, '9078653124', 'MALE','2022-01-05' , 2, 3),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Teresa', 'Lisbon', 'teresalisbon@email.com', 'Abc1', true, '5674019283', 'FEMALE','2022-01-05' , 1, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Grace', 'Van Pelt', 'gracevanpelt@email.com', 'Abc1', true, '1386709254', 'FEMALE','2022-01-05' , 2, 3),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Dennis', 'Abbott', 'dennisabbott@email.com', 'Abc1', true, '0642871359', 'MALE','2022-01-05' , 1, 2),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Jason', 'Wylie', 'jasonwylie@email.com', 'Abc1', true, '9081263547', 'MALE','2022-01-05' , 2, 3),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Michelle', 'Vega', 'michellevega@email.com', 'Abc1', true, '0912537648', 'FEMALE','2022-01-05' , 3, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Kim', 'Fischer', 'kimfischer@email.com', 'Abc1', true, '1209786345', 'FEMALE','2022-01-05' , 2, 1);
 
 
 INSERT INTO clients_vendors(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
@@ -61,25 +61,25 @@ VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Accessories'
        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Services', 'Box' ,1);
 
 INSERT INTO products(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
-                     name, description, quantity_in_stock, low_limit_alert, price, created_at, product_unit, status, category_id, ingested)
-VALUES ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Apple', 'Red',20, 5, 10, '2024-01-05', 'PCS', 'ACTIVE', 1, false),
-       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Peach','Orange', 20, 5, 7 , '2024-01-05', 'PCS', 'DRAFT', 1, false),
-       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Chocolate', 'Brown' , 20, 5, 8, '2024-01-05', 'PCS', 'ACTIVE', 1, false),
-       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Ice-cream', 'White' ,20, 5, 9, '2024-01-05', 'PCS', 'DRAFT', 1, false);
+                     name, description, quantity_in_stock, low_limit_alert, price, created_at, product_unit, status, category_id)
+VALUES ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Apple', 'Red',20, 5, 10, '2024-01-05', 'PCS', 'ACTIVE', 1),
+       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Peach','Orange', 20, 5, 7 , '2024-01-05', 'PCS', 'DRAFT', 1),
+       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Chocolate', 'Brown' , 20, 5, 8, '2024-01-05', 'PCS', 'ACTIVE', 1),
+       ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Ice-cream', 'White' ,20, 5, 9, '2024-01-05', 'PCS', 'DRAFT', 1);
 
 INSERT INTO invoices(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
-                     invoice_no, invoice_type, invoice_status, date_of_issue, due_date,payment_terms, notes, client_vendor_id, company_id, ingested, accept_date)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV001', 'SALES', 'APPROVED', '2024-11-10 00:00:00', '2024-11-30 00:00:00', 'terms', 'notes', 1 , 1, false, '2024-11-12 00:00:00'),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV002', 'SALES', 'APPROVED', '2024-11-11 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 1, false, '2024-11-13 00:00:00'),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-11-09 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-14 00:00:00'),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV004', 'SALES', 'APPROVED', '2024-11-08 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-15 00:00:00'),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV005', 'SALES', 'APPROVED', '2024-11-07 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, false, '2024-11-15 00:00:00');
+                     invoice_no, invoice_type, invoice_status, date_of_issue, due_date,payment_terms, notes, client_vendor_id, company_id, accept_date)
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV001', 'SALES', 'APPROVED', '2024-11-10 00:00:00', '2024-11-30 00:00:00', 'terms', 'notes', 1 , 1, '2024-11-12 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV002', 'SALES', 'APPROVED', '2024-11-11 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 1, '2024-11-13 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-11-09 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, '2024-11-14 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV004', 'SALES', 'APPROVED', '2024-11-08 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, '2024-11-15 00:00:00'),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'INV005', 'SALES', 'APPROVED', '2024-11-07 00:00:00', '2024-11-30 00:00:00','terms', 'notes', 1 , 2, '2024-11-15 00:00:00');
 
 INSERT INTO invoice_products(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,
-                             price, quantity, remaining_quantity, tax, total, profit_loss, invoice_id, product_id, ingested)
+                             price, quantity, remaining_quantity, tax, total, profit_loss, invoice_id, product_id)
 VALUES
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 20, 2, 20, 10, 0, 0, 1, 1, false),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 25, 5, 0, 10, 0, 0, 1, 2, false),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 2, 0, 10, 0, 0, 1, 3, false),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 200, 2, 0, 10, 0, 0, 2, 3, false),
-('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 5, 0, 10, 0, 0, 2, 3, false);
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 20, 2, 20, 10, 0, 0, 1, 1),
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 25, 5, 0, 10, 0, 0, 1, 2),
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 2, 0, 10, 0, 0, 1, 3),
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 200, 2, 0, 10, 0, 0, 2, 3),
+('2024-04-15 00:00', 2, 'false', '2024-04-15 00:00', 2, 300, 5, 0, 10, 0, 0, 2, 3);

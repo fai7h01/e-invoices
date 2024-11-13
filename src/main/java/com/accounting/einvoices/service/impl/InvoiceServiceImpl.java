@@ -48,25 +48,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> findAllByIngested(boolean ingested) {
-        return invoiceRepository.findAllByIngested(ingested).stream()
-                .map(invoice -> {
-                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(invoiceDTO);
-                    return invoiceDTO;
-                }).collect(Collectors.toList());
-    }
-
-    @Override
-    public void setIngested(boolean ingested) {
-        findAllByIngested(false).forEach(invoiceDTO -> {
-            Invoice converted = mapperUtil.convert(invoiceDTO, new Invoice());
-            converted.setIngested(ingested);
-            invoiceRepository.save(converted);
-        });
-    }
-
-    @Override
     public InvoiceDTO findById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         return mapperUtil.convert(invoice, new InvoiceDTO());

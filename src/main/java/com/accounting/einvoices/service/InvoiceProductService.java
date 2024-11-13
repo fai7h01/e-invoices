@@ -9,8 +9,6 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByInvoiceId(Long id);
 
-    List<InvoiceProductDTO> findAllByIngested(boolean ingested);
-
     InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct);
 
     void delete(Long id);
