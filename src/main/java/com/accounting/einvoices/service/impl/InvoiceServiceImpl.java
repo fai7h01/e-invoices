@@ -8,6 +8,8 @@ import com.accounting.einvoices.repository.InvoiceRepository;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
+    private static final Logger log = LoggerFactory.getLogger(InvoiceServiceImpl.class);
     private final InvoiceRepository invoiceRepository;
     private final MapperUtil mapperUtil;
     private final InvoiceProductService invoiceProductService;
@@ -40,6 +43,29 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDTO> findAllByLoggedInUser() {
         return invoiceRepository.findAllByCompanyId(companyService.getByLoggedInUser().getId()).stream()
+                .map(invoice -> {
+                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxAndTotal(invoiceDTO);
+                    return invoiceDTO;
+                }).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<InvoiceDTO> findAllByLoggedInCompanyId(Long id) {
+        return invoiceRepository.findAllByCompanyId(id).stream()
+                .map(invoice -> {
+                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxAndTotal(invoiceDTO);
+                    return invoiceDTO;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InvoiceDTO> findAllByCompanyTitle(String company) {
+        List<Invoice> invoices = invoiceRepository.findAllByCompanyTitle(company);
+        log.info("\n\n>> Found invoices by company: {}", invoices);
+        return invoices.stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
                     setPriceTaxAndTotal(invoiceDTO);
@@ -112,6 +138,17 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(id);
         invoiceProductService.calculateProfitLoss(id);
+    }
+
+    @Override
+    public InvoiceDTO approve(String invNo, String companyTitle) {
+        Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyTitle(invNo, companyTitle).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
+        invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
+        invoice.setAcceptDate(LocalDate.now());
+        Invoice saved = invoiceRepository.save(invoice);
+        invoiceProductService.updateQuantityInStock(invoice.getId());
+        invoiceProductService.calculateProfitLoss(invoice.getId());
+        return mapperUtil.convert(saved, new InvoiceDTO());
     }
 
     @Override

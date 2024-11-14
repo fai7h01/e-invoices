@@ -67,7 +67,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("loggedInUser")
+    @GetMapping("/loggedInUser")
     public ResponseEntity<ResponseWrapper> getLoggedInUser() {
         UserDTO loggedInUser = keycloakService.getLoggedInUser();
         return ResponseEntity.ok(ResponseWrapper.builder()

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +38,7 @@ public class GlobalExceptionHandler {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
-                .message(exception.getMessage())
+                .message(exception.getMessage() + "\n\n>> Stack trace: " + Arrays.toString(exception.getStackTrace()))
                 .httpStatus(HttpStatus.NOT_FOUND)
                 .timestamp(LocalDateTime.now())
                 .build();

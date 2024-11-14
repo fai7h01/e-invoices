@@ -10,6 +10,9 @@ import java.util.List;
 public interface InvoiceService {
 
     List<InvoiceDTO> findAllByLoggedInUser();
+    List<InvoiceDTO> findAllByLoggedInCompanyId(Long id);
+
+    List<InvoiceDTO> findAllByCompanyTitle(String company);
 
     InvoiceDTO findById(Long id);
 
@@ -24,6 +27,9 @@ public interface InvoiceService {
     void setPriceTaxAndTotal(InvoiceDTO invoice);
 
     void approve(Long id);
+
+    //approve invoice using company and invNo
+    InvoiceDTO approve(String invNo, String companyTitle);
 
     BigDecimal countTotalCost();
 
