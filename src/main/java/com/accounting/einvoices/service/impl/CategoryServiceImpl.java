@@ -73,10 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<ProductDTO> products = productService.findAllByCategoryId(id);
         if (!products.isEmpty()) {
             products.forEach(productDTO -> {
-                Product product = mapperUtil.convert(productDTO, new Product());
-                product.setIsDeleted(true);
-                ProductDTO dto = mapperUtil.convert(product, new ProductDTO());
-                productService.save(dto);
+                productService.delete(productDTO.getId());
             });
         }
         found.setIsDeleted(true);
