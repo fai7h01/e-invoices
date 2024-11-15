@@ -31,7 +31,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final ClientVendorService clientVendorService;
     private final ProductService productService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService, CompanyService companyService, ClientVendorService clientVendorService, ProductService productService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
+                              CompanyService companyService, ClientVendorService clientVendorService, @Lazy ProductService productService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;

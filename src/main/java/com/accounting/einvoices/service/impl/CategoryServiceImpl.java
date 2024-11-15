@@ -12,6 +12,7 @@ import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final ProductService productService;
     private final MapperUtil mapperUtil;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CompanyService companyService, ProductService productService, MapperUtil mapperUtil) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CompanyService companyService,
+                               @Lazy ProductService productService, MapperUtil mapperUtil) {
         this.categoryRepository = categoryRepository;
         this.companyService = companyService;
         this.productService = productService;

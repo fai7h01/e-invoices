@@ -3,6 +3,7 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ public class DashboardServiceImpl implements DashboardService {
     private final ProductService productService;
     private final InvoiceProductService invoiceProductService;
 
-    public DashboardServiceImpl(InvoiceService invoiceService, UserService userService, ClientVendorService clientVendorService, ProductService productService, InvoiceProductService invoiceProductService) {
+    public DashboardServiceImpl(InvoiceService invoiceService, UserService userService, ClientVendorService clientVendorService,
+                                @Lazy ProductService productService, InvoiceProductService invoiceProductService) {
         this.invoiceService = invoiceService;
         this.userService = userService;
         this.clientVendorService = clientVendorService;

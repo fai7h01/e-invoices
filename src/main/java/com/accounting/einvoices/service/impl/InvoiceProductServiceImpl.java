@@ -14,6 +14,7 @@ import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,8 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     private final CompanyService companyService;
     private final MapperUtil mapperUtil;
 
-    public InvoiceProductServiceImpl(InvoiceProductRepository invoiceProductRepository, InvoiceService invoiceService, ProductService productService, CompanyService companyService, MapperUtil mapperUtil) {
+    public InvoiceProductServiceImpl(InvoiceProductRepository invoiceProductRepository, InvoiceService invoiceService,
+                                     @Lazy ProductService productService, CompanyService companyService, MapperUtil mapperUtil) {
         this.invoiceProductRepository = invoiceProductRepository;
         this.invoiceService = invoiceService;
         this.productService = productService;

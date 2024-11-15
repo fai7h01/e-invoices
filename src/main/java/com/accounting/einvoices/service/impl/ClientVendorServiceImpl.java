@@ -14,6 +14,7 @@ import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.util.MapperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,8 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private final InvoiceService invoiceService;
     private final MapperUtil mapperUtil;
 
-    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, CompanyService companyService, InvoiceService invoiceService, MapperUtil mapperUtil) {
+    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, CompanyService companyService,
+                                   @Lazy InvoiceService invoiceService, MapperUtil mapperUtil) {
         this.clientVendorRepository = clientVendorRepository;
         this.companyService = companyService;
         this.invoiceService = invoiceService;
