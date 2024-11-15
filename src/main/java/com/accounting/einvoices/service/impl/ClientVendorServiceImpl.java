@@ -4,7 +4,7 @@ import com.accounting.einvoices.dto.ClientVendorDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.entity.ClientVendor;
-import com.accounting.einvoices.exception.ClientCannotBeDeleted;
+import com.accounting.einvoices.exception.ClientCannotBeDeletedException;
 import com.accounting.einvoices.exception.ClientVendorAlreadyExistsException;
 import com.accounting.einvoices.exception.ClientVendorNotFoundException;
 import com.accounting.einvoices.repository.ClientVendorRepository;
@@ -80,7 +80,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         ClientVendor clientVendor = clientVendorRepository.findById(id).orElseThrow(() -> new ClientVendorNotFoundException("Client/Vendor not found."));
         List<InvoiceDTO> clientInvoices = invoiceService.findAllByClientId(id);
         if (!clientInvoices.isEmpty()) {
-            throw new ClientCannotBeDeleted("Client has invoice(s) and cannot be delete.");
+            throw new ClientCannotBeDeletedException("Client has invoice(s) and cannot be delete.");
         }
         clientVendor.setIsDeleted(true);
         clientVendor.setName(clientVendor.getId() + "-" + clientVendor.getName());

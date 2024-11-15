@@ -25,4 +25,6 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id);
 
+    List<InvoiceProductDTO> findAllByProductId(Long id);
+
 }

@@ -2,13 +2,16 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CategoryDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.exception.ProductAlreadyExistsException;
+import com.accounting.einvoices.exception.ProductCannotBeDeletedException;
 import com.accounting.einvoices.exception.ProductNotFoundException;
 import com.accounting.einvoices.repository.ProductRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
@@ -24,12 +27,14 @@ public class ProductServiceImpl implements ProductService {
     private final MapperUtil mapperUtil;
     private final CompanyService companyService;
     private final CategoryService categoryService;
+    private final InvoiceProductService invoiceProductService;
 
-    public ProductServiceImpl(ProductRepository productRepository, MapperUtil mapperUtil, CompanyService companyService, CategoryService categoryService) {
+    public ProductServiceImpl(ProductRepository productRepository, MapperUtil mapperUtil, CompanyService companyService, CategoryService categoryService, InvoiceProductService invoiceProductService) {
         this.productRepository = productRepository;
         this.mapperUtil = mapperUtil;
         this.companyService = companyService;
         this.categoryService = categoryService;
+        this.invoiceProductService = invoiceProductService;
     }
 
     @Override
@@ -65,6 +70,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long id) {
         Product found = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found."));
+        //if there is invoiceProducts product cannot be deleted
+        List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByProductId(id);
+        if (invoiceProducts.isEmpty()) {
+            throw new ProductCannotBeDeletedException("Product is already used in invoice(s) and cannot be deleted.");
+        }
         found.setIsDeleted(true);
         productRepository.save(found);
     }
