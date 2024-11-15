@@ -97,6 +97,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (foundInvoice.isPresent()) {
             invoice.setId(id);
             invoice.setCompany(companyService.getByLoggedInUser());
+            //find clientVendor by name
+            ClientVendorDTO client = clientVendorService.findByName(invoice.getClientVendor().getName());
+            invoice.getClientVendor().setId(client.getId());
             Invoice saved = invoiceRepository.save(mapperUtil.convert(invoice, new Invoice()));
             return mapperUtil.convert(saved, new InvoiceDTO());
         }
