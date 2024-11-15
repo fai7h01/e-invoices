@@ -52,16 +52,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
     @Override
-    public List<InvoiceDTO> findAllByLoggedInCompanyId(Long id) {
-        return invoiceRepository.findAllByCompanyId(id).stream()
-                .map(invoice -> {
-                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(invoiceDTO);
-                    return invoiceDTO;
-                }).collect(Collectors.toList());
-    }
-
-    @Override
     public List<InvoiceDTO> findAllByCompanyTitle(String company) {
         List<Invoice> invoices = invoiceRepository.findAllByCompanyTitle(company);
         log.info("\n\n>> Found invoices by company: {}", invoices);
@@ -183,6 +173,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDTO> findAllByAcceptDate(LocalDate date) {
         return invoiceRepository.findAllByAcceptDateIs(date).stream()
+                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<InvoiceDTO> findAllByClientId(Long id) {
+        return invoiceRepository.findAllByClientVendorId(id).stream()
                 .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
                 .collect(Collectors.toList());
     }

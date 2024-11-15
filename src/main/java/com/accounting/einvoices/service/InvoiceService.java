@@ -10,7 +10,6 @@ import java.util.List;
 public interface InvoiceService {
 
     List<InvoiceDTO> findAllByLoggedInUser();
-    List<InvoiceDTO> findAllByLoggedInCompanyId(Long id);
 
     List<InvoiceDTO> findAllByCompanyTitle(String company);
 
@@ -38,4 +37,6 @@ public interface InvoiceService {
     BigDecimal sumProfitLoss();
 
     List<InvoiceDTO> findAllByAcceptDate(LocalDate date);
+
+    List<InvoiceDTO> findAllByClientId(Long id);
 }

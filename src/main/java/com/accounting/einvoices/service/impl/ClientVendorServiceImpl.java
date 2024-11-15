@@ -2,12 +2,15 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.ClientVendorDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.entity.ClientVendor;
+import com.accounting.einvoices.exception.ClientCannotBeDeleted;
 import com.accounting.einvoices.exception.ClientVendorAlreadyExistsException;
 import com.accounting.einvoices.exception.ClientVendorNotFoundException;
 import com.accounting.einvoices.repository.ClientVendorRepository;
 import com.accounting.einvoices.service.ClientVendorService;
 import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.util.MapperUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,13 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     private static final Logger log = LoggerFactory.getLogger(ClientVendorServiceImpl.class);
     private final ClientVendorRepository clientVendorRepository;
     private final CompanyService companyService;
+    private final InvoiceService invoiceService;
     private final MapperUtil mapperUtil;
 
-    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, CompanyService companyService, MapperUtil mapperUtil) {
+    public ClientVendorServiceImpl(ClientVendorRepository clientVendorRepository, CompanyService companyService, InvoiceService invoiceService, MapperUtil mapperUtil) {
         this.clientVendorRepository = clientVendorRepository;
         this.companyService = companyService;
+        this.invoiceService = invoiceService;
         this.mapperUtil = mapperUtil;
     }
 
@@ -73,6 +78,10 @@ public class ClientVendorServiceImpl implements ClientVendorService {
     @Override
     public void delete(Long id) {
         ClientVendor clientVendor = clientVendorRepository.findById(id).orElseThrow(() -> new ClientVendorNotFoundException("Client/Vendor not found."));
+        List<InvoiceDTO> clientInvoices = invoiceService.findAllByClientId(id);
+        if (!clientInvoices.isEmpty()) {
+            throw new ClientCannotBeDeleted("Client has invoice(s) and cannot be delete.");
+        }
         clientVendor.setIsDeleted(true);
         clientVendor.setName(clientVendor.getId() + "-" + clientVendor.getName());
         clientVendorRepository.save(clientVendor);
