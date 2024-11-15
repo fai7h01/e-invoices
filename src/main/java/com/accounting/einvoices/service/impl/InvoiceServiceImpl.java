@@ -187,4 +187,15 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<InvoiceDTO> lastThreeApprovedInvoices() {
+        return invoiceRepository.findTop3ByCompanyIdAndInvoiceStatusOrderByDateOfIssueAsc(companyService.getByLoggedInUser().getId(),
+                InvoiceStatus.APPROVED).stream()
+                .map(invoice -> {
+                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxAndTotal(invoiceDTO);
+                    return invoiceDTO;
+                }).collect(Collectors.toList());
+    }
 }

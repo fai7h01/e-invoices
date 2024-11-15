@@ -1,7 +1,9 @@
 package com.accounting.einvoices.controller;
 
+import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.DashboardService;
+import com.accounting.einvoices.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -18,9 +21,11 @@ import java.util.Map;
 public class DashboardController {
 
     private final DashboardService dashboardService;
+    private final InvoiceService invoiceService;
 
-    public DashboardController(DashboardService dashboardService) {
+    public DashboardController(DashboardService dashboardService, InvoiceService invoiceService) {
         this.dashboardService = dashboardService;
+        this.invoiceService = invoiceService;
     }
 
     @GetMapping("/summaryNumbers")
@@ -44,11 +49,20 @@ public class DashboardController {
     }
 
     @GetMapping("/soldProductsBy/{year}/{month}")
-    private ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
+    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
         Map<String, Integer> productsMap = dashboardService.totalProductsSoldEachDayMonth(year, month);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Sold products each day of month.")
                 .data(productsMap).build());
+    }
+
+    @GetMapping("/lastThreeApproved")
+    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
+        List<InvoiceDTO> invoices = invoiceService.lastThreeApprovedInvoices();
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Last three approved invoices are successfully retrieved.")
+                .data(invoices).build());
     }
 }

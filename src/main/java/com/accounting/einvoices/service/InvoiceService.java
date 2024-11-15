@@ -39,4 +39,6 @@ public interface InvoiceService {
     List<InvoiceDTO> findAllByAcceptDate(LocalDate date);
 
     List<InvoiceDTO> findAllByClientId(Long id);
+
+    List<InvoiceDTO> lastThreeApprovedInvoices();
 }
