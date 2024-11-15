@@ -16,4 +16,6 @@ public interface ProductService {
 
     void delete(Long id);
 
+    List<ProductDTO> findAllByCategoryId(Long id);
+
 }

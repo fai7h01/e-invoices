@@ -72,11 +72,18 @@ public class ProductServiceImpl implements ProductService {
         Product found = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found."));
         //if there is invoiceProducts product cannot be deleted
         List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByProductId(id);
-        if (invoiceProducts.isEmpty()) {
+        if (!invoiceProducts.isEmpty()) {
             throw new ProductCannotBeDeletedException("Product is already used in invoice(s) and cannot be deleted.");
         }
         found.setIsDeleted(true);
         productRepository.save(found);
+    }
+
+    @Override
+    public List<ProductDTO> findAllByCategoryId(Long id) {
+        return productRepository.findAllByCategoryId(id).stream()
+                .map(product -> mapperUtil.convert(product, new ProductDTO()))
+                .collect(Collectors.toList());
     }
 
     private CompanyDTO getLoggedInCompany(){

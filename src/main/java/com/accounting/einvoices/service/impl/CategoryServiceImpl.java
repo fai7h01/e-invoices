@@ -2,12 +2,15 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CategoryDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Category;
+import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.exception.CategoryAlreadyExistsException;
 import com.accounting.einvoices.exception.CategoryNotFoundException;
 import com.accounting.einvoices.repository.CategoryRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CompanyService companyService;
+    private final ProductService productService;
     private final MapperUtil mapperUtil;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CompanyService companyService, MapperUtil mapperUtil) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, CompanyService companyService, ProductService productService, MapperUtil mapperUtil) {
         this.categoryRepository = categoryRepository;
         this.companyService = companyService;
+        this.productService = productService;
         this.mapperUtil = mapperUtil;
     }
 
@@ -62,6 +67,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(Long id) {
         Category found = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found."));
+        //find products by category and delete all of them/
+        List<ProductDTO> products = productService.findAllByCategoryId(id);
+        if (!products.isEmpty()) {
+            products.forEach(productDTO -> {
+                Product product = mapperUtil.convert(productDTO, new Product());
+                product.setIsDeleted(true);
+                ProductDTO dto = mapperUtil.convert(product, new ProductDTO());
+                productService.save(dto);
+            });
+        }
         found.setIsDeleted(true);
         categoryRepository.save(found);
     }
