@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/static/style.css" type="text/css" media="all" />
 </head>
 
-<body>
+<body style="margin: auto; width: 40%; line-height: 1.5; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;">
 <div>
-    <div class="py-4">
-        <div class="px-14 py-6">
-            <table class="w-full border-collapse border-spacing-0">
+    <div style="padding: 1rem 0;">
+        <div style="padding: 1.5rem 3.5rem;">
+            <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
                 <tbody>
                 <tr>
-                    <td class="w-full align-top">
+                    <td style="width: 100%; vertical-align: top;">
                         <div>
-                            <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png" class="h-12" />
+                            <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png" style="height: 3rem;" />
                         </div>
                     </td>
-
-                    <td class="align-top">
-                        <div class="text-sm">
-                            <table class="border-collapse border-spacing-0">
+                    <td style="vertical-align: top;">
+                        <div style="font-size: 0.875rem;">
+                            <table style="border-collapse: collapse; border-spacing: 0;">
                                 <tbody>
                                 <tr>
-                                    <td class="border-r pr-4">
+                                    <td style="border-right: 1px solid #e5e7eb; padding-right: 1rem;">
                                         <div>
-                                            <p class="whitespace-nowrap text-slate-400 text-right">Date</p>
-                                            <p class="whitespace-nowrap font-bold text-main text-right" th:text="${invoice.dueDate}"></p>
+                                            <p style="white-space: nowrap; color: #94a3b8; text-align: right;">Date</p>
+                                            <p style="white-space: nowrap; font-weight: 700; color: #5c6ac4; text-align: right;" th:text="${invoice.dueDate}"></p>
                                         </div>
                                     </td>
-                                    <td class="pl-4">
+                                    <td style="padding-left: 1rem;">
                                         <div>
-                                            <p class="whitespace-nowrap text-slate-400 text-right">Invoice #</p>
-                                            <p class="whitespace-nowrap font-bold text-main text-right" th:text="${invoice.invoiceNo}"></p>
+                                            <p style="white-space: nowrap; color: #94a3b8; text-align: right;">Invoice #</p>
+                                            <p style="white-space: nowrap; font-weight: 700; color: #5c6ac4; text-align: right;" th:text="${invoice.invoiceNo}"></p>
                                         </div>
                                     </td>
                                 </tr>
@@ -48,29 +46,29 @@
             </table>
         </div>
 
-        <div class="bg-slate-100 px-14 py-6 text-sm">
-            <table class="w-full border-collapse border-spacing-0">
+        <div style="background-color: #f1f5f9; padding: 1.5rem 3.5rem; font-size: 0.875rem;">
+            <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
                 <tbody>
                 <tr>
-                    <td class="w-1/2 align-top">
-                        <div class="text-sm text-neutral-600">
-                            <p class="font-bold">Supplier Company INC</p>
+                    <td style="width: 50%; vertical-align: top;">
+                        <div style="font-size: 0.875rem; color: #525252;">
+                            <p style="font-weight: 700;">Supplier Company INC</p>
                             <p th:text="'Title' + ${company.title}"></p>
                             <p th:text="'Phone' + ${company.phone}"></p>
                             <p th:text="'Website' + ${company.website}"></p>
-                            <p th:text="'Address' + ${company.address.addressLine1}">Port Orlofurt, 05820</p>
-                            <p th:text="'Country' + ${company.address.country}">United States</p>
+                            <p th:text="'Address' + ${company.address.addressLine1}" style="white-space: nowrap;">Port Orlofurt, 05820</p>
+                            <p th:text="'Country' + ${company.address.country}" style="white-space: nowrap;">United States</p>
                         </div>
                     </td>
-                    <td class="w-1/2 align-top text-right">
-                        <div class="text-sm text-neutral-600">
-                            <p class="font-bold">Supplier Company INC</p>
+                    <td style="width: 50%; vertical-align: top; text-align: right;">
+                        <div style="font-size: 0.875rem; color: #525252;">
+                            <p style="font-weight: 700;">Supplier Company INC</p>
                             <p th:text="'Title' + ${invoice.clientVendor.name}"></p>
                             <p th:text="'Phone' + ${invoice.clientVendor.phone}"></p>
                             <p th:text="'Website' + ${invoice.clientVendor.website}"></p>
                             <p th:text="'Email' + ${invoice.clientVendor.email}"></p>
-                            <p th:text="'Address' + ${invoice.clientVendor.address.addressLine1}">Port Orlofurt, 05820</p>
-                            <p th:text="'Country' + ${invoice.clientVendor.address.country}">United States</p>
+                            <p th:text="'Address' + ${invoice.clientVendor.address.addressLine1}" style="white-space: nowrap;">Port Orlofurt, 05820</p>
+                            <p th:text="'Country' + ${invoice.clientVendor.address.country}" style="white-space: nowrap;">United States</p>
                         </div>
                     </td>
                 </tr>
@@ -78,64 +76,42 @@
             </table>
         </div>
 
-        <div class="px-14 py-10 text-sm text-neutral-700">
-            <table class="w-full border-collapse border-spacing-0">
+        <div style="padding: 2.5rem 3.5rem; font-size: 0.875rem; color: #404040;">
+            <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
                 <thead>
                 <tr>
-                    <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
-                    <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Product details</td>
-                    <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
-                    <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Qty.</td>
-                    <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main">Tax</td>
-                    <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Total</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.75rem; font-weight: 700; color: #5c6ac4;">#</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.5rem; font-weight: 700; color: #5c6ac4;">Product details</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.5rem; text-align: right; font-weight: 700; color: #5c6ac4;">Price</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.5rem; text-align: center; font-weight: 700; color: #5c6ac4;">Qty.</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.5rem; text-align: center; font-weight: 700; color: #5c6ac4;">Tax</td>
+                    <td style="border-bottom: 2px solid #5c6ac4; padding-bottom: 0.75rem; padding-left: 0.5rem; text-align: right; font-weight: 700; color: #5c6ac4;">Total</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="invoiceProduct, iStat : ${invoiceProducts}">
-                    <td class="border-b py-3 pl-3" th:text="${iStat.count}">1.</td>
-                    <td class="border-b py-3 pl-2" th:text="${invoiceProduct.product.name}">Montly accountinc services</td>
-                    <td class="border-b py-3 pl-2 text-right" th:text="${invoiceProduct.product.name}">$150.00</td>
-                    <td class="border-b py-3 pl-2 text-center" th:text="${invoiceProduct.product.name}">1</td>
-                    <td class="border-b py-3 pl-2 text-center" th:text="${invoiceProduct.product.name}">20%</td>
-                    <td class="border-b py-3 pl-2 text-right" th:text="${invoiceProduct.product.name}">$150.00</td>
-                    <td class="border-b py-3 pl-2 pr-3 text-right" th:text="${invoiceProduct.product.name}">$180.00</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.75rem;" th:text="${iStat.count}">1.</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.5rem;" th:text="${invoiceProduct.product.name}">Monthly accounting services</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.5rem; text-align: right;" th:text="${invoiceProduct.product.price}">$150.00</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.5rem; text-align: center;" th:text="${invoiceProduct.quantity}">1</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.5rem; text-align: center;" th:text="${invoiceProduct.tax}">20%</td>
+                    <td style="border-bottom: 1px solid #e5e7eb; padding: 0.75rem 0.5rem; text-align: right;" th:text="${invoiceProduct.total}">$180.00</td>
                 </tr>
                 <tr>
-                    <td colspan="7">
-                        <table class="w-full border-collapse border-spacing-0">
+                    <td colspan="6" style="padding: 0.75rem;">
+                        <table style="width: 100%; border-collapse: collapse; border-spacing: 0;">
                             <tbody>
                             <tr>
-                                <td class="w-full"></td>
-                                <td>
-                                    <table class="w-full border-collapse border-spacing-0">
-                                        <tbody>
-                                        <tr>
-                                            <td class="border-b p-3">
-                                                <div class="whitespace-nowrap text-slate-400">Net total:</div>
-                                            </td>
-                                            <td class="border-b p-3 text-right">
-                                                <div class="whitespace-nowrap font-bold text-main">$320.00</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-3">
-                                                <div class="whitespace-nowrap text-slate-400">VAT total:</div>
-                                            </td>
-                                            <td class="p-3 text-right">
-                                                <div class="whitespace-nowrap font-bold text-main">$64.00</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="bg-main p-3">
-                                                <div class="whitespace-nowrap font-bold text-white">Total:</div>
-                                            </td>
-                                            <td class="bg-main p-3 text-right">
-                                                <div class="whitespace-nowrap font-bold text-white">$384.00</div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
+                                <td style="text-align: right; padding: 0.75rem; color: #94a3b8;">Net total:</td>
+                                <td style="text-align: right; padding: 0.75rem; font-weight: 700; color: #5c6ac4;">$320.00</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; padding: 0.75rem; color: #94a3b8;">VAT total:</td>
+                                <td style="text-align: right; padding: 0.75rem; font-weight: 700; color: #5c6ac4;">$64.00</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; padding: 0.75rem; background-color: #5c6ac4; font-weight: 700; color: #fff;">Total:</td>
+                                <td style="text-align: right; padding: 0.75rem; background-color: #5c6ac4; font-weight: 700; color: #fff;">$384.00</td>
                             </tr>
                             </tbody>
                         </table>
@@ -144,30 +120,7 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="px-14 text-sm text-neutral-700">
-            <p class="text-main font-bold">PAYMENT DETAILS</p>
-            <p>Banks of Banks</p>
-            <p>Bank/Sort Code: 1234567</p>
-            <p>Account Number: 123456678</p>
-            <p>Payment Reference: BRA-00335</p>
-        </div>
-
-        <div class="px-14 py-10 text-sm text-neutral-700">
-            <p class="text-main font-bold">Notes</p>
-            <p class="italic">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries
-                for previewing layouts and visual mockups.</p>
-            </dvi>
-
-            <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
-                Supplier Company
-                <span class="text-slate-300 px-2">|</span>
-                info@company.com
-                <span class="text-slate-300 px-2">|</span>
-                +1-202-555-0106
-            </footer>
-        </div>
     </div>
+</div>
 </body>
-
 </html>
