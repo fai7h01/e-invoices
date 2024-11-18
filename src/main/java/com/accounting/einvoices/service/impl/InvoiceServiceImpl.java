@@ -67,7 +67,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDTO findById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
-        return mapperUtil.convert(invoice, new InvoiceDTO());
+        InvoiceDTO converted = mapperUtil.convert(invoice, new InvoiceDTO());
+        setPriceTaxAndTotal(converted);
+        return converted;
     }
 
     @Override

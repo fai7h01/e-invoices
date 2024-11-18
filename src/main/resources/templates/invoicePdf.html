@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/static/style.css" type="text/css" media="all" />
 </head>
 
 <body>
@@ -65,12 +65,12 @@
                     <td class="w-1/2 align-top text-right">
                         <div class="text-sm text-neutral-600">
                             <p class="font-bold">Supplier Company INC</p>
-                            <p th:text="'Title' + ${client.name}"></p>
-                            <p th:text="'Phone' + ${client.phone}"></p>
-                            <p th:text="'Website' + ${client.website}"></p>
-                            <p th:text="'Email' + ${client.email}"></p>
-                            <p th:text="'Address' + ${client.address.addressLine1}">Port Orlofurt, 05820</p>
-                            <p th:text="'Country' + ${client.address.country}">United States</p>
+                            <p th:text="'Title' + ${invoice.clientVendor.name}"></p>
+                            <p th:text="'Phone' + ${invoice.clientVendor.phone}"></p>
+                            <p th:text="'Website' + ${invoice.clientVendor.website}"></p>
+                            <p th:text="'Email' + ${invoice.clientVendor.email}"></p>
+                            <p th:text="'Address' + ${invoice.clientVendor.address.addressLine1}">Port Orlofurt, 05820</p>
+                            <p th:text="'Country' + ${invoice.clientVendor.address.country}">United States</p>
                         </div>
                     </td>
                 </tr>
@@ -95,8 +95,8 @@
                     <td class="border-b py-3 pl-3" th:text="${iStat.count}">1.</td>
                     <td class="border-b py-3 pl-2" th:text="${invoiceProduct.product.name}">Montly accountinc services</td>
                     <td class="border-b py-3 pl-2 text-right" th:text="${invoiceProduct.product.name}">$150.00</td>
-                    <td class="border-b py-3 pl-2 text-center"th:text="${invoiceProduct.product.name}">1</td>
-                    <td class="border-b py-3 pl-2 text-center"th:text="${invoiceProduct.product.name}">20%</td>
+                    <td class="border-b py-3 pl-2 text-center" th:text="${invoiceProduct.product.name}">1</td>
+                    <td class="border-b py-3 pl-2 text-center" th:text="${invoiceProduct.product.name}">20%</td>
                     <td class="border-b py-3 pl-2 text-right" th:text="${invoiceProduct.product.name}">$150.00</td>
                     <td class="border-b py-3 pl-2 pr-3 text-right" th:text="${invoiceProduct.product.name}">$180.00</td>
                 </tr>
