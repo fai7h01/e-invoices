@@ -82,7 +82,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         ClientVendor clientVendor = clientVendorRepository.findById(id).orElseThrow(() -> new ClientVendorNotFoundException("Client/Vendor not found."));
         List<InvoiceDTO> clientInvoices = invoiceService.findAllByClientId(id);
         if (!clientInvoices.isEmpty()) {
-            throw new ClientCannotBeDeletedException("Client has invoice(s) and cannot be delete.");
+            throw new ClientCannotBeDeletedException("Client has invoice(s) and cannot be deleted.");
         }
         clientVendor.setIsDeleted(true);
         clientVendor.setName(clientVendor.getId() + "-" + clientVendor.getName());
