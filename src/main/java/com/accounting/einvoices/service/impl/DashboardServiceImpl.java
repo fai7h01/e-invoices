@@ -1,5 +1,6 @@
 package com.accounting.einvoices.service.impl;
 
+import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
 
-    //@ExecutionTime
+    @ExecutionTime
     @Override
     public Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month) {
 

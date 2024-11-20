@@ -11,7 +11,7 @@ public class BigDecimalUtil {
 
     public static BigDecimal format(BigDecimal value) {
         if (value == null)
-            throw new NoSuchElementException("Value cannot be formatted.");
+            throw new NoSuchElementException("Value is null, cannot be formatted.");
         return value.setScale(SCALE, ROUNDING_MODE);
     }
 
