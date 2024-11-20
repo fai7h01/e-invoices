@@ -13,6 +13,7 @@ import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.service.ProductService;
+import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.parameters.P;
@@ -46,7 +47,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         return invoiceProductRepository.findAllByInvoiceId(id).stream()
                 .map(invoiceProduct -> {
                     InvoiceProductDTO invoiceProductDTO = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
-                    invoiceProductDTO.setTotal(getTotalWithTax(invoiceProductDTO));
+                    invoiceProductDTO.setTotal(BigDecimalUtil.format(getTotalWithTax(invoiceProductDTO)));
                     return invoiceProductDTO;
                 }).collect(Collectors.toList());
     }
@@ -149,7 +150,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         return invoiceProductRepository.findAllByInvoiceId(id).stream()
                 .map(invoiceProduct -> {
                     InvoiceProductDTO dto = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
-                    dto.setTotal(getTotalWithTax(dto));
+                    dto.setTotal(BigDecimalUtil.format(getTotalWithTax(dto)));
                     return dto;
                 }).collect(Collectors.toList());
     }
