@@ -1,5 +1,6 @@
 package com.accounting.einvoices.controller;
 
+import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.KeycloakService;
@@ -39,7 +40,7 @@ public class UserController {
                 .data(saved).build());
     }
 
-
+    @ExecutionTime
     @GetMapping("/list")
     @Operation(summary = "Get All Users")
     public ResponseEntity<ResponseWrapper> getAllUsers() {

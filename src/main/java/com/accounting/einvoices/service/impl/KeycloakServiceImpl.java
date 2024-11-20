@@ -99,23 +99,26 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Override
     public UserDTO getLoggedInUser() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        // Check if the principal is of type KeycloakPrincipal
+//        if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
+//            KeycloakPrincipal<KeycloakSecurityContext> principal =
+//                    (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
+//            String username = principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
+//            log.info("logged in user: {}", username);
+//            return userService.findByUsername(username);
+//        } else if (authentication.getPrincipal() instanceof String) {
+//            // Handle case where the principal is a username directly
+//            String username = (String) authentication.getPrincipal();
+//            log.info("logged in user: {}", username);
+//            return userService.findByUsername(username);
+//        } else {
+//            throw new IllegalStateException("Authentication principal is of an unexpected type.");
+//        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Check if the principal is of type KeycloakPrincipal
-        if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
-            KeycloakPrincipal<KeycloakSecurityContext> principal =
-                    (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-            String username = principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
-            log.info("logged in user: {}", username);
-            return userService.findByUsername(username);
-        } else if (authentication.getPrincipal() instanceof String) {
-            // Handle case where the principal is a username directly
-            String username = (String) authentication.getPrincipal();
-            log.info("logged in user: {}", username);
-            return userService.findByUsername(username);
-        } else {
-            throw new IllegalStateException("Authentication principal is of an unexpected type.");
-        }
+        SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
+        return userService.findByUsername(userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername());
     }
 
     private Keycloak getKeycloakInstance() {
