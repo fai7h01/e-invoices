@@ -45,6 +45,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
 
+
+    @ExceptionHandler({ProductCannotBeDeletedException.class, ClientCannotBeDeletedException.class})
+    public ResponseEntity<ExceptionWrapper> cannotBeDeletedException(Throwable exception) {
+        log.error(exception.getMessage());
+        ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
+                .success(false)
+                .message(exception.getMessage())
+                .httpStatus(HttpStatus.CONFLICT)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
+    }
+
+
     @ExceptionHandler(ProductLowLimitAlertException.class)
     public ResponseEntity<ExceptionWrapper> lowLimitAlertException(Throwable exception) {
         log.error(exception.getMessage());
@@ -58,7 +72,7 @@ public class GlobalExceptionHandler {
     }
 
 
-        @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class})
+    @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class})
     public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
