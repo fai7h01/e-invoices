@@ -35,6 +35,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
                // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
                // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
+               // .antMatchers("/localhost:1010/**").hasAuthority("ai-assistant")
                 .anyRequest().permitAll();
         http.csrf().disable();
     }
