@@ -73,6 +73,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company) {
+        Optional<Invoice> invoice = invoiceRepository.findByInvoiceNoAndCompanyTitle(invNo, company);
+        if (invoice.isEmpty()) throw new InvoiceNotFoundException("Invoice not found.");
+        return mapperUtil.convert(invoice.get(), new InvoiceDTO());
+    }
+
+    @Override
     public InvoiceDTO generateInvoice() {
         InvoiceDTO invoice = new InvoiceDTO();
         int currentInvNo = this.findAllByLoggedInUser().size();

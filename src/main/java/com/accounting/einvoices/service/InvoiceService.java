@@ -15,6 +15,8 @@ public interface InvoiceService {
 
     InvoiceDTO findById(Long id);
 
+    InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company);
+
     InvoiceDTO generateInvoice();
 
     InvoiceDTO save(InvoiceDTO invoice);

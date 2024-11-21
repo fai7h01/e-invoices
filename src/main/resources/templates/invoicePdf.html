@@ -8,113 +8,189 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
     </style>
 </head>
-<body style="font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; color: #404040; background-color: #f1f5f9; line-height: 1.5; padding: 2rem;">
-<div style="max-width: 1000px; margin: 0 auto; background-color: #ffffff; padding: 3rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem;">
-        <div>
-            <h1 style="font-size: 2rem; color: #5c6ac4; margin-bottom: 1rem;">Invoice</h1>
-            <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 1.1rem;" th:text="'Invoice # ' + ${invoice.invoiceNo}"></p>
-            <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 1.1rem;" th:text="'Date of Issues: ' + ${invoice.dateOfIssue}"></p>
-            <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 1.1rem;" th:text="'Due Date: ' + ${invoice.dueDate}"></span></p>
-        </div>
-        <div>
-            <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png" alt="Company Logo" style="width: 200px; height: auto;">
-        </div>
-    </div>
+<body style="font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif; color: #404040; background-color: #f1f5f9; line-height: 1.5; padding: 1rem;">
+<table cellpadding="0" cellspacing="0" style="width: 100%; max-width: 800px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <tr>
+        <td style="padding: 3rem;">
+            <!-- Header Section -->
+            <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 3rem;">
+                <tr>
+                    <td style="width: 60%;">
+                        <h1 style="font-size: 1.7rem; color: #5c6ac4; margin-bottom: 1rem;">Invoice</h1>
+                        <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.85rem;" th:text="'Invoice # ' + ${invoice.invoiceNo}"></p>
+                        <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.85rem;" th:text="'Date of Issues: ' + ${invoice.dateOfIssue}"></p>
+                        <p style="margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.85rem;" th:text="'Due Date: ' + ${invoice.dueDate}"></p>
+                    </td>
+                    <td style="width: 40%; text-align: right;">
+                        <img src="https://raw.githubusercontent.com/templid/email-templates/main/templid-dynamic-templates/invoice-02/brand-sample.png" alt="Company Logo" style="width: 170px; height: auto;">
+                    </td>
+                </tr>
+            </table>
 
-    <div style="margin-bottom: 3rem;">
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.875rem;">
-            <thead>
-            <tr>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Category</th>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Product</th>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Price</th>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Quantity</th>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Tax</th>
-                <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Line Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="invoiceProduct, iStat : ${invoiceProducts}">
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.category}"></td> <!-- Product Category -->
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.name}"></td>
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.price}"></td>
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.quantity}"></td>
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.tax}"></td>
-                <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.total}"></td>
-            </tr>
-            <tr th:each="invoiceProduct, iStat : ${invoiceProducts}">
-                <td colspan="6" style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; background-color: #f9f9f9;">Description: <span th:text="${invoiceProduct.description}"></span></td> <!-- Description -->
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            <!-- Products Table -->
+            <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 3rem; font-size: 0.875rem;">
+                <thead>
+                <tr>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Category</th>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Product</th>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Price</th>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Quantity</th>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Tax</th>
+                    <th style="padding: 0.75rem; text-align: left; background-color: #ffffff; font-weight: 700; color: #5c6ac4; border-bottom: 2px solid #5c6ac4;">Line Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="invoiceProduct, iStat : ${invoiceProducts}">
+                    <tr>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.category.description}"></td>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.name}"></td>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.product.price}"></td>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.quantity}"></td>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.tax}"></td>
+                        <td style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb;" th:text="${invoiceProduct.total}"></td>
+                    </tr>
+                    <tr><!--if null dont show -->
+                        <td colspan="6" style="padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; background-color: #f9f9f9;">Description: <span th:text="${invoiceProduct.description}"></span></td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+            <!-- Notes and Totals Section -->
+            <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 3rem;">
+                <tr>
+                    <td style="width: 60%; padding-right: 1.5rem; vertical-align: top;">
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 2rem;">
+                            <tr>
+                                <td style="background-color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
+                                    <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Notes:</h3>
+                                    <p th:text="${invoice.notes}"></p>
+                                </td>
+                            </tr>
+                        </table>
+                        <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                            <tr>
+                                <td style="background-color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
+                                    <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Payment Terms:</h3>
+                                    <p th:text="${invoice.paymentTerms}"></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 40%; vertical-align: top;">
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; background-color: #f1f5f9; border-radius: 8px;">
+                            <tr>
+                                <td style="padding: 0.75rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
+                                    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                        <tr>
+                                            <td style="color: #94a3b8;">Subtotal:</td>
+                                            <td style="text-align: right; color: #5c6ac4; font-weight: 700;" th:text="${invoice.price}"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
+                                    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                        <tr>
+                                            <td style="color: #94a3b8;">Tax:</td>
+                                            <td style="text-align: right; color: #5c6ac4; font-weight: 700;" th:text="${invoice.tax}"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: #5c6ac4; padding: 0.75rem 1.5rem; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                                    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                                        <tr>
+                                            <td style="color: white; font-weight: 700; font-size: 1.1rem;">Total:</td>
+                                            <td style="text-align: right; color: white; font-weight: 700; font-size: 1.1rem;" th:text="${invoice.total}"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Address Section -->
+            <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 3rem; table-layout: fixed;">
+                <tr style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+                    <!-- Bill To Section -->
+                    <td style="width: 50%; padding-right: 1.5rem; vertical-align: top; text-align: left;">
+                        <h2 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700;">Bill To:</h2>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Company Name:</strong> <span th:text="${invoice.company.title}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Phone:</strong> <span th:text="${invoice.company.phone}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Website:</strong> <span th:text="${invoice.company.website}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Email:</strong> <span th:text="${invoice.company.email}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Country:</strong> <span th:text="${invoice.company.address.country}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>City:</strong> <span th:text="${invoice.company.address.city}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Address:</strong> <span th:text="${invoice.company.address.addressLine1}"></span>
+                        </p>
+                    </td>
+
+                    <!-- Business Information Section -->
+                    <td style="width: 50%; padding-left: 1.5rem; vertical-align: top; text-align: right; margin-bottom: 20px;">
+                        <h2 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700;">Business Information:</h2>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Company Name:</strong> <span th:text="${invoice.clientVendor.name}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Phone:</strong> <span th:text="${invoice.clientVendor.phone}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Website:</strong> <span th:text="${invoice.clientVendor.website}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Email:</strong> <span th:text="${invoice.clientVendor.email}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Country:</strong> <span th:text="${invoice.clientVendor.address.country}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>City:</strong> <span th:text="${invoice.clientVendor.address.city}"></span>
+                        </p>
+                        <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;">
+                            <strong>Address:</strong> <span th:text="${invoice.clientVendor.address.addressLine1}"></span>
+                        </p>
+                    </td>
+                </tr>
+            </table>
 
 
-    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem; margin-bottom: 3rem;">
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
-            <div style="background-color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
-                <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Notes:</h3>
-                <p th:text="${invoice.notes}"></p>
-            </div>
-            <div style="background-color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
-                <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Payment Terms:</h3>
-                <p th:text="${invoice.paymentTerms}">Terms</p>
-            </div>
-        </div>
-        <div style="background-color: #f1f5f9; padding: 1.5rem; border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #e5e7eb; color: #94a3b8;">
-                <span>Subtotal:</span>
-                <span style="color: #5c6ac4; font-weight: 700;" th:text="${invoice.price}"></span>
-            </div>
-            <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #e5e7eb; color: #94a3b8;">
-                <span>Tax:</span>
-                <span style="color: #5c6ac4; font-weight: 700;" th:text="${invoice.tax}"></span>
-            </div>
-            <div style="display: flex; justify-content: space-between; background-color: #5c6ac4; margin: 0 -1.5rem -1.5rem -1.5rem; padding: 0.75rem 1.5rem;">
-                <span style="color: white; font-weight: 700; font-size: 1.1rem;">Total</span>
-                <span style="color: white; font-weight: 700; font-size: 1.1rem;" th:text="${invoice.total}">$59.00</span>
-            </div>
-        </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem;">
-        <div style="padding: 1.5rem; border-radius: 8px; font-size: 0.875rem;">
-            <h2 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700;">Bill To:</h2>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong >Company Name:</strong> <span th:text="${company.title}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Phone:</strong> <span th:text="${company.phone}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Website:</strong> <span th:text="${company.website}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Email:</strong> <span th:text="${company.email}"></span></p> <!-- Comapany email -->
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Country:</strong> <span th:text="${company.country}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>City:</strong> <span th:text="${company.city}"></span></p> <!-- Company city -->
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Address:</strong> <span th:text="${company.addressLine1}"></span></p>
-        </div>
-        <div style="padding: 1.5rem; border-radius: 8px; font-size: 0.875rem; text-align: right;">
-            <h2 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.25rem; font-weight: 700;">Business Information:</h2>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Company Name:</strong> <span th:text="${invoice.clientVendor.name}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Phone:</strong> <span th:text="${invoice.clientVendor.phone}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Website:</strong> <span th:text="${invoice.clientVendor.website}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Email:</strong> <span th:text="${invoice.clientVendor.email}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Country:</strong> <span th:text="${invoice.clientVendor.address.country}"></span></p>
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>City:</strong> <span th:text="${invoice.clientVendor.address.city}"></span></p> <!-- Client city -->
-            <p style="margin-bottom: 0.5rem; font-size: 0.875rem; color: #525252;"><strong>Address:</strong> <span th:text="${invoice.clientVendor.address.addressLine1}"></span></p>
-        </div>
-    </div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; padding: 1.5rem;">
-        <div style="text-align: left;">
-            <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Client Signature:</h3>
-            <div style="margin-top: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb;">
-                <img src="data:image/svg+xml,%3Csvg width='200' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 25C50 5 150 45 190 25' stroke='black' fill='none' stroke-width='2'/%3E%3C/svg%3E" alt="Client Signature" style="max-width: 200px; height: auto;">
-            </div>
-        </div>
-        <div style="text-align: right;">
-            <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Business Signature:</h3>
-            <div style="margin-top: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb;">
-                <img src="data:image/svg+xml,%3Csvg width='200' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 25C50 45 150 5 190 25' stroke='black' fill='none' stroke-width='2'/%3E%3C/svg%3E" alt="Business Signature" style="max-width: 200px; height: auto;">
-            </div>
-        </div>
-    </div>
-</div>
+            <!-- Signature Section -->
+            <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                <tr>
+                    <td style="width: 50%; padding-right: 1.5rem; vertical-align: top;">
+                        <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Client Signature:</h3>
+                        <div style="margin-top: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <img src="data:image/svg+xml,%3Csvg width='200' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 25C50 5 150 45 190 25' stroke='black' fill='none' stroke-width='2'/%3E%3C/svg%3E" alt="Client Signature" style="max-width: 200px; height: auto;">
+                        </div>
+                    </td>
+                    <td style="width: 50%; padding-left: 1.5rem; vertical-align: top; text-align: right;">
+                        <h3 style="color: #5c6ac4; margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700;">Business Signature:</h3>
+                        <div style="margin-top: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb;">
+                            <img src="data:image/svg+xml,%3Csvg width='200' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 25C50 45 150 5 190 25' stroke='black' fill='none' stroke-width='2'/%3E%3C/svg%3E" alt="Business Signature" style="max-width: 200px; height: auto;">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
