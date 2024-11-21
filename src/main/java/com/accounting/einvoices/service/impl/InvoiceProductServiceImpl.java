@@ -49,7 +49,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                     InvoiceProductDTO invoiceProductDTO = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
                     invoiceProductDTO.setTotal(BigDecimalUtil.format(getTotalWithTax(invoiceProductDTO)));
                     return invoiceProductDTO;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
     @Override
@@ -152,14 +152,14 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                     InvoiceProductDTO dto = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
                     dto.setTotal(BigDecimalUtil.format(getTotalWithTax(dto)));
                     return dto;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
     @Override
     public List<InvoiceProductDTO> findAllByProductId(Long id) {
         return invoiceProductRepository.findAllByProductId(id).stream()
                 .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDTO()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

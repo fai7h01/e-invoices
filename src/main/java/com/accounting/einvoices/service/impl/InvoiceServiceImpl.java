@@ -48,7 +48,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
                     setPriceTaxAndTotal(invoiceDTO);
                     return invoiceDTO;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
 
@@ -61,7 +61,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
                     setPriceTaxAndTotal(invoiceDTO);
                     return invoiceDTO;
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
     @Override

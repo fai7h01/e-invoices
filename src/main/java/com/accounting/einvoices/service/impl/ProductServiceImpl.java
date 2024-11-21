@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAllByCategoryId(Long id) {
         return productRepository.findAllByCategoryId(id).stream()
                 .map(product -> mapperUtil.convert(product, new ProductDTO()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private CompanyDTO getLoggedInCompany(){

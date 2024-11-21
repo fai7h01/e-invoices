@@ -53,7 +53,7 @@ public class ClientVendorServiceImpl implements ClientVendorService {
         List<ClientVendor> clientVendorList = clientVendorRepository.findAllByCompanyId(getLoggedInCompany().getId());
         return clientVendorList.stream()
                 .map(clientVendor -> mapperUtil.convert(clientVendor, new ClientVendorDTO()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
