@@ -95,7 +95,7 @@ public class InvoiceController {
 
     @DeleteMapping("/remove/product/{id}")
     public ResponseEntity<ResponseWrapper> removeInvoiceProductFromInvoice(@PathVariable Long id){
-        invoiceProductService.delete(id);
+        invoiceProductService.delete(id);// find by invoice id and delete by id
         return ResponseEntity.noContent().build();
     }
 

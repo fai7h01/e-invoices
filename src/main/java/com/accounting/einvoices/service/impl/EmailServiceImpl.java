@@ -3,6 +3,7 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.service.EmailService;
 import com.itextpdf.html2pdf.HtmlConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +16,7 @@ import javax.mail.util.ByteArrayDataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -28,8 +30,9 @@ public class EmailServiceImpl implements EmailService {
         this.templateEngine = templateEngine;
     }
 
+    @Async
     @Override
-    public void sendEmailWithAttachment(String to, String subject, String text, byte[] pdfAttachment) {
+    public CompletableFuture<String> sendEmailWithAttachment(String to, String subject, String text, byte[] pdfAttachment) {
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -38,10 +41,11 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(text);
             helper.addAttachment("invoice.pdf", new ByteArrayDataSource(pdfAttachment, "application/pdf"));
             emailSender.send(message);
+            return CompletableFuture.completedFuture("Email sent successfully.");
         } catch (MessagingException e) {
             log.info("Email Service Exception: {}", e.getMessage());
+            return CompletableFuture.completedFuture("Sending email failed!");
         }
-
     }
 
     @Override
