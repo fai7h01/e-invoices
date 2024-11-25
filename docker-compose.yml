@@ -1,28 +1,90 @@
+
+networks:
+  invoicing-app-network:
+    driver: bridge
+
 volumes:
-  postgres_data:
-    driver: local
+  invoicing-app-data:
+  keycloak-data:
 
 services:
-  postgres:
+
+  postgres-invoicing:
     image: postgres
+    container_name: invoicing-postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: faith
+      POSTGRES_DB: invoicing_db
+    networks:
+      - invoicing-app-network
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - invoicing-app-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d invoicing_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  postgres-keycloak:
+    image: postgres
+    container_name: keycloak-postgres-db
     environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: faith
+      POSTGRES_DB: keycloak_db
+    networks:
+      - invoicing-app-network
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d keycloak_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  invoicing-app:
+    image: fai7h01/invoicing-app:v1
+    container_name: invoicing
+    environment:
+      DB_URL: jdbc:postgresql://postgres-invoicing:5432/invoicing_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: faith
+    networks:
+      - invoicing-app-network
+    ports:
+      - '9090:9090'
+    depends_on:
+      postgres-invoicing:
+        condition: service_healthy
+
   keycloak:
-    image: quay.io/keycloak/keycloak:legacy
+    image: fai7h01/keycloak:18
+    container_name: keycloak
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: postgres
+      DB_ADDR: keycloak-postgres-db
+      DB_DATABASE: keycloak_db
+      DB_USER: postgres
+      DB_PASSWORD: faith
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
     ports:
-      - 8080:8080
+      - '8080:8080'
+    volumes:
+      - ./keycloak-config:/opt/keycloak/data/import
+    networks:
+      - invoicing-app-network
     depends_on:
-      - postgres
+      postgres-keycloak:
+        condition: service_healthy
+
+
