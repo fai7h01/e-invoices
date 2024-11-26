@@ -62,9 +62,6 @@ services:
       - invoicing-app-network
     ports:
       - '9090:9090'
-    depends_on:
-      postgres-invoicehub:
-        condition: service_healthy
 
   keycloak:
     image: quay.io/keycloak/keycloak:legacy
