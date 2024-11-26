@@ -6,7 +6,7 @@ ENV KEYCLOAK_ADMIN=admin
 ENV KEYCLOAK_ADMIN_PASSWORD=admin
 
 # Copy the realm export file into the container
-COPY ./keycloak-config/realm-export.json /opt/keycloak/data/import/realm-export.json
+COPY ../keycloak-config/realm-export.json /opt/keycloak/data/import/realm-export.json
 
 # Configure Keycloak to automatically import the realm on startup
 CMD ["-Dkeycloak.migration.action=import", \
