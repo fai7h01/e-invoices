@@ -29,18 +29,6 @@ services:
       timeout: 5s
       retries: 5
 
-  invoicing-app:
-    image: fai7h01/invoicehub:v1
-    container_name: invoicing
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://invoicehub_db_user:1PhV7N0jRvr9Dk5QwJr63LkMGtcFYWUp@dpg-ct31efrv2p9s73b4dtd0-a.frankfurt-postgres.render.com/invoicehub_db
-      SPRING_DATASOURCE_USERNAME: invoicehub_db_user
-      SPRING_DATASOURCE_PASSWORD: 1PhV7N0jRvr9Dk5QwJr63LkMGtcFYWUp
-    networks:
-      - invoicing-app-network
-    ports:
-      - '9090:9090'
-
   keycloak:
     image: quay.io/keycloak/keycloak:legacy
     container_name: keycloak
