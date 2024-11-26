@@ -11,25 +11,25 @@ volumes:
 
 services:
 
-  postgres-invoicehub:
-    image: postgres
-    container_name: invoicing-postgres-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: faith
-      POSTGRES_DB: invoicing_db
-    networks:
-      - invoicing-app-network
-    volumes:
-      - invoicing-app-data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
-    restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d invoicing_db" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+#  postgres-invoicehub:
+#    image: postgres
+#    container_name: invoicing-postgres-db
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: faith
+#      POSTGRES_DB: invoicing_db
+#    networks:
+#      - invoicing-app-network
+#    volumes:
+#      - invoicing-app-data:/var/lib/postgresql/data
+#    ports:
+#      - '5432:5432'
+#    restart: always
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U postgres -d invoicing_db" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
 
   postgres-keycloak:
     image: postgres
