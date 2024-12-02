@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.cors().and().authorizeRequests()
-               // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
-               // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
-               // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
-               // .antMatchers("/localhost:1010/**").hasAuthority("ai-assistant")
+                // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
+                // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
+                // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
+                // .antMatchers("/localhost:1010/**").hasAuthority("ai-assistant")
                 .anyRequest().permitAll();
         http.csrf().disable();
     }
