@@ -7,6 +7,7 @@ import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,7 @@ public class DashboardServiceImpl implements DashboardService {
         return soldProductsEachDay;
     }
 
+    @Cacheable(value = "exchangeRates", key = "'rates'")
     @Override
     public Map<Pair<String, String>, String> exchangeRatePairs() {
 
