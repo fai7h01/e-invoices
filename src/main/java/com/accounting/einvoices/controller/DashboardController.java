@@ -65,4 +65,13 @@ public class DashboardController {
                 .message("Last three approved invoices are successfully retrieved.")
                 .data(invoices).build());
     }
+
+    @GetMapping("/exchangeRates")
+    public ResponseEntity<ResponseWrapper> getExchangeRates() {
+        Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs();
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Exchange rates successfully retrieved.")
+                .data(rates).build());
+    }
 }
