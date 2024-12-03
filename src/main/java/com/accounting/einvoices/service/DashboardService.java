@@ -15,6 +15,7 @@ public interface DashboardService {
     //chart
     Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month);
 
+    Map<Pair<String, String>, String> exchangeRatePairs();
 
 //    //total products sold
 //    //find approved invoices, find invoice products, find sum quantity of products

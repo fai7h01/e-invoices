@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "time_next_update_unix",
     "time_next_update_utc",
     "base_code",
-    "target_code",
-    "conversion_rate"
+    "conversion_rates"
 })
 @Generated("jsonschema2pojo")
 public class ExchangeRateResponse {
@@ -43,10 +42,8 @@ public class ExchangeRateResponse {
     private String timeNextUpdateUtc;
     @JsonProperty("base_code")
     private String baseCode;
-    @JsonProperty("target_code")
-    private String targetCode;
-    @JsonProperty("conversion_rate")
-    private Double conversionRate;
+    @JsonProperty("conversion_rates")
+    private ConversionRates conversionRates;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -130,24 +127,14 @@ public class ExchangeRateResponse {
         this.baseCode = baseCode;
     }
 
-    @JsonProperty("target_code")
-    public String getTargetCode() {
-        return targetCode;
+    @JsonProperty("conversion_rates")
+    public ConversionRates getConversionRates() {
+        return conversionRates;
     }
 
-    @JsonProperty("target_code")
-    public void setTargetCode(String targetCode) {
-        this.targetCode = targetCode;
-    }
-
-    @JsonProperty("conversion_rate")
-    public Double getConversionRate() {
-        return conversionRate;
-    }
-
-    @JsonProperty("conversion_rate")
-    public void setConversionRate(Double conversionRate) {
-        this.conversionRate = conversionRate;
+    @JsonProperty("conversion_rates")
+    public void setConversionRates(ConversionRates conversionRates) {
+        this.conversionRates = conversionRates;
     }
 
     @JsonAnyGetter
