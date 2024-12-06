@@ -22,7 +22,7 @@ public class ExchangeRatesScheduler {
         this.cacheManager = cacheManager;
     }
 
-    @Scheduled(fixedRate = 21600000)
+    @Scheduled(fixedRate = 86_400_000)
     public void refreshExchangeRatesCache() {
 
         Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs();
