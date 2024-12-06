@@ -44,7 +44,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://philipbaravi.github.io/invoicing-app",
+        configuration.setAllowedOrigins(List.of("https://philipbaravi.github.io",
                 "https://invoicehub-lb-1106916193.us-east-1.elb.amazonaws.com")); // Allow specific origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
