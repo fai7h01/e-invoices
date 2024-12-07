@@ -23,16 +23,12 @@ public class User extends BaseEntity{
     @Column(unique = true)
     private String username;
     private String password;
+    private String confirmPassword;
     private String firstName;
     private String lastName;
     private String phone;
-    private String position;
     private boolean enabled;
-
     private LocalDate dateOfEmployment;
-
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id")

@@ -81,10 +81,11 @@ public class UserServiceImpl implements UserService {
             user.getCompany().setId(savedCompany.getId()); // Set the existing managed company
         }
 
+
         User convertedUser = mapperUtil.convert(user, new User());
 
-       // keycloakService.userCreate(user);
-        keycloakService.userCreate(mapperUtil.convert(convertedUser, new UserDTO()));
+       //keycloakService.userCreate(user);
+       // keycloakService.userCreate(mapperUtil.convert(convertedUser, new UserDTO()));
         User saved = userRepository.save(convertedUser);
         return mapperUtil.convert(saved, new UserDTO());
     }
