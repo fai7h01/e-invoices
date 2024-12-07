@@ -1,54 +1,54 @@
-
-networks:
-  invoicing-app-network:
-    driver: bridge
-
-volumes:
-  keycloak-data:
-    driver: local
-
-services:
-
-  postgres-keycloak:
-    image: postgres
-    container_name: keycloak-postgres-db
-    environment:
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-      POSTGRES_DB: keycloak_db
-    networks:
-      - invoicing-app-network
-    volumes:
-      - keycloak-data:/var/lib/postgresql/data
-    ports:
-      - '5433:5432'
-    restart: always
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres -d keycloak_db" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:legacy
-    container_name: keycloak
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: postgres-keycloak
-      DB_DATABASE: keycloak_db
-      DB_USER: postgres
-      DB_SCHEMA: public
-      DB_PASSWORD: faith
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
-    ports:
-      - '8080:8080'
-    volumes:
-      - ./keycloak-config:/opt/keycloak/data/import
-      - keycloak-data:/opt/keycloak/data
-    networks:
-      - invoicing-app-network
-    depends_on:
-      postgres-keycloak:
-        condition: service_healthy
+#
+#networks:
+#  invoicing-app-network:
+#    driver: bridge
+#
+#volumes:
+#  keycloak-data:
+#    driver: local
+#
+#services:
+#
+#  postgres-keycloak:
+#    image: postgres
+#    container_name: keycloak-postgres-db
+#    environment:
+#      POSTGRES_USER: keycloak
+#      POSTGRES_PASSWORD: keycloak
+#      POSTGRES_DB: keycloak_db
+#    networks:
+#      - invoicing-app-network
+#    volumes:
+#      - keycloak-data:/var/lib/postgresql/data
+#    ports:
+#      - '5433:5432'
+#    restart: always
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U postgres -d keycloak_db" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:legacy
+#    container_name: keycloak
+#    environment:
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: postgres-keycloak
+#      DB_DATABASE: keycloak_db
+#      DB_USER: postgres
+#      DB_SCHEMA: public
+#      DB_PASSWORD: faith
+#      KEYCLOAK_USER: admin
+#      KEYCLOAK_PASSWORD: admin
+#      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+#    ports:
+#      - '8080:8080'
+#    volumes:
+#      - ./keycloak-config:/opt/keycloak/data/import
+#      - keycloak-data:/opt/keycloak/data
+#    networks:
+#      - invoicing-app-network
+#    depends_on:
+#      postgres-keycloak:
+#        condition: service_healthy
