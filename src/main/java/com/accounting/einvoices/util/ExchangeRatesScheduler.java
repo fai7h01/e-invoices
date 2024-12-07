@@ -25,9 +25,13 @@ public class ExchangeRatesScheduler {
     @Scheduled(fixedRate = 86_400_000)
     public void refreshExchangeRatesCache() {
 
-        Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs();
+        Map<Pair<String, String>, String> gelRates = dashboardService.exchangeRatePairs("GEL");
+        Map<Pair<String, String>, String> usdRates = dashboardService.exchangeRatePairs("USD");
+        Map<Pair<String, String>, String> eurRates = dashboardService.exchangeRatePairs("EUR");
 
-        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", rates);
+        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
+        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
+        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", eurRates);
 
         log.info("Exchange rates cache refreshed!");
     }

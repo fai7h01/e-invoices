@@ -66,8 +66,8 @@ public class DashboardController {
     }
 
     @GetMapping("/exchangeRates")
-    public ResponseEntity<ResponseWrapper> getExchangeRates() {
-        Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs();
+    public ResponseEntity<ResponseWrapper> getExchangeRates(@RequestParam("code") String code) {
+        Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs(code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Exchange rates successfully retrieved.")
