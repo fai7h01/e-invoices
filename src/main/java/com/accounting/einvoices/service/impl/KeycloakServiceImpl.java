@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -65,15 +66,22 @@ public class KeycloakServiceImpl implements KeycloakService {
         // Create Keycloak user
         Response result = usersResource.create(keycloakUser);
 
-        String userId = getCreatedId(result);
-        ClientRepresentation appClient = realmResource.clients()
-                .findByClientId(keycloakProperties.getClientId()).get(0);
+        if (result.getStatus() == Response.Status.CREATED.getStatusCode()) {
+            String userId = getCreatedId(result);
+            ClientRepresentation appClient = realmResource.clients()
+                    .findByClientId(keycloakProperties.getClientId()).get(0);
 
-        RoleRepresentation userClientRole = realmResource.clients().get(appClient.getId())
-                .roles().get(dto.getRole().getDescription()).toRepresentation();
+            RoleRepresentation userClientRole = realmResource.clients().get(appClient.getId())
+                    .roles().get(dto.getRole().getDescription()).toRepresentation();
 
-        realmResource.users().get(userId).roles().clientLevel(appClient.getId())
-                .add(asList(userClientRole));
+            realmResource.users().get(userId).roles().clientLevel(appClient.getId())
+                    .add(Collections.singletonList(userClientRole));
+        } else {
+            log.error("Error creating user in Keycloak: {}", result.getStatusInfo().getReasonPhrase());
+        }
+
+        //String userId = getCreatedId(result);
+
 
 
         keycloak.close();
