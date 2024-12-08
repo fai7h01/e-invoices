@@ -2,7 +2,6 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.entity.Invoice;
-import com.accounting.einvoices.entity.InvoiceProduct;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.repository.InvoiceRepository;
@@ -120,7 +119,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void delete(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         try {
-            invoiceProductService.deleteAll(id);
+            invoiceProductService.deleteAllByInvoice(id);
         }catch (InvoiceNotFoundException e) {
             log.warn("Invoice Products not found to delete: {}", e.getMessage());
         }

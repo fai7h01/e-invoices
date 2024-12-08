@@ -2,14 +2,17 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CategoryDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Category;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.exception.CategoryAlreadyExistsException;
+import com.accounting.einvoices.exception.CategoryCannotBeDeletedException;
 import com.accounting.einvoices.exception.CategoryNotFoundException;
 import com.accounting.einvoices.repository.CategoryRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.context.annotation.Lazy;
@@ -25,13 +28,15 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CompanyService companyService;
     private final ProductService productService;
+    private final InvoiceProductService invoiceProductService;
     private final MapperUtil mapperUtil;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository, CompanyService companyService,
-                               @Lazy ProductService productService, MapperUtil mapperUtil) {
+                               @Lazy ProductService productService, InvoiceProductService invoiceProductService, MapperUtil mapperUtil) {
         this.categoryRepository = categoryRepository;
         this.companyService = companyService;
         this.productService = productService;
+        this.invoiceProductService = invoiceProductService;
         this.mapperUtil = mapperUtil;
     }
 
@@ -70,14 +75,24 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         Category found = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found."));
         //find products by category and delete all of them/
+        //check if category can be deleted
+        if (checkIfCategoryCanBeDeleted(found.getId())) {
+            productService.deleteAllByCategory(id);
+            found.setIsDeleted(true);
+            categoryRepository.save(found);
+        }
+        throw new CategoryCannotBeDeletedException("There is at least one product that is used in invoice!");
+    }
+
+    private boolean checkIfCategoryCanBeDeleted(Long id) {
         List<ProductDTO> products = productService.findAllByCategoryId(id);
         if (!products.isEmpty()) {
-            products.forEach(productDTO -> {
-                productService.delete(productDTO.getId());
-            });
+            for (ProductDTO product : products) {
+                List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByProductId(product.getId());
+                return invoiceProducts.isEmpty();
+            }
         }
-        found.setIsDeleted(true);
-        categoryRepository.save(found);
+        return true;
     }
 
     private CompanyDTO getLoggedInCompany(){

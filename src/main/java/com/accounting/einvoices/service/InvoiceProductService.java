@@ -9,11 +9,13 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByInvoiceId(Long id);
 
+    List<InvoiceProductDTO> findAllByProductId(Long id);
+
     InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct);
 
     void delete(Long id);
 
-    void deleteAll(Long invoiceId);
+    void deleteAllByInvoice(Long invoiceId);
 
     BigDecimal getTotalWithTax(InvoiceProductDTO invoiceProduct);
 

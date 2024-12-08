@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({ProductCannotBeDeletedException.class, ClientCannotBeDeletedException.class})
+    @ExceptionHandler({ProductCannotBeDeletedException.class, ClientCannotBeDeletedException.class, CategoryCannotBeDeletedException.class})
     public ResponseEntity<ExceptionWrapper> cannotBeDeletedException(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()

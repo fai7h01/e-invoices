@@ -53,6 +53,16 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public List<InvoiceProductDTO> findAllByProductId(Long id) {
+        return invoiceProductRepository.findAllByProductId(id).stream()
+                .map(invoiceProduct -> {
+                    InvoiceProductDTO invoiceProductDTO = mapperUtil.convert(invoiceProduct, new InvoiceProductDTO());
+                    invoiceProductDTO.setTotal(BigDecimalUtil.format(getTotalWithTax(invoiceProductDTO)));
+                    return invoiceProductDTO;
+                }).toList();
+    }
+
+    @Override
     public InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct) {
         InvoiceDTO foundInvoice = invoiceService.findById(invoiceId);
         ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());
@@ -71,17 +81,15 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public void deleteAll(Long invoiceId) {
-        List<InvoiceProductDTO> invoiceProducts = findAllByInvoiceId(invoiceId);
-        if (!invoiceProducts.isEmpty()){
-            invoiceProducts.forEach(invoiceProductDTO -> {
-                InvoiceProduct converted = mapperUtil.convert(invoiceProductDTO, new InvoiceProduct());
-                converted.setIsDeleted(true);
-                invoiceProductRepository.save(converted);
+    public void deleteAllByInvoice(Long invoiceId) {
+        List<InvoiceProduct> invoiceProducts = invoiceProductRepository.findAllByInvoiceId(invoiceId);
+        if (!invoiceProducts.isEmpty()) {
+            invoiceProducts.forEach(invoiceProduct -> {
+                invoiceProduct.setIsDeleted(true);
+                invoiceProductRepository.save(invoiceProduct);
             });
-            return;
         }
-        throw new InvoiceProductNotFoundException("Invoice Products not found.");
+        //throw new InvoiceProductNotFoundException("Invoice Products not found.");
     }
 
     @Override

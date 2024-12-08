@@ -81,6 +81,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void deleteAllByCategory(Long id) {
+        List<Product> products = productRepository.findAllByCategoryId(id);
+        if (!products.isEmpty()) {
+            products.forEach(product -> {
+                delete(product.getId());
+            });
+        }
+      //  throw new ProductNotFoundException("Products not found to delete.")
+    }
+
+    @Override
     public List<ProductDTO> findAllByCategoryId(Long id) {
         return productRepository.findAllByCategoryId(id).stream()
                 .map(product -> mapperUtil.convert(product, new ProductDTO()))
