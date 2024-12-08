@@ -71,6 +71,20 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public void deleteAll(Long invoiceId) {
+        List<InvoiceProductDTO> invoiceProducts = findAllByInvoiceId(invoiceId);
+        if (!invoiceProducts.isEmpty()){
+            invoiceProducts.forEach(invoiceProductDTO -> {
+                InvoiceProduct converted = mapperUtil.convert(invoiceProductDTO, new InvoiceProduct());
+                converted.setIsDeleted(true);
+                invoiceProductRepository.save(converted);
+            });
+            return;
+        }
+        throw new InvoiceProductNotFoundException("Invoice Products not found.");
+    }
+
+    @Override
     public BigDecimal getTotalWithTax(InvoiceProductDTO invoiceProduct) {
         BigDecimal totalWithoutTax = getTotalWithoutTax(invoiceProduct);
         BigDecimal tax = (totalWithoutTax.multiply(invoiceProduct.getTax()).divide(BigDecimal.valueOf(100), RoundingMode.DOWN));
@@ -155,11 +169,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
                 }).toList();
     }
 
+
+    //if product is used in invoice, its invoice product and product can not be deleted if there is invoice product
     @Override
-    public List<InvoiceProductDTO> findAllByProductId(Long id) {
-        return invoiceProductRepository.findAllByProductId(id).stream()
-                .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDTO()))
-                .toList();
+    public boolean checkIfCanBeDeleted(Long id) {
+        List<InvoiceProduct> invoiceProducts = invoiceProductRepository.findAllByProductId(id);
+        return !invoiceProducts.isEmpty();
     }
 
 }

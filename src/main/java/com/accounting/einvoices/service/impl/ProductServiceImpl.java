@@ -14,12 +14,14 @@ import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -71,8 +73,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
         Product found = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found."));
         //if there is invoiceProducts product cannot be deleted
-        List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByProductId(id);
-        if (!invoiceProducts.isEmpty()) {
+        if (invoiceProductService.checkIfCanBeDeleted(id)) {
             throw new ProductCannotBeDeletedException("Product is already used in invoice(s) and cannot be deleted.");
         }
         found.setIsDeleted(true);

@@ -13,6 +13,8 @@ public interface InvoiceProductService {
 
     void delete(Long id);
 
+    void deleteAll(Long invoiceId);
+
     BigDecimal getTotalWithTax(InvoiceProductDTO invoiceProduct);
 
     BigDecimal getTotalWithoutTax(InvoiceProductDTO invoiceProduct);
@@ -25,6 +27,6 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByInvoiceIdAndCalculateTotalPrice(Long id);
 
-    List<InvoiceProductDTO> findAllByProductId(Long id);
+    boolean checkIfCanBeDeleted(Long id);
 
 }

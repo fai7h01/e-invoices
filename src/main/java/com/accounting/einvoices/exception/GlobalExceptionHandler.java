@@ -20,17 +20,17 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
-//    public ResponseEntity<ExceptionWrapper> handleGenericExceptions(Throwable exception) {
-//        log.error(exception.getMessage());
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(ExceptionWrapper.builder()
-//                        .success(false)
-//                        .message("Action failed: An error occurred!")
-//                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//                        .timestamp(LocalDateTime.now())
-//                        .build());
-//    }
+    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
+    public ResponseEntity<ExceptionWrapper> handleGenericExceptions(Throwable exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ExceptionWrapper.builder()
+                        .success(false)
+                        .message("Action failed: An error occurred!")
+                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
 
     @ExceptionHandler({UserNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class, ProductNotFoundException.class,
             InvoiceProductNotFoundException.class})
