@@ -23,7 +23,6 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
 @Profile("dev")
@@ -43,20 +42,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     @Override
     public Response userCreate(UserDTO dto) {
 
-        CredentialRepresentation credential = new CredentialRepresentation();
-        credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setTemporary(false);
-        credential.setValue(dto.getPassword());
-
-        UserRepresentation keycloakUser = new UserRepresentation();
-        keycloakUser.setUsername(dto.getUsername());
-        keycloakUser.setFirstName(dto.getFirstName());
-        keycloakUser.setLastName(dto.getLastName());
-        keycloakUser.setEmail(dto.getUsername());
-        keycloakUser.setCredentials(asList(credential));
-        keycloakUser.setEmailVerified(true);
-        keycloakUser.setEnabled(true);
-
+        UserRepresentation keycloakUser = getUserRepresentation(dto);
 
         Keycloak keycloak = getKeycloakInstance();
 
@@ -80,12 +66,27 @@ public class KeycloakServiceImpl implements KeycloakService {
             log.error("Error creating user in Keycloak: {}", result.getStatusInfo().getReasonPhrase());
         }
 
-        //String userId = getCreatedId(result);
-
 
 
         keycloak.close();
         return result;
+    }
+
+    private UserRepresentation getUserRepresentation(UserDTO dto) {
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setTemporary(false);
+        credential.setValue(dto.getPassword());
+
+        UserRepresentation keycloakUser = new UserRepresentation();
+        keycloakUser.setUsername(dto.getUsername());
+        keycloakUser.setFirstName(dto.getFirstName());
+        keycloakUser.setLastName(dto.getLastName());
+        keycloakUser.setEmail(dto.getUsername());
+        keycloakUser.setCredentials(List.of(credential));
+        keycloakUser.setEmailVerified(true);
+        keycloakUser.setEnabled(true);
+        return keycloakUser;
     }
 
     @Override
@@ -106,23 +107,6 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     @Override
     public UserDTO getLoggedInUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        // Check if the principal is of type KeycloakPrincipal
-//        if (authentication.getPrincipal() instanceof KeycloakPrincipal) {
-//            KeycloakPrincipal<KeycloakSecurityContext> principal =
-//                    (KeycloakPrincipal<KeycloakSecurityContext>) authentication.getPrincipal();
-//            String username = principal.getKeycloakSecurityContext().getToken().getPreferredUsername();
-//            log.info("logged in user: {}", username);
-//            return userService.findByUsername(username);
-//        } else if (authentication.getPrincipal() instanceof String) {
-//            // Handle case where the principal is a username directly
-//            String username = (String) authentication.getPrincipal();
-//            log.info("logged in user: {}", username);
-//            return userService.findByUsername(username);
-//        } else {
-//            throw new IllegalStateException("Authentication principal is of an unexpected type.");
-//        }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
         return userService.findByUsername(userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername());
