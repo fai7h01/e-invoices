@@ -52,3 +52,115 @@
 #    depends_on:
 #      postgres-keycloak:
 #        condition: service_healthy
+
+
+
+
+
+
+
+
+
+
+
+services:
+  invoicehub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: invoicehub
+    ports:
+      - "9090:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://invoicehub-db:5432/invoicehubdb
+      SPRING_DATASOURCE_USERNAME: invoicehub
+      SPRING_DATASOURCE_PASSWORD: invoicehub
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      KEYCLOAK_AUTH_SERVER_URL: http://keycloak:8080/auth
+    depends_on:
+      - invoicehub-db
+      - keycloak
+
+  invoicehub-db:
+    image: postgres:15
+    container_name: invoicehub-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: invoicehub
+      POSTGRES_PASSWORD: invoicehub
+      POSTGRES_DB: invoicehubdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  keycloak-db:
+    image: postgres:15
+    container_name: postgres-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloakdb
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    container_name: keycloak
+    ports:
+      - "8081:8080"
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-db
+      DB_DATABASE: keycloakdb
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    volumes:
+      - /keycloak-docker/keycloak-config/export-realm.json:/tmp/export-realm.json
+    depends_on:
+      - keycloak-db
+
+
+
+
+
+volumes:
+  postgres_data:
+    driver: local
+  keycloak_postgres_data:
+    driver: local
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
