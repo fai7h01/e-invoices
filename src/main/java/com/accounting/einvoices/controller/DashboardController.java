@@ -1,6 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -49,11 +51,11 @@ public class DashboardController {
 
     @GetMapping("/soldProductsBy/{year}/{month}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
-        Map<String, Integer> productsMap = dashboardService.totalProductsSoldEachDayMonth(year, month);
+        Set<ProductSalesStatDTO> stats = dashboardService.totalProductsSoldEachDayMonth(year, month);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Sold products each day of month.")
-                .data(productsMap).build());
+                .data(stats).build());
     }
 
     @GetMapping("/lastThreeApproved")

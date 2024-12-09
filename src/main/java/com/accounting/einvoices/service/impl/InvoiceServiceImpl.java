@@ -192,7 +192,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public List<InvoiceDTO> findAllByAcceptDate(LocalDate date) {
         Long companyId = companyService.getByLoggedInUser().getId();
         return invoiceRepository.findAllByAcceptDateIsAndInvoiceStatusAndCompanyId(date, InvoiceStatus.APPROVED, companyId).stream()
-                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
+                .map(invoice -> {
+                    InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxAndTotal(dto);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

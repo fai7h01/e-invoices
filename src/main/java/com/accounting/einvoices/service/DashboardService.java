@@ -1,9 +1,12 @@
 package com.accounting.einvoices.service;
 
+import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import org.springframework.data.util.Pair;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface DashboardService {
 
@@ -13,7 +16,7 @@ public interface DashboardService {
     Map<String, Integer> summaryQuantities();
 
     //chart
-    Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month);
+    Set<ProductSalesStatDTO> totalProductsSoldEachDayMonth(String year, String month);
 
     Map<Pair<String, String>, String> exchangeRatePairs(String code);
 

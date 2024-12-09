@@ -4,6 +4,7 @@ import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.client.ExchangeRateClient;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.service.*;
@@ -52,10 +53,13 @@ public class DashboardServiceImpl implements DashboardService {
 
     @ExecutionTime
     @Override
-    public Map<String, Integer> totalProductsSoldEachDayMonth(String year, String month) {
+    //        DateChart
+    public Set<ProductSalesStatDTO> totalProductsSoldEachDayMonth(String year, String month) {
 
         //maybe Pair.of to show month as well
         Map<String, Integer> soldProductsEachDay = new TreeMap<>();
+
+        Set<ProductSalesStatDTO> stats = new LinkedHashSet<>();
 
         YearMonth date = YearMonth.of(Integer.parseInt(year), Integer.parseInt(month));
         //calculate how many invoices are approved and how many invoice products are there in total
@@ -72,15 +76,24 @@ public class DashboardServiceImpl implements DashboardService {
             int eachDay = firstDay;
             log.info("\n\n >> EACH DAY: {}", eachDay);
             int count = 0;
+            BigDecimal amount = BigDecimal.ZERO;
+            ProductSalesStatDTO productSalesStat = new ProductSalesStatDTO();
             for (InvoiceDTO invoiceDTO : invoicesByDate) {
 
                 count += invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
                         .map(InvoiceProductDTO::getQuantity)
                         .reduce(Integer::sum).orElse(0);
+
+                amount = amount.add(invoiceDTO.getTotal());
+
                 log.info("Day of month and count of products: {}, {}", eachDay, count);
+
                 String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-                Pair<String, Integer> pair = Pair.of(monthName, eachDay);
-                soldProductsEachDay.put(pair.getFirst() + " " + pair.getSecond(), count);
+                productSalesStat.setMonth(monthName);
+                productSalesStat.setDayOfMonth(String.valueOf(eachDay));
+                productSalesStat.setQuantity(count);
+                productSalesStat.setAmount(amount);
+                stats.add(productSalesStat);
             }
 
 
@@ -89,7 +102,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         log.info("products: {}", soldProductsEachDay);
 
-        return soldProductsEachDay;
+        return stats;
     }
 
 
