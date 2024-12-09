@@ -31,4 +31,6 @@ public interface InvoiceProductService {
 
     boolean checkIfCanBeDeleted(Long id);
 
+    int sumQuantityOfSoldProducts();
+
 }
