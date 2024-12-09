@@ -185,4 +185,9 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         return !invoiceProducts.isEmpty();
     }
 
+    @Override
+    public int sumQuantityOfSoldProducts() {
+        return invoiceProductRepository.sumQuantityOfSoldProducts(companyService.getByLoggedInUser().getId());
+    }
+
 }

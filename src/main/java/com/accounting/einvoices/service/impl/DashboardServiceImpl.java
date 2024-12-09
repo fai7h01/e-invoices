@@ -198,7 +198,9 @@ public class DashboardServiceImpl implements DashboardService {
         map.put("total_employees", userService.findAll().size());
         map.put("total_clients", clientVendorService.findAll().size());
         map.put("total_products", productService.findAll().size());
+        map.put("total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
         return map;
     }
+
 
 }
