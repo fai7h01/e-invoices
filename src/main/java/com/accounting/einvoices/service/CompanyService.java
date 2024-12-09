@@ -8,5 +8,7 @@ public interface CompanyService {
 
     CompanyDTO save(CompanyDTO company);
 
+    CompanyDTO findByTitle(String title);
+
     CompanyDTO findById(Long id);
 }

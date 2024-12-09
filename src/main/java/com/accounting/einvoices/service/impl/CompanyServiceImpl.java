@@ -3,6 +3,7 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.Company;
+import com.accounting.einvoices.exception.CompanyAlreadyExistsException;
 import com.accounting.einvoices.repository.CompanyRepository;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.KeycloakService;
@@ -10,6 +11,7 @@ import com.accounting.einvoices.util.MapperUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -33,8 +35,16 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyDTO save(CompanyDTO company) {
         Company converted = mapperUtil.convert(company, new Company());
+        Optional<Company> found = companyRepository.findByTitle(company.getTitle().toLowerCase());
+        if (found.isPresent()) throw new CompanyAlreadyExistsException("Company with that name already exists.");
+        converted.setTitle(company.getTitle().toLowerCase());
         Company saved = companyRepository.save(converted);
         return mapperUtil.convert(saved, new CompanyDTO());
+    }
+
+    @Override
+    public CompanyDTO findByTitle(String title) {
+        return null;
     }
 
     @Override
