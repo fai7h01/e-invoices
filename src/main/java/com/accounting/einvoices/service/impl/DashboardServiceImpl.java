@@ -69,15 +69,20 @@ public class DashboardServiceImpl implements DashboardService {
 
             List<InvoiceDTO> invoicesByDate = invoiceService.findAllByAcceptDate(initialDate);
 
-            int finalFirstDay = firstDay;
-            invoicesByDate.forEach(invoiceDTO -> {
-                int count = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
+            int eachDay = firstDay;
+            log.info("\n\n >> EACH DAY: {}", eachDay);
+            int count = 0;
+            for (InvoiceDTO invoiceDTO : invoicesByDate) {
+
+                count += invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
                         .map(InvoiceProductDTO::getQuantity)
                         .reduce(Integer::sum).orElse(0);
+                log.info("Day of month and count of products: {}, {}", eachDay, count);
                 String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-                Pair<String, Integer> pair = Pair.of(monthName, finalFirstDay);
+                Pair<String, Integer> pair = Pair.of(monthName, eachDay);
                 soldProductsEachDay.put(pair.getFirst() + " " + pair.getSecond(), count);
-            });
+            }
+
 
             firstDay++;
         }
