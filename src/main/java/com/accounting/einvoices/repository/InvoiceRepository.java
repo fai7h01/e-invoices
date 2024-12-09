@@ -3,6 +3,8 @@ package com.accounting.einvoices.repository;
 import com.accounting.einvoices.entity.Invoice;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +16,12 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findAllByCompanyTitle(String companyTitle);
 
-    List<Invoice> findAllByAcceptDateIsAndInvoiceStatusAndCompanyId(LocalDate date, InvoiceStatus status, Long id);
+    @Query("SELECT i FROM Invoice i WHERE EXTRACT(YEAR FROM i.acceptDate) = :year AND EXTRACT(MONTH FROM i.acceptDate) = :month " +
+            "AND i.invoiceStatus = :status AND i.company.id = :companyId ORDER BY i.acceptDate")
+    List<Invoice> findAllByYearMonthStatusAndCompany(@Param("year") int year,
+                                                  @Param("month") int month,
+                                                  @Param("status") InvoiceStatus status,
+                                                  @Param("companyId") Long companyId);
 
     Optional<Invoice> findByInvoiceNoAndCompanyTitle(String invNo, String company);
 

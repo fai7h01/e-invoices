@@ -49,9 +49,11 @@ public class DashboardController {
                 .data(summary).build());
     }
 
-    @GetMapping("/soldProductsBy/{year}/{month}")
-    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year, @PathVariable("month") String month) {
-        Set<ProductSalesStatDTO> stats = dashboardService.totalProductsSoldEachDayMonth(year, month);
+    @GetMapping("/soldProductsBy/{year}/{month}/{currCode}")
+    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
+                                                                      @PathVariable("month") String month,
+                                                                      @PathVariable("currCode") String code) {
+        List<ProductSalesStatDTO> stats = dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(month), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Sold products each day of month.")

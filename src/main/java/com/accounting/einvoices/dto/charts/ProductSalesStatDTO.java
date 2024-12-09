@@ -10,8 +10,9 @@ import java.math.BigDecimal;
 @Setter
 public class ProductSalesStatDTO {
 
-    private String month;
-    private String dayOfMonth;
+    private int year;
+    private int month;
+    private int dayOfMonth;
     private int quantity;
     private BigDecimal amount;
     private Currency currency;

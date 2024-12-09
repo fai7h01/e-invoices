@@ -1,11 +1,13 @@
 package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.enums.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface InvoiceService {
 
@@ -25,7 +27,7 @@ public interface InvoiceService {
 
     void delete(Long id);
 
-    void setPriceTaxAndTotal(InvoiceDTO invoice);
+    void setPriceTaxTotal(InvoiceDTO invoice);
 
     void approve(Long id);
 
@@ -38,7 +40,7 @@ public interface InvoiceService {
 
     BigDecimal sumProfitLoss();
 
-    List<InvoiceDTO> findAllByAcceptDate(LocalDate date);
+    Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month);
 
     List<InvoiceDTO> findAllByClientId(Long id);
 

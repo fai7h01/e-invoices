@@ -1,5 +1,6 @@
 package com.accounting.einvoices.entity;
 
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.enums.InvoiceType;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,10 @@ public class Invoice extends BaseEntity {
 
     private LocalDateTime dueDate;
 
-    private LocalDate acceptDate;
+    private LocalDateTime acceptDate;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     private String paymentTerms;
 

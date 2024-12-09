@@ -2,6 +2,7 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.entity.Invoice;
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.repository.InvoiceRepository;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceRepository.findAllByCompanyId(companyService.getByLoggedInUser().getId()).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(invoiceDTO);
+                    setPriceTaxTotal(invoiceDTO);
                     return invoiceDTO;
                 }).toList();
     }
@@ -59,7 +61,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoices.stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(invoiceDTO);
+                    setPriceTaxTotal(invoiceDTO);
                     return invoiceDTO;
                 }).toList();
     }
@@ -68,7 +70,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceDTO findById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         InvoiceDTO converted = mapperUtil.convert(invoice, new InvoiceDTO());
-        setPriceTaxAndTotal(converted);
+        setPriceTaxTotal(converted);
         return converted;
     }
 
@@ -96,7 +98,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setCompany(loggedInCompany);
         invoice.setClientVendor(client);
         Invoice converted = mapperUtil.convert(invoice, new Invoice());
-        Invoice saved = invoiceRepository.save(converted);;
+        //choose currency for invoice before saving
+        Invoice saved = invoiceRepository.save(converted);
         return mapperUtil.convert(saved, new InvoiceDTO());
     }
 
@@ -128,7 +131,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void setPriceTaxAndTotal(InvoiceDTO invoice) {
+    public void setPriceTaxTotal(InvoiceDTO invoice) {
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
         BigDecimal totalPrice = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithoutTax).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalWithTax = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithTax).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -142,7 +145,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void approve(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
-        invoice.setAcceptDate(LocalDate.now());
+        invoice.setAcceptDate(LocalDateTime.now());
         invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(id);
         invoiceProductService.calculateProfitLoss(id);
@@ -152,7 +155,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceDTO approve(String invNo, String companyTitle) {
         Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyTitle(invNo, companyTitle).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
-        invoice.setAcceptDate(LocalDate.now());
+        invoice.setAcceptDate(LocalDateTime.now());
         Invoice saved = invoiceRepository.save(invoice);
         invoiceProductService.updateQuantityInStock(invoice.getId());
         invoiceProductService.calculateProfitLoss(invoice.getId());
@@ -189,15 +192,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> findAllByAcceptDate(LocalDate date) {
+    public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month) {
         Long companyId = companyService.getByLoggedInUser().getId();
-        return invoiceRepository.findAllByAcceptDateIsAndInvoiceStatusAndCompanyId(date, InvoiceStatus.APPROVED, companyId).stream()
+        return invoiceRepository.findAllByYearMonthStatusAndCompany(year, month, InvoiceStatus.APPROVED, companyId)
+                .stream()
                 .map(invoice -> {
                     InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(dto);
+                    setPriceTaxTotal(dto);
                     return dto;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(InvoiceDTO::getCurrency));
     }
 
     @Override
@@ -213,7 +217,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 InvoiceStatus.APPROVED).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxAndTotal(invoiceDTO);
+                    setPriceTaxTotal(invoiceDTO);
                     return invoiceDTO;
                 }).collect(Collectors.toList());
     }

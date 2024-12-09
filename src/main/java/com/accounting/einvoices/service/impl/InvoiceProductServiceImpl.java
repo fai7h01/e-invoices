@@ -68,6 +68,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
         ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());
         invoiceProduct.setInvoice(foundInvoice);
         invoiceProduct.setProduct(foundProduct);
+        invoiceProduct.setCurrency(foundInvoice.getCurrency());
         InvoiceProduct saved = invoiceProductRepository.save(mapperUtil.convert(invoiceProduct, new InvoiceProduct()));
         return mapperUtil.convert(saved, new InvoiceProductDTO());
     }
