@@ -20,6 +20,8 @@ public interface DashboardService {
 
     Map<Pair<String, String>, String> exchangeRatePairs(String code);
 
+
+
 //    //total products sold
 //    //find approved invoices, find invoice products, find sum quantity of products
 //    int getTotalQuantityOfSoldProducts();

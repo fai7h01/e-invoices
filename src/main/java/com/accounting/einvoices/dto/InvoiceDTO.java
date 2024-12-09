@@ -1,5 +1,6 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.enums.InvoiceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -45,6 +48,8 @@ public class InvoiceDTO {
     private ClientVendorDTO clientVendor;
 
     private BigDecimal price;
+
+    private Currency currency;
 
     private BigDecimal tax;
 

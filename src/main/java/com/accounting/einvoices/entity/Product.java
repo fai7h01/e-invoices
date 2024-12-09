@@ -1,5 +1,6 @@
 package com.accounting.einvoices.entity;
 
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.enums.ProductUnit;
 import lombok.Getter;
@@ -30,6 +31,9 @@ public class Product extends BaseEntity {
     private LocalDate createdAt;
 
     private BigDecimal price;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @Enumerated(EnumType.STRING)
     private ProductUnit productUnit;

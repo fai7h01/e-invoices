@@ -1,11 +1,14 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.Currency;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 
 @Data
@@ -22,6 +25,8 @@ public class InvoiceProductDTO {
     private Integer quantity;
 
     private BigDecimal price;
+
+    private Currency currency;
 
     private BigDecimal tax;
 

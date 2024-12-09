@@ -1,5 +1,6 @@
 package com.accounting.einvoices.dto;
 
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.enums.ProductUnit;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,6 +30,8 @@ public class ProductDTO {
     private Integer lowLimitAlert;
 
     private BigDecimal price;
+
+    private Currency currency;
 
     private LocalDate createdAt;
 
