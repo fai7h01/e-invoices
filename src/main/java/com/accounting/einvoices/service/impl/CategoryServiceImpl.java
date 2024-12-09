@@ -80,6 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
             productService.deleteAllByCategory(id);
             found.setIsDeleted(true);
             categoryRepository.save(found);
+            return;
         }
         throw new CategoryCannotBeDeletedException("There is at least one product that is used in invoice!");
     }
