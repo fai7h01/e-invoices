@@ -109,11 +109,11 @@ VALUES
 INSERT INTO invoices(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                      invoice_no, invoice_type, invoice_status, date_of_issue, due_date, payment_terms, notes,
                      client_vendor_id, company_id, accept_date)
-VALUES  ('2024-11-05 00:00:00', 1, '2024-11-05 00:00:00', 1, false, 'INV001', 'SALES', 'AWAITING_APPROVAL', '2024-11-10 00:00:00', '2024-11-30 00:00:00', 'Net 20', 'Urgent delivery required', 1, 1, '2024-11-12 00:00:00'),
-        ('2024-11-06 00:00:00', 1, '2024-11-06 00:00:00', 1, false, 'INV002', 'SALES', 'APPROVED', '2024-11-11 00:00:00', '2024-11-30 00:00:00', 'Net 30', 'Standard terms', 1, 2, '2024-11-13 00:00:00'),
-        ('2024-11-07 00:00:00', 1, '2024-11-07 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-11-09 00:00:00', '2024-11-20 00:00:00', 'Net 10', 'Early payment discount', 1, 3, '2024-11-14 00:00:00'),
-        ('2024-11-08 00:00:00', 1, '2024-11-08 00:00:00', 1, false, 'INV004', 'SALES', 'APPROVED', '2024-11-08 00:00:00', '2024-11-25 00:00:00', 'Net 15', 'Bulk order', 1, 4, '2024-11-15 00:00:00'),
-        ('2024-11-09 00:00:00', 1, '2024-11-09 00:00:00', 1, false, 'INV005', 'SALES', 'AWAITING_APPROVAL', '2024-11-07 00:00:00', '2024-11-28 00:00:00', 'Net 20', 'Special discount applied', 1, 5, '2024-11-16 00:00:00');
+VALUES  ('2024-11-05 00:00:00', 1, '2024-11-05 00:00:00', 1, false, 'INV001', 'SALES', 'AWAITING_APPROVAL', '2024-11-10 00:00:00', '2024-11-30 00:00:00', 'Net 20', 'Urgent delivery required', 1, 1, null),
+        ('2024-11-06 00:00:00', 1, '2024-11-06 00:00:00', 1, false, 'INV002', 'SALES', 'APPROVED', '2024-11-11 00:00:00', '2024-11-30 00:00:00', 'Net 30', 'Standard terms', 2, 1, '2024-11-13 00:00:00'),
+        ('2024-11-07 00:00:00', 1, '2024-11-07 00:00:00', 1, false, 'INV003', 'SALES', 'APPROVED', '2024-11-09 00:00:00', '2024-11-20 00:00:00', 'Net 10', 'Early payment discount', 1, 1, '2024-11-14 00:00:00'),
+        ('2024-11-08 00:00:00', 1, '2024-11-08 00:00:00', 1, false, 'INV004', 'SALES', 'APPROVED', '2024-11-08 00:00:00', '2024-11-25 00:00:00', 'Net 15', 'Bulk order', 2, 4, '2024-11-15 00:00:00'),
+        ('2024-11-09 00:00:00', 1, '2024-11-09 00:00:00', 1, false, 'INV005', 'SALES', 'AWAITING_APPROVAL', '2024-11-07 00:00:00', '2024-11-28 00:00:00', 'Net 20', 'Special discount applied', 1, 1, null);
 
 
 INSERT INTO invoice_products(insert_date_time, insert_user_id, is_deleted, last_update_date_time, last_update_user_id,

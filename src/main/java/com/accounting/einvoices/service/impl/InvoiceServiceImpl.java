@@ -190,7 +190,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<InvoiceDTO> findAllByAcceptDate(LocalDate date) {
-        return invoiceRepository.findAllByAcceptDateIs(date).stream()
+        Long companyId = companyService.getByLoggedInUser().getId();
+        return invoiceRepository.findAllByAcceptDateIsAndInvoiceStatusAndCompanyId(date, InvoiceStatus.APPROVED, companyId).stream()
                 .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
                 .collect(Collectors.toList());
     }

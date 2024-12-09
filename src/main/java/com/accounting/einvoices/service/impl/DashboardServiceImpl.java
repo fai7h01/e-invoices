@@ -3,6 +3,7 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.client.ExchangeRateClient;
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.service.*;
@@ -70,7 +71,9 @@ public class DashboardServiceImpl implements DashboardService {
 
             int finalFirstDay = firstDay;
             invoicesByDate.forEach(invoiceDTO -> {
-                int count = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).size();
+                int count = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
+                        .map(InvoiceProductDTO::getQuantity)
+                        .reduce(Integer::sum).orElse(0);
                 String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
                 Pair<String, Integer> pair = Pair.of(monthName, finalFirstDay);
                 soldProductsEachDay.put(pair.getFirst() + " " + pair.getSecond(), count);

@@ -14,7 +14,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findAllByCompanyTitle(String companyTitle);
 
-    List<Invoice> findAllByAcceptDateIs(LocalDate date);
+    List<Invoice> findAllByAcceptDateIsAndInvoiceStatusAndCompanyId(LocalDate date, InvoiceStatus status, Long id);
 
     Optional<Invoice> findByInvoiceNoAndCompanyTitle(String invNo, String company);
 
