@@ -51,13 +51,9 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
 
+    @Cacheable(value = "SoldProductsStatsEachDayOfMonth", key = "{#year, #month}")
     @ExecutionTime
-    @Override
-    //        DateChart
     public Set<ProductSalesStatDTO> totalProductsSoldEachDayMonth(String year, String month) {
-
-        //maybe Pair.of to show month as well
-        Map<String, Integer> soldProductsEachDay = new TreeMap<>();
 
         Set<ProductSalesStatDTO> stats = new LinkedHashSet<>();
 
@@ -65,42 +61,48 @@ public class DashboardServiceImpl implements DashboardService {
         //calculate how many invoices are approved and how many invoice products are there in total
 
         int monthDays = date.lengthOfMonth();
-        int firstDay = 1;
+        int day = 1;
 
-        while (firstDay <= monthDays) {
+        while (day <= monthDays) {
 
-            LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonthValue(), firstDay);
+            LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonthValue(), day);
+            String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
 
             List<InvoiceDTO> invoicesByDate = invoiceService.findAllByAcceptDate(initialDate);
 
-            int eachDay = firstDay;
-            log.info("\n\n >> EACH DAY: {}", eachDay);
-            int count = 0;
-            BigDecimal amount = BigDecimal.ZERO;
-            ProductSalesStatDTO productSalesStat = new ProductSalesStatDTO();
+            log.info("\n\n >> EACH DAY: {}", day);
+
+            int totalQuantity = 0;
+            BigDecimal totalAmount = BigDecimal.ZERO;
+
+            ProductSalesStatDTO productSalesStat = ProductSalesStatDTO.builder().build();
+
             for (InvoiceDTO invoiceDTO : invoicesByDate) {
 
-                count += invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
+                int dayQuantity = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
                         .map(InvoiceProductDTO::getQuantity)
                         .reduce(Integer::sum).orElse(0);
 
-                amount = amount.add(invoiceDTO.getTotal());
+                totalQuantity += dayQuantity;
+                totalAmount = totalAmount.add(invoiceDTO.getTotal());
 
-                log.info("Day of month and count of products: {}, {}", eachDay, count);
+                productSalesStat = ProductSalesStatDTO.builder()
+                        .month(monthName)
+                        .dayOfMonth(String.valueOf(day))
+                        .quantity(totalQuantity)
+                        .amount(totalAmount)
+                        .build();
 
-                String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-                productSalesStat.setMonth(monthName);
-                productSalesStat.setDayOfMonth(String.valueOf(eachDay));
-                productSalesStat.setQuantity(count);
-                productSalesStat.setAmount(amount);
-                stats.add(productSalesStat);
+            }
+            if (productSalesStat.getAmount() == null || productSalesStat.getQuantity() == 0) {
+                day++;
+                continue;
             }
 
+            stats.add(productSalesStat);
 
-            firstDay++;
+            day++;
         }
-
-        log.info("products: {}", soldProductsEachDay);
 
         return stats;
     }
