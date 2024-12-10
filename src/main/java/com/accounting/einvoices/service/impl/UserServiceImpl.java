@@ -84,7 +84,9 @@ public class UserServiceImpl implements UserService {
         User convertedUser = mapperUtil.convert(user, new User());
 
         User saved = userRepository.save(convertedUser);
+        log.info("\n\n>>User saved in database!");
         keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
+
         return mapperUtil.convert(saved, new UserDTO());
     }
 

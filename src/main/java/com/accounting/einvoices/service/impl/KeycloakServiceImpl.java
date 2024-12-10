@@ -66,8 +66,6 @@ public class KeycloakServiceImpl implements KeycloakService {
             log.error("Error creating user in Keycloak: {}", result.getStatusInfo().getReasonPhrase());
         }
 
-
-
         keycloak.close();
         return result;
     }
