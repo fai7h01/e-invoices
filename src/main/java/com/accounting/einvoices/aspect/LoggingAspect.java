@@ -1,9 +1,11 @@
 package com.accounting.einvoices.aspect;
 
+import com.accounting.einvoices.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,25 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     private String getUsername(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
-        return userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername();
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            // Check if authentication is null or if the user is not authenticated
+            if (authentication == null || !authentication.isAuthenticated()
+                    || authentication instanceof AnonymousAuthenticationToken) {
+                throw new UserNotFoundException("No User");
+            }
+
+            // Ensure authentication details are available
+            if (authentication.getDetails() instanceof SimpleKeycloakAccount) {
+                SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
+                return userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername();
+            }
+        } catch (RuntimeException e) {
+            log.error("No user");
+        }
+
+        return " ";
     }
 
     @Pointcut("within(com.accounting.einvoices.controller.*)")
