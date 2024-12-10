@@ -15,9 +15,11 @@ public interface DashboardService {
 
     Map<String, Integer> summaryQuantities();
 
+    Map<Pair<String, String>, String> exchangeRatePairs(String code);
+
     //chart
     List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency);
 
-    Map<Pair<String, String>, String> exchangeRatePairs(String code);
+    //top 3 selling products by year and month
 
 }
