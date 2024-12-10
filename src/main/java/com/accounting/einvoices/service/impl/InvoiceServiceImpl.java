@@ -57,7 +57,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDTO> findAllByCompanyTitle(String company) {
         List<Invoice> invoices = invoiceRepository.findAllByCompanyTitle(company);
-        log.info("\n\n>> Found invoices by company: {}", invoices);
         return invoices.stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
@@ -133,6 +132,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void setPriceTaxTotal(InvoiceDTO invoice) {
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
+        log.info("\n\n>> Found invoiceproducts with invoice: {}", invoiceProductDtoList);
         BigDecimal totalPrice = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithoutTax).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalWithTax = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithTax).reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalTax = invoiceProductDtoList.stream().map(InvoiceProductDTO::getTax).reduce(BigDecimal.ZERO, BigDecimal::add); //get total tax
@@ -194,7 +194,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month) {
         Long companyId = companyService.getByLoggedInUser().getId();
-        return invoiceRepository.findAllByYearMonthStatusAndCompany(year, month, InvoiceStatus.APPROVED, companyId)
+        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearMonthStatusAndCompany(year, month, InvoiceStatus.APPROVED, companyId)
                 .stream()
                 .map(invoice -> {
                     InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
@@ -202,6 +202,8 @@ public class InvoiceServiceImpl implements InvoiceService {
                     return dto;
                 })
                 .collect(Collectors.groupingBy(InvoiceDTO::getCurrency));
+        log.info("\n\n found grouped invoices: {}", map);
+        return map;
     }
 
     @Override

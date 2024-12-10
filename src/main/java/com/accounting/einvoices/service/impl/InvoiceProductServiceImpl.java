@@ -15,6 +15,7 @@ import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.service.ProductService;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class InvoiceProductServiceImpl implements InvoiceProductService {
 

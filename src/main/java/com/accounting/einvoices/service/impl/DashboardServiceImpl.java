@@ -56,17 +56,19 @@ public class DashboardServiceImpl implements DashboardService {
         List<ProductSalesStatDTO> stats = new ArrayList<>();
 
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
-        log.info("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>GROUP MAP: {}", map);
+
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
+        log.info("\n\n>> Invoices from map by currency: {}", invoices);
 
         int totalQuantity = 0;
         BigDecimal totalAmount = BigDecimal.ZERO;
-        ProductSalesStatDTO productSalesStat;
+        ProductSalesStatDTO productSalesStat = ProductSalesStatDTO.builder().build();
 
         for (InvoiceDTO invoice : invoices) {
             int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
                     .map(InvoiceProductDTO::getQuantity)
                     .reduce(Integer::sum).orElse(0);
+            log.info("\n\n>> Day quantity: {}, at november: {}", dayQuantity, invoice.getAcceptDate().getDayOfMonth());
 
             totalQuantity += dayQuantity;
             totalAmount = totalAmount.add(invoice.getTotal());
@@ -79,8 +81,10 @@ public class DashboardServiceImpl implements DashboardService {
                     .amount(totalAmount)
                     .currency(invoice.getCurrency())
                     .build();
-            stats.add(productSalesStat);
         }
+        stats.add(productSalesStat);
+
+        log.info("\n\n last result of product stats: {}", stats);
         return stats;
 //        while (day <= monthDays) {
 //
