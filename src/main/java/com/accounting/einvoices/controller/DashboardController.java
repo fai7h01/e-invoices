@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,13 +61,16 @@ public class DashboardController {
                 .data(stats).build());
     }
 
-    @GetMapping("/lastThreeApproved")
-    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
-        List<InvoiceDTO> invoices = invoiceService.lastThreeApprovedInvoices();
+
+    @GetMapping("/topSellingProducts/{year}/{month}/{currCode}")
+    public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
+                                                              @PathVariable("month") String month,
+                                                              @PathVariable("currCode") String code) {
+        List<ProductSalesStatDTO> stats = dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(month), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
-                .message("Last three approved invoices are successfully retrieved.")
-                .data(invoices).build());
+                .message("Top Selling Products in " + year + " " + Month.of(Integer.parseInt(month)))
+                .data(stats).build());
     }
 
     @GetMapping("/exchangeRates")
@@ -76,5 +80,14 @@ public class DashboardController {
                 .success(true)
                 .message("Exchange rates successfully retrieved.")
                 .data(rates).build());
+    }
+
+    @GetMapping("/lastThreeApproved")
+    public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
+        List<InvoiceDTO> invoices = invoiceService.lastThreeApprovedInvoices();
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Last three approved invoices are successfully retrieved.")
+                .data(invoices).build());
     }
 }

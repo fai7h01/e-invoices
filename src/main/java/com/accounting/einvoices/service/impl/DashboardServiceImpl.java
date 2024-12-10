@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -85,6 +86,41 @@ public class DashboardServiceImpl implements DashboardService {
         stats.add(productSalesStat);
 
         log.info("\n\n last result of product stats: {}", stats);
+        return stats;
+    }
+
+
+    @Override
+    public List<ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency) {
+
+        List<ProductSalesStatDTO> stats = new ArrayList<>();
+
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
+
+        List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
+
+        ProductSalesStatDTO productSalesStat;
+
+        for (int index = 0; index < invoices.size(); index++) {
+            List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoices.get(index).getId());
+            List<Map.Entry<String, Integer>> productQtyEntryList = invoiceProducts.stream()
+                    .collect(Collectors.groupingBy(dto -> dto.getProduct().getName(), Collectors.summingInt(InvoiceProductDTO::getQuantity)))
+                    .entrySet()
+                    .stream()
+                    .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                    .collect(Collectors.toList());
+
+            log.info("\n\n>> Product Quantity Map: {}", productQtyEntryList);
+
+            for (Map.Entry<String, Integer> each : productQtyEntryList) {
+                productSalesStat = ProductSalesStatDTO.builder()
+                        .name(each.getKey())
+                        .quantity(each.getValue())
+                        .build();
+                stats.add(productSalesStat);
+            }
+
+        }
         return stats;
     }
 
