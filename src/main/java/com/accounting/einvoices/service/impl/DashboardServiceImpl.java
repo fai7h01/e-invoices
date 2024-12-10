@@ -86,50 +86,6 @@ public class DashboardServiceImpl implements DashboardService {
 
         log.info("\n\n last result of product stats: {}", stats);
         return stats;
-//        while (day <= monthDays) {
-//
-//            LocalDate initialDate = LocalDate.of(date.getYear(), date.getMonthValue(), day);
-//            String monthName = date.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-//
-//            Map<Currency, List<InvoiceDTO>> invoices = invoiceService.findAllByAcceptDate(initialDate);
-//            log.info("Invoices map: {}", invoices);
-//            List<InvoiceDTO> invoicesByCurrency = invoices.get(Currency.valueOf(currency));
-//
-//            log.info("\n\n >> EACH DAY: {}", day);
-//
-//            int totalQuantity = 0;
-//            BigDecimal totalAmount = BigDecimal.ZERO;
-//
-//            ProductSalesStatDTO productSalesStat = ProductSalesStatDTO.builder().build();
-//
-//            for (InvoiceDTO invoiceDTO : invoicesByCurrency) {
-//
-//                int dayQuantity = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId()).stream()
-//                        .map(InvoiceProductDTO::getQuantity)
-//                        .reduce(Integer::sum).orElse(0);
-//
-//                totalQuantity += dayQuantity;
-//                totalAmount = totalAmount.add(invoiceDTO.getTotal());
-//
-//                productSalesStat = ProductSalesStatDTO.builder()
-//                        .month(monthName)
-//                        .dayOfMonth(String.valueOf(day))
-//                        .quantity(totalQuantity)
-//                        .amount(totalAmount)
-//                        .currency(invoiceDTO.getCurrency())
-//                        .build();
-//
-//            }
-//            if (productSalesStat.getAmount() == null || productSalesStat.getQuantity() == 0) {
-//                day++;
-//                continue;
-//            }
-//
-//            stats.add(productSalesStat);
-//
-//            day++;
-//        }
-
     }
 
 
