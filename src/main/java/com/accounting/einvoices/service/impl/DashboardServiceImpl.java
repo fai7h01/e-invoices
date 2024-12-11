@@ -4,6 +4,7 @@ import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.client.ExchangeRateClient;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
@@ -103,8 +104,9 @@ public class DashboardServiceImpl implements DashboardService {
 
         for (int index = 0; index < invoices.size(); index++) {
             List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoices.get(index).getId());
-            List<Map.Entry<String, Integer>> productQtyEntryList = invoiceProducts.stream()
-                    .collect(Collectors.groupingBy(dto -> dto.getProduct().getName(), Collectors.summingInt(InvoiceProductDTO::getQuantity)))
+            List<Map.Entry<Pair<ProductDTO, BigDecimal>, Integer>> productQtyEntryList = invoiceProducts.stream()
+                    .collect(Collectors.groupingBy(dto -> Pair.of(dto.getProduct(), dto.getPrice()),
+                            Collectors.summingInt(InvoiceProductDTO::getQuantity)))
                     .entrySet()
                     .stream()
                     .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
@@ -112,10 +114,13 @@ public class DashboardServiceImpl implements DashboardService {
 
             log.info("\n\n>> Product Quantity Map: {}", productQtyEntryList);
 
-            for (Map.Entry<String, Integer> each : productQtyEntryList) {
+            for (Map.Entry<Pair<ProductDTO, BigDecimal>, Integer> each : productQtyEntryList) {
+                BigDecimal totalAmount = each.getKey().getSecond().multiply(BigDecimal.valueOf(each.getValue()));
                 productSalesStat = ProductSalesStatDTO.builder()
-                        .name(each.getKey())
+                        .name(each.getKey().getFirst().getName())
                         .quantity(each.getValue())
+                        .amount(totalAmount)
+                        .currency(invoices.get(index).getCurrency())
                         .build();
                 stats.add(productSalesStat);
             }
