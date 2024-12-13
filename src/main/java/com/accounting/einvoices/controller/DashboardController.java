@@ -62,11 +62,15 @@ public class DashboardController {
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
                                                                       @PathVariable("month") String month,
                                                                       @PathVariable("currCode") String code) {
-        List<ProductSalesStatDTO> stats = dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(month), code);
-        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
-                .success(true)
-                .message("Sold products each day of month.")
-                .data(stats).build());
+        List<ProductSalesStatDTO> stats =
+                dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(month), code);
+        if (!stats.isEmpty()) {
+            return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                    .success(true)
+                    .message("Sold products each day of month.")
+                    .data(stats).build());
+        }
+        return ResponseEntity.noContent().build();
     }
 
 
