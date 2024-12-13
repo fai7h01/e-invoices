@@ -106,8 +106,4 @@ public class DashboardController {
                 .data(invoices).build());
     }
 
-    @GetMapping("/test/{date}")
-    public LocalDate getCreatedAtDate(@PathVariable("date") String date) {
-        return LocalDate.parse(date);
-    }
 }

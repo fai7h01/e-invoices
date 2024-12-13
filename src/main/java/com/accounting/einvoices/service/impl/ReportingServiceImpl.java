@@ -4,7 +4,6 @@ import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.enums.Currency;
-import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,6 @@ public class ReportingServiceImpl implements ReportingService {
 
     @Override
     public BigDecimal countTotalCostByDate(int year, int month, String currency) {
-
-        //find products by createdAt
 
         BigDecimal totalCost = BigDecimal.ZERO;
         for (ProductDTO each : productService.findAllByCreatedDate(year, month, currency)) {
