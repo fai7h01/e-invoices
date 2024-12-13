@@ -3,6 +3,7 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.exception.ProductLowLimitAlertException;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +102,14 @@ public class InvoiceController {
     @GetMapping("/approve/{id}")
     public ResponseEntity<ResponseWrapper> approveInvoice(@PathVariable Long id){
         invoiceService.approve(id);
-        invoiceProductService.lowQuantityAlert(id);
+        try {
+            invoiceProductService.lowQuantityAlert(id);
+        } catch (ProductLowLimitAlertException e) {
+            String message = e.getMessage();
+            return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                    .success(true)
+                    .message("Invoice is successfully approved. " + message).build());
+        }
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Invoice is successfully approved.").build());

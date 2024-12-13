@@ -3,6 +3,7 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,15 +48,18 @@ public class ReportingServiceImpl implements ReportingService {
 
     @Override
     public BigDecimal countTotalSalesByDate(int year, int month, String currency) {
-        return invoiceService.findAllByLoggedInUser().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
+        List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
+        return invoicesByCurrency.stream()
                 .map(InvoiceDTO::getTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public BigDecimal sumProfitLossByDate(int year, int month, String currency) {
-        return invoiceService.findAllByLoggedInUser().stream()
-                .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
+        List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
+        return invoicesByCurrency.stream()
                 .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
                         .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -66,8 +71,8 @@ public class ReportingServiceImpl implements ReportingService {
         Map<String, BigDecimal> map = new HashMap<>();
 
         map.put("total_cost", countTotalCostByDate(year, month, currency));
-//        map.put("total_sales", countTotalSalesByDateAndCurrency());
-//        map.put("total_profit_loss", sumProfitLoss());
+        map.put("total_sales", countTotalSalesByDate(year, month, currency));
+        map.put("total_profit_loss", sumProfitLossByDate(year, month, currency));
 
         return map;
     }
