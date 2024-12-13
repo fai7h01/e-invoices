@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;
+import com.accounting.einvoices.service.ReportingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -23,26 +24,33 @@ import java.util.Set;
 public class DashboardController {
 
     private final DashboardService dashboardService;
+    private final ReportingService reportingService;
     private final InvoiceService invoiceService;
 
-    public DashboardController(DashboardService dashboardService, InvoiceService invoiceService) {
+    public DashboardController(DashboardService dashboardService, ReportingService reportingService, InvoiceService invoiceService) {
         this.dashboardService = dashboardService;
+        this.reportingService = reportingService;
         this.invoiceService = invoiceService;
     }
 
-    @GetMapping("/summaryNumbers")
-    public ResponseEntity<ResponseWrapper> getSummaryNumbers() {
-        Map<String, BigDecimal> summary = dashboardService.summaryNumbers();
+
+    @GetMapping("/financialSummary/{year}/{month}/{code}")
+    public ResponseEntity<ResponseWrapper> getSummaryNumbers(@PathVariable("year") String year,
+                                                             @PathVariable("month") String month,
+                                                             @PathVariable("code") String code) {
+
+        Map<String, BigDecimal> financialSummary =
+                reportingService.getFinancialSummary(Integer.parseInt(year), Integer.parseInt(month), code);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Summary numbers are successfully retrieved.")
-                .data(summary).build());
+                .message("Financial summary are successfully retrieved.")
+                .data(financialSummary).build());
     }
 
     @GetMapping("/summaryQuantities")
     public ResponseEntity<ResponseWrapper> getSummaryQuantities() {
-        Map<String, Integer> summary = dashboardService.summaryQuantities();
+        Map<String, Integer> summary = reportingService.getSummaryQuantities();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
@@ -89,5 +97,10 @@ public class DashboardController {
                 .success(true)
                 .message("Last three approved invoices are successfully retrieved.")
                 .data(invoices).build());
+    }
+
+    @GetMapping("/test/{date}")
+    public LocalDate getCreatedAtDate(@PathVariable("date") String date) {
+        return LocalDate.parse(date);
     }
 }

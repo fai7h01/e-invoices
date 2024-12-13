@@ -41,15 +41,6 @@ public class DashboardServiceImpl implements DashboardService {
         this.exchangeRateClient = exchangeRateClient;
     }
 
-    @Override
-    public Map<String, BigDecimal> summaryNumbers() {
-        Map<String, BigDecimal> map = new HashMap<>();
-        map.put("total_cost", invoiceService.countTotalCost());
-        map.put("total_sales", invoiceService.countTotalSales());
-        map.put("total_profit_loss", invoiceService.sumProfitLoss());
-        return map;
-    }
-
 
     //@Cacheable(value = "SoldProductsStatsEachDayOfMonth", key = "{#year, #month}")
     @ExecutionTime
@@ -228,15 +219,15 @@ public class DashboardServiceImpl implements DashboardService {
         );
     }
 
-    @Override
-    public Map<String, Integer> summaryQuantities() {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("total_employees", userService.findAll().size());
-        map.put("total_clients", clientVendorService.findAll().size());
-        map.put("total_products", productService.findAll().size());
-        map.put("total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
-        return map;
-    }
+//    @Override
+//    public Map<String, Integer> summaryQuantities() {
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("total_employees", userService.findAll().size());
+//        map.put("total_clients", clientVendorService.findAll().size());
+//        map.put("total_products", productService.findAll().size());
+//        map.put("total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
+//        return map;
+//    }
 
 
 }

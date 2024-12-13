@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Product;
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.exception.ProductAlreadyExistsException;
 import com.accounting.einvoices.exception.ProductCannotBeDeletedException;
 import com.accounting.einvoices.exception.ProductNotFoundException;
@@ -43,6 +44,13 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAll() {
         return productRepository.findAllByCategoryCompanyId(getLoggedInCompany().getId()).stream()
                 .map(product -> mapperUtil.convert(product, new ProductDTO())).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDTO> findAllByCreatedDate(int year, int month, String currency) {
+        return productRepository.findAllByCreatedDate(year, month, Currency.valueOf(currency)).stream()
+                .map(product -> mapperUtil.convert(product, new ProductDTO()))
+                .toList();
     }
 
     @Override

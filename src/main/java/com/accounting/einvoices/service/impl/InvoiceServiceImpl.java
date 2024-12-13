@@ -162,34 +162,34 @@ public class InvoiceServiceImpl implements InvoiceService {
         return mapperUtil.convert(saved, new InvoiceDTO());
     }
 
-    @Override
-    public BigDecimal countTotalCost() {
-        List<ProductDTO> products = productService.findAll();
-        BigDecimal totalCost = BigDecimal.ZERO;
-        for (ProductDTO each : products) {
-            BigDecimal price = each.getPrice();
-            int quantity = each.getQuantityInStock();
-            BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
-            totalCost = totalCost.add(cost);
-        }
-        return BigDecimalUtil.format(totalCost);
-    }
-
-    @Override
-    public BigDecimal countTotalSales() {
-        return this.findAllByLoggedInUser().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
-                .map(InvoiceDTO::getTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Override
-    public BigDecimal sumProfitLoss() {
-        return this.findAllByLoggedInUser().stream()
-                .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
-                .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
-                        .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+//    @Override
+//    public BigDecimal countTotalCost() {
+//        List<ProductDTO> products = productService.findAll();
+//        BigDecimal totalCost = BigDecimal.ZERO;
+//        for (ProductDTO each : products) {
+//            BigDecimal price = each.getPrice();
+//            int quantity = each.getQuantityInStock();
+//            BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
+//            totalCost = totalCost.add(cost);
+//        }
+//        return BigDecimalUtil.format(totalCost);
+//    }
+//
+//    @Override
+//    public BigDecimal countTotalSales() {
+//        return this.findAllByLoggedInUser().stream().filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+//                .map(InvoiceDTO::getTotal)
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//    }
+//
+//    @Override
+//    public BigDecimal sumProfitLoss() {
+//        return this.findAllByLoggedInUser().stream()
+//                .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+//                .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
+//                        .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
+//                .reduce(BigDecimal.ZERO, BigDecimal::add);
+//    }
 
     @Override
     public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month) {
