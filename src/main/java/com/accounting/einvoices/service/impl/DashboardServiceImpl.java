@@ -180,9 +180,11 @@ public class DashboardServiceImpl implements DashboardService {
             Double usd = conversionRates.getUsd();
             Double gbp = conversionRates.getGbp();
             Double cny = conversionRates.getCny();
+            Double gel = conversionRates.getGel();
             rateMap.put(Pair.of("EUR", "USD"), String.valueOf(usd));
             rateMap.put(Pair.of("EUR", "GBP"), String.valueOf(gbp));
             rateMap.put(Pair.of("EUR", "CNY"), String.valueOf(cny));
+            rateMap.put(Pair.of("EUR", "GEL"), String.valueOf(gel));
         }
 
         return rateMap;
@@ -200,9 +202,11 @@ public class DashboardServiceImpl implements DashboardService {
             Double eur = conversionRates.getEur();
             Double cny = conversionRates.getCny();
             Double gbp = conversionRates.getGbp();
+            Double gel = conversionRates.getGbp();
             rateMap.put(Pair.of("USD", "EUR"), String.valueOf(eur));
             rateMap.put(Pair.of("USD", "CNY"), String.valueOf(cny));
             rateMap.put(Pair.of("USD", "GBP"), String.valueOf(gbp));
+            rateMap.put(Pair.of("USD", "GEL"), String.valueOf(gel));
         }
 
         return rateMap;
