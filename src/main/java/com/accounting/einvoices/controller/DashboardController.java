@@ -2,6 +2,7 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
+import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -84,7 +85,7 @@ public class DashboardController {
 
     @GetMapping("/exchangeRates")
     public ResponseEntity<ResponseWrapper> getExchangeRates(@RequestParam("code") String code) {
-        Map<Pair<String, String>, String> rates = dashboardService.exchangeRatePairs(code);
+        CurrencyExchangeDTO rates = dashboardService.exchangeRatePairs(code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Exchange rates successfully retrieved.")

@@ -7,8 +7,10 @@ import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ConversionRates;
+import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.enums.Currency;
+import com.accounting.einvoices.exception.ExchangeRatesNotRetrievedException;
 import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -130,57 +132,62 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Cacheable(value = "exchangeRates", key = "#code")
     @Override
-    public Map<Pair<String, String>, String> exchangeRatePairs(String code) {
-
-        Map<Pair<String, String>, String> rateMap = new HashMap<>();
+    public CurrencyExchangeDTO exchangeRatePairs(String code) {
 
         return switch (code) {
-            case "GEL" -> getGelExchanges(rateMap, code);
-            case "USD" -> getUsdExchanges(rateMap, code);
-            case "EUR" -> getEuroExchanges(rateMap, code);
-            default -> new HashMap<>();
+            case "GEL" -> getGelExchanges();
+            case "USD" -> getUsdExchanges();
+            case "EUR" -> getEuroExchanges();
+            default -> throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
         };
     }
 
-    private Map<Pair<String, String>, String> getGelExchanges(Map<Pair<String, String>, String> rateMap, String code) {
+    private CurrencyExchangeDTO getGelExchanges() {
 
         Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
 
-        if (!code.equals("GEL")) return new HashMap<>();
+
+        Double usd = 0d;
+        Double eur = 0d;
+        Double gbp = 0d;
+        Double cny = 0d;
 
         if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
-            Double forUsd = conversionRates.getGel();
-            rateMap.put(Pair.of("USD", "GEL"), String.valueOf(forUsd));
+            usd = conversionRates.getGel();
+
         }
 
         if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
-            Double forEur = conversionRates.getGel();
-            rateMap.put(Pair.of("EUR", "GEL"), String.valueOf(forEur));
+            eur = conversionRates.getGel();
+
         }
 
         if (Objects.requireNonNull(responseMap.get("GBP").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("GBP").getConversionRates();
-            Double forGbp = conversionRates.getGel();
-            rateMap.put(Pair.of("GBP", "GEL"), String.valueOf(forGbp));
+            gbp = conversionRates.getGel();
+
         }
 
         if (Objects.requireNonNull(responseMap.get("CNY").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("CNY").getConversionRates();
-            Double forCny = conversionRates.getGel();
-            rateMap.put(Pair.of("CNY", "GEL"), String.valueOf(forCny));
+            cny= conversionRates.getGel();
         }
 
-        return rateMap;
+        return CurrencyExchangeDTO.builder()
+                .usd(usd)
+                .eur(eur)
+                .gbp(gbp)
+                .cny(cny)
+                .build();
 
     }
 
-    private Map<Pair<String, String>, String> getEuroExchanges(Map<Pair<String, String>, String> rateMap, String code) {
+    private CurrencyExchangeDTO getEuroExchanges() {
 
         Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
 
-        if (!code.equals("EUR")) return new HashMap<>();
 
         if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
@@ -188,21 +195,23 @@ public class DashboardServiceImpl implements DashboardService {
             Double gbp = conversionRates.getGbp();
             Double cny = conversionRates.getCny();
             Double aud = conversionRates.getAud();
-            rateMap.put(Pair.of("EUR", "USD"), String.valueOf(usd));
-            rateMap.put(Pair.of("EUR", "GBP"), String.valueOf(gbp));
-            rateMap.put(Pair.of("EUR", "CNY"), String.valueOf(cny));
-            rateMap.put(Pair.of("EUR", "AUD"), String.valueOf(aud));
-        }
 
-        return rateMap;
+            return CurrencyExchangeDTO.builder()
+                    .usd(usd)
+                    .cny(cny)
+                    .gbp(gbp)
+                    .aud(aud)
+                    .build();
+        } else {
+            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
+        }
 
     }
 
-    private Map<Pair<String, String>, String> getUsdExchanges(Map<Pair<String, String>, String> rateMap, String code) {
+    private CurrencyExchangeDTO getUsdExchanges() {
 
         Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
 
-        if (!code.equals("USD")) return new HashMap<>();
 
         if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
             ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
@@ -210,14 +219,16 @@ public class DashboardServiceImpl implements DashboardService {
             Double cny = conversionRates.getCny();
             Double gbp = conversionRates.getGbp();
             Double aud = conversionRates.getAud();
-            rateMap.put(Pair.of("USD", "EUR"), String.valueOf(eur));
-            rateMap.put(Pair.of("USD", "CNY"), String.valueOf(cny));
-            rateMap.put(Pair.of("USD", "GBP"), String.valueOf(gbp));
-            rateMap.put(Pair.of("USD", "AUD"), String.valueOf(aud));
+
+            return CurrencyExchangeDTO.builder()
+                    .eur(eur)
+                    .cny(cny)
+                    .gbp(gbp)
+                    .aud(aud)
+                    .build();
+        } else {
+            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
         }
-
-        return rateMap;
-
     }
 
     private Map<String, ExchangeRateResponse> exchangeRateResponsesMap() {
@@ -230,15 +241,6 @@ public class DashboardServiceImpl implements DashboardService {
         );
     }
 
-//    @Override
-//    public Map<String, Integer> summaryQuantities() {
-//        Map<String, Integer> map = new HashMap<>();
-//        map.put("total_employees", userService.findAll().size());
-//        map.put("total_clients", clientVendorService.findAll().size());
-//        map.put("total_products", productService.findAll().size());
-//        map.put("total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
-//        return map;
-//    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.accounting.einvoices.util;
 
+import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.service.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
@@ -25,9 +26,9 @@ public class ExchangeRatesScheduler {
     @Scheduled(fixedRate = 86_400_000)
     public void refreshExchangeRatesCache() {
 
-        Map<Pair<String, String>, String> gelRates = dashboardService.exchangeRatePairs("GEL");
-        Map<Pair<String, String>, String> usdRates = dashboardService.exchangeRatePairs("USD");
-        Map<Pair<String, String>, String> eurRates = dashboardService.exchangeRatePairs("EUR");
+        CurrencyExchangeDTO gelRates = dashboardService.exchangeRatePairs("GEL");
+        CurrencyExchangeDTO usdRates = dashboardService.exchangeRatePairs("USD");
+        CurrencyExchangeDTO eurRates = dashboardService.exchangeRatePairs("EUR");
 
         Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
         Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
