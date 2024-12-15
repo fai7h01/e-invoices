@@ -190,7 +190,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
-    public int sumQuantityOfSoldProducts() {
+    public Integer sumQuantityOfSoldProducts() {
         return invoiceProductRepository.sumQuantityOfSoldProducts(companyService.getByLoggedInUser().getId());
     }
 
