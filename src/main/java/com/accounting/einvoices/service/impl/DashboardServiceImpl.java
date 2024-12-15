@@ -9,6 +9,7 @@ import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.enums.Currency;
+import com.accounting.einvoices.exception.InvoiceNotFoundException;
 import com.accounting.einvoices.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,7 +44,6 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     //@Cacheable(value = "SoldProductsStatsEachDayOfMonth", key = "{#year, #month}")
-    @ExecutionTime
     public List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency) {
 
         List<ProductSalesStatDTO> stats = new ArrayList<>();
@@ -51,6 +51,11 @@ public class DashboardServiceImpl implements DashboardService {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
+
+        if (invoices == null) {
+            throw new InvoiceNotFoundException("Invoices not found.");
+        }
+
         log.info("\n\n>> Invoices from map by currency: {}", invoices);
 
         int totalQuantity = 0;
@@ -90,6 +95,8 @@ public class DashboardServiceImpl implements DashboardService {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
+
+        if (invoices == null) throw new InvoiceNotFoundException("Approved Invoices not found.");
 
         ProductSalesStatDTO productSalesStat;
 

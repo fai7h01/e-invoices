@@ -20,25 +20,25 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
-//    public ResponseEntity<ExceptionWrapper> handleGenericExceptions(Throwable exception) {
-//        log.error(exception.getMessage());
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(ExceptionWrapper.builder()
-//                        .success(false)
-//                        .message("Action failed: An error occurred!")
-//                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//                        .timestamp(LocalDateTime.now())
-//                        .build());
-//    }
+    @ExceptionHandler({Exception.class, RuntimeException.class, Throwable.class})
+    public ResponseEntity<ExceptionWrapper> handleGenericExceptions(Throwable exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ExceptionWrapper.builder()
+                        .success(false)
+                        .message("Action failed: An error occurred!")
+                        .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .timestamp(LocalDateTime.now())
+                        .build());
+    }
 
-    @ExceptionHandler({UserNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class, ProductNotFoundException.class,
-            InvoiceProductNotFoundException.class})
+    @ExceptionHandler({UserNotFoundException.class, InvoiceNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class,
+            ProductNotFoundException.class, InvoiceProductNotFoundException.class})
     public ResponseEntity<ExceptionWrapper> handleNotFoundExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
                 .success(false)
-                .message(exception.getMessage() + "\n\n>> Stack trace: " + Arrays.toString(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .httpStatus(HttpStatus.NOT_FOUND)
                 .timestamp(LocalDateTime.now())
                 .build();

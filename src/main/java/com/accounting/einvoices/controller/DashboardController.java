@@ -64,13 +64,10 @@ public class DashboardController {
                                                                       @PathVariable("currCode") String code) {
         List<ProductSalesStatDTO> stats =
                 dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(month), code);
-        if (!stats.isEmpty()) {
-            return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
-                    .success(true)
-                    .message("Sold products each day of month.")
-                    .data(stats).build());
-        }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Sold products each day of month.")
+                .data(stats).build());
     }
 
 
@@ -79,13 +76,10 @@ public class DashboardController {
                                                               @PathVariable("month") String month,
                                                               @PathVariable("currCode") String code) {
         List<ProductSalesStatDTO> stats = dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(month), code);
-        if (!stats.isEmpty()) {
-            return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
-                    .success(true)
-                    .message("Top Selling Products in " + year + " " + Month.of(Integer.parseInt(month)))
-                    .data(stats).build());
-        }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
+                .success(true)
+                .message("Top Selling Products in " + year + " " + Month.of(Integer.parseInt(month)))
+                .data(stats).build());
     }
 
     @GetMapping("/exchangeRates")
