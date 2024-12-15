@@ -108,7 +108,8 @@ public class InvoiceController {
             String message = e.getMessage();
             return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                     .success(true)
-                    .message("Invoice is successfully approved. " + message).build());
+                    .message("Invoice is successfully approved.")
+                    .alert(message).build());
         }
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)

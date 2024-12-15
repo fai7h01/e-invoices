@@ -13,6 +13,7 @@ public class ResponseWrapper {
 
     private boolean success;
     private String message;
+    private String alert;
     private Integer code;
     private Object data;
 
