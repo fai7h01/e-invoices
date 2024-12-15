@@ -10,7 +10,7 @@ import java.util.Map;
 public interface DashboardService {
 
 
-    CurrencyExchangeDTO exchangeRatePairs(String code);
+    CurrencyExchangeDTO exchangeRatesOf(String code, Long amount);
 
     //chart
     List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency);

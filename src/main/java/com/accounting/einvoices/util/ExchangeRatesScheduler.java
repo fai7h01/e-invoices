@@ -26,13 +26,13 @@ public class ExchangeRatesScheduler {
     @Scheduled(fixedRate = 86_400_000)
     public void refreshExchangeRatesCache() {
 
-        CurrencyExchangeDTO gelRates = dashboardService.exchangeRatePairs("GEL");
-        CurrencyExchangeDTO usdRates = dashboardService.exchangeRatePairs("USD");
-        CurrencyExchangeDTO eurRates = dashboardService.exchangeRatePairs("EUR");
+        dashboardService.exchangeRatesOf("GEL", 1L);
+        dashboardService.exchangeRatesOf("USD", 1L);
+        dashboardService.exchangeRatesOf("EUR", 1L);
 
-        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
-        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
-        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", eurRates);
+//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
+//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
+//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", eurRates);
 
         log.info("Exchange rates cache refreshed!");
     }

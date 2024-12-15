@@ -31,14 +31,7 @@ public interface InvoiceService {
 
     void approve(Long id);
 
-    //approve invoice using company and invNo
     InvoiceDTO approve(String invNo, String companyTitle);
-
-//    BigDecimal countTotalCost();
-//
-//    BigDecimal countTotalSales();
-//
-//    BigDecimal sumProfitLoss();
 
     Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month);
 

@@ -83,9 +83,10 @@ public class DashboardController {
                 .data(stats).build());
     }
 
-    @GetMapping("/exchangeRates")
-    public ResponseEntity<ResponseWrapper> getExchangeRates(@RequestParam("code") String code) {
-        CurrencyExchangeDTO rates = dashboardService.exchangeRatePairs(code);
+    @GetMapping("/exchangeRates/{code}")
+    public ResponseEntity<ResponseWrapper> getExchangeRates(@PathVariable("code") String code,
+                                                            @RequestParam(value = "amount", required = false) Long amount) {
+        CurrencyExchangeDTO rates = dashboardService.exchangeRatesOf(code, amount);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Exchange rates successfully retrieved.")

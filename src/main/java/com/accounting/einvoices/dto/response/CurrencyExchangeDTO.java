@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder
 @Getter
 @Setter
@@ -12,24 +14,24 @@ public class CurrencyExchangeDTO {
 
 
     @JsonProperty("USD")
-    private Double usd;
+    private BigDecimal usd;
     @JsonProperty("AUD")
-    private Double aud;
+    private BigDecimal aud;
     @JsonProperty("BGN")
-    private Double bgn;
+    private BigDecimal bgn;
     @JsonProperty("CAD")
-    private Double cad;
+    private BigDecimal cad;
     @JsonProperty("CHF")
-    private Double chf;
+    private BigDecimal chf;
     @JsonProperty("CNY")
-    private Double cny;
+    private BigDecimal cny;
     @JsonProperty("EGP")
-    private Double egp;
+    private BigDecimal egp;
     @JsonProperty("EUR")
-    private Double eur;
+    private BigDecimal eur;
     @JsonProperty("GBP")
-    private Double gbp;
+    private BigDecimal gbp;
     @JsonProperty("GEL")
-    private Double gel;
+    private BigDecimal gel;
 
 }

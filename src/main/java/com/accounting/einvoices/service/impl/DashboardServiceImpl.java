@@ -130,116 +130,155 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
 
-    @Cacheable(value = "exchangeRates", key = "#code")
+
+//    public CurrencyExchangeDTO exchangeRatePairs(String code, Long amount) {
+//
+//        return exchangeRatesOf(code, amount);
+//
+//        return switch (code) {
+//            case "GEL" -> getGelExchanges();
+//            case "USD" -> getUsdExchanges();
+//            case "EUR" -> getEuroExchanges();
+//            default -> throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
+//        };
+//    }
+
+//    private CurrencyExchangeDTO getGelExchanges() {
+//
+//        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
+//
+//
+//        Double usd = 0d;
+//        Double eur = 0d;
+//        Double gbp = 0d;
+//        Double cny = 0d;
+//
+//        if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
+//            usd = conversionRates.getGel();
+//
+//        }
+//
+//        if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
+//            eur = conversionRates.getGel();
+//
+//        }
+//
+//        if (Objects.requireNonNull(responseMap.get("GBP").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("GBP").getConversionRates();
+//            gbp = conversionRates.getGel();
+//
+//        }
+//
+//        if (Objects.requireNonNull(responseMap.get("CNY").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("CNY").getConversionRates();
+//            cny= conversionRates.getGel();
+//        }
+//
+//        return CurrencyExchangeDTO.builder()
+//                .usd(usd)
+//                .eur(eur)
+//                .gbp(gbp)
+//                .cny(cny)
+//                .build();
+//
+//    }
+
+    @Cacheable(value = "exchangeRates", key = "#code + '_' + (#amount != null ? #amount : 1)")
     @Override
-    public CurrencyExchangeDTO exchangeRatePairs(String code) {
+    public CurrencyExchangeDTO exchangeRatesOf(String code, Long amount) {
 
-        return switch (code) {
-            case "GEL" -> getGelExchanges();
-            case "USD" -> getUsdExchanges();
-            case "EUR" -> getEuroExchanges();
-            default -> throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
-        };
-    }
+        ExchangeRateResponse response = exchangeRateClient.getExchanges(code);
 
-    private CurrencyExchangeDTO getGelExchanges() {
+        BigDecimal n = (amount == null) ? BigDecimal.ONE : BigDecimal.valueOf(amount);
 
-        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
+        if (Objects.requireNonNull(response.getResult()).equals("success")) {
+            ConversionRates conversionRates = response.getConversionRates();
+            BigDecimal usd = BigDecimal.valueOf(conversionRates.getUsd());
+            BigDecimal gbp = BigDecimal.valueOf(conversionRates.getGbp());
+            BigDecimal cny = BigDecimal.valueOf(conversionRates.getCny());
+            BigDecimal aud = BigDecimal.valueOf(conversionRates.getAud());
+            BigDecimal gel = BigDecimal.valueOf(conversionRates.getGel());
 
-
-        Double usd = 0d;
-        Double eur = 0d;
-        Double gbp = 0d;
-        Double cny = 0d;
-
-        if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
-            usd = conversionRates.getGel();
-
-        }
-
-        if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
-            eur = conversionRates.getGel();
-
-        }
-
-        if (Objects.requireNonNull(responseMap.get("GBP").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("GBP").getConversionRates();
-            gbp = conversionRates.getGel();
-
-        }
-
-        if (Objects.requireNonNull(responseMap.get("CNY").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("CNY").getConversionRates();
-            cny= conversionRates.getGel();
-        }
-
-        return CurrencyExchangeDTO.builder()
-                .usd(usd)
-                .eur(eur)
-                .gbp(gbp)
-                .cny(cny)
-                .build();
-
-    }
-
-    private CurrencyExchangeDTO getEuroExchanges() {
-
-        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
-
-
-        if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
-            Double usd = conversionRates.getUsd();
-            Double gbp = conversionRates.getGbp();
-            Double cny = conversionRates.getCny();
-            Double aud = conversionRates.getAud();
+            if (amount != null) {
+                usd = usd.multiply(n);
+                gbp = gbp.multiply(n);
+                cny = cny.multiply(n);
+                aud = aud.multiply(n);
+                gel = gel.multiply(n);
+            }
 
             return CurrencyExchangeDTO.builder()
                     .usd(usd)
                     .cny(cny)
                     .gbp(gbp)
                     .aud(aud)
+                    .gel(gel)
                     .build();
-        } else {
-            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
         }
 
+        throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
+
+
     }
 
-    private CurrencyExchangeDTO getUsdExchanges() {
+//    private CurrencyExchangeDTO getEuroExchanges() {
+//
+//        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
+//
+//
+//        if (Objects.requireNonNull(responseMap.get("EUR").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("EUR").getConversionRates();
+//            Double usd = conversionRates.getUsd();
+//            Double gbp = conversionRates.getGbp();
+//            Double cny = conversionRates.getCny();
+//            Double aud = conversionRates.getAud();
+//
+//            return CurrencyExchangeDTO.builder()
+//                    .usd(usd)
+//                    .cny(cny)
+//                    .gbp(gbp)
+//                    .aud(aud)
+//                    .build();
+//        } else {
+//            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
+//        }
+//
+//    }
 
-        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
+//    private CurrencyExchangeDTO getUsdExchanges() {
+//
+//        Map<String, ExchangeRateResponse> responseMap = exchangeRateResponsesMap();
+//
+//
+//        if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
+//            ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
+//            Double eur = conversionRates.getEur();
+//            Double cny = conversionRates.getCny();
+//            Double gbp = conversionRates.getGbp();
+//            Double aud = conversionRates.getAud();
+//
+//            return CurrencyExchangeDTO.builder()
+//                    .eur(eur)
+//                    .cny(cny)
+//                    .gbp(gbp)
+//                    .aud(aud)
+//                    .build();
+//        } else {
+//            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
+//        }
+//    }
 
-
-        if (Objects.requireNonNull(responseMap.get("USD").getResult()).equals("success")) {
-            ConversionRates conversionRates = responseMap.get("USD").getConversionRates();
-            Double eur = conversionRates.getEur();
-            Double cny = conversionRates.getCny();
-            Double gbp = conversionRates.getGbp();
-            Double aud = conversionRates.getAud();
-
-            return CurrencyExchangeDTO.builder()
-                    .eur(eur)
-                    .cny(cny)
-                    .gbp(gbp)
-                    .aud(aud)
-                    .build();
-        } else {
-            throw new ExchangeRatesNotRetrievedException("Exception rates could not retrieved.");
-        }
-    }
-
-    private Map<String, ExchangeRateResponse> exchangeRateResponsesMap() {
-
-        return Map.of(
-                "USD", exchangeRateClient.getExchanges("USD"),
-                "EUR", exchangeRateClient.getExchanges("EUR"),
-                "GBP", exchangeRateClient.getExchanges("GBP"),
-                "CNY", exchangeRateClient.getExchanges("CNY")
-        );
-    }
+//    private Map<String, ExchangeRateResponse> exchangeRateResponsesMap(String code) {
+//
+//        return Map.of(
+//                "USD", exchangeRateClient.getExchanges("USD"),
+//                "EUR", exchangeRateClient.getExchanges("EUR"),
+//                "GBP", exchangeRateClient.getExchanges("GBP"),
+//                "CNY", exchangeRateClient.getExchanges("CNY")
+//        );
+//    }
 
 
 
