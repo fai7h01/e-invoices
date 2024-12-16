@@ -16,7 +16,6 @@ import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -29,24 +28,16 @@ import java.util.stream.Collectors;
 public class DashboardServiceImpl implements DashboardService {
 
     private final InvoiceService invoiceService;
-    private final UserService userService;
-    private final ClientVendorService clientVendorService;
-    private final ProductService productService;
     private final InvoiceProductService invoiceProductService;
     private final ExchangeRateClient exchangeRateClient;
 
-    public DashboardServiceImpl(InvoiceService invoiceService, UserService userService, ClientVendorService clientVendorService,
-                                @Lazy ProductService productService, InvoiceProductService invoiceProductService, ExchangeRateClient exchangeRateClient) {
+    public DashboardServiceImpl(InvoiceService invoiceService, InvoiceProductService invoiceProductService, ExchangeRateClient exchangeRateClient) {
         this.invoiceService = invoiceService;
-        this.userService = userService;
-        this.clientVendorService = clientVendorService;
-        this.productService = productService;
         this.invoiceProductService = invoiceProductService;
         this.exchangeRateClient = exchangeRateClient;
     }
 
 
-    //@Cacheable(value = "SoldProductsStatsEachDayOfMonth", key = "{#year, #month}")
     public List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency) {
 
         List<ProductSalesStatDTO> stats = new ArrayList<>();
@@ -59,17 +50,15 @@ public class DashboardServiceImpl implements DashboardService {
             throw new InvoiceNotFoundException("Invoices not found.");
         }
 
-        log.info("\n\n>> Invoices from map by currency: {}", invoices);
-
         int totalQuantity = 0;
         BigDecimal totalAmount = BigDecimal.ZERO;
         ProductSalesStatDTO productSalesStat = ProductSalesStatDTO.builder().build();
 
         for (InvoiceDTO invoice : invoices) {
+
             int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
                     .map(InvoiceProductDTO::getQuantity)
                     .reduce(Integer::sum).orElse(0);
-            log.info("\n\n>> Day quantity: {}, at november: {}", dayQuantity, invoice.getAcceptDate().getDayOfMonth());
 
             totalQuantity += dayQuantity;
             totalAmount = totalAmount.add(invoice.getTotal());
@@ -85,7 +74,6 @@ public class DashboardServiceImpl implements DashboardService {
         }
         stats.add(productSalesStat);
 
-        log.info("\n\n last result of product stats: {}", stats);
         return stats;
     }
 
@@ -104,16 +92,16 @@ public class DashboardServiceImpl implements DashboardService {
         ProductSalesStatDTO productSalesStat;
 
         for (InvoiceDTO invoice : invoices) {
+
             List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoice.getId());
+
             List<Map.Entry<Pair<ProductDTO, BigDecimal>, Integer>> productQtyEntryList = invoiceProducts.stream()
                     .collect(Collectors.groupingBy(dto -> Pair.of(dto.getProduct(), dto.getPrice()),
                             Collectors.summingInt(InvoiceProductDTO::getQuantity)))
                     .entrySet()
                     .stream()
                     .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
-                    .collect(Collectors.toList());
-
-            log.info("\n\n>> Product Quantity Map: {}", productQtyEntryList);
+                    .toList();
 
             for (Map.Entry<Pair<ProductDTO, BigDecimal>, Integer> each : productQtyEntryList) {
                 String name = each.getKey().getFirst().getName();
