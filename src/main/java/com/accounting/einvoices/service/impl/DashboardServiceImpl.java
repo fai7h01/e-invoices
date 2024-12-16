@@ -1,6 +1,5 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.client.ExchangeRateClient;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
@@ -10,8 +9,8 @@ import com.accounting.einvoices.dto.response.ConversionRates;
 import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.enums.Currency;
-import com.accounting.einvoices.exception.ExchangeRatesNotRetrievedException;
-import com.accounting.einvoices.exception.InvoiceNotFoundException;
+import com.accounting.einvoices.exception.exchangeRates.ExchangeRatesNotRetrievedException;
+import com.accounting.einvoices.exception.invoice.InvoiceNotFoundException;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -56,9 +55,13 @@ public class DashboardServiceImpl implements DashboardService {
 
         for (InvoiceDTO invoice : invoices) {
 
+            log.info("\n\n>> Invoice id: {}", invoice.getInvoiceNo());
+
             int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
                     .map(InvoiceProductDTO::getQuantity)
                     .reduce(Integer::sum).orElse(0);
+
+            log.info("\n\n>> Day qty: {}", dayQuantity);
 
             totalQuantity += dayQuantity;
             totalAmount = totalAmount.add(invoice.getTotal());
@@ -71,8 +74,10 @@ public class DashboardServiceImpl implements DashboardService {
                     .amount(totalAmount)
                     .currency(invoice.getCurrency())
                     .build();
+
+            stats.add(productSalesStat);
         }
-        stats.add(productSalesStat);
+
 
         return stats;
     }

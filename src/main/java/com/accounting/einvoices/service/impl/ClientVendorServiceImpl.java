@@ -4,9 +4,9 @@ import com.accounting.einvoices.dto.ClientVendorDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.entity.ClientVendor;
-import com.accounting.einvoices.exception.ClientCannotBeDeletedException;
-import com.accounting.einvoices.exception.ClientVendorAlreadyExistsException;
-import com.accounting.einvoices.exception.ClientVendorNotFoundException;
+import com.accounting.einvoices.exception.client.ClientCannotBeDeletedException;
+import com.accounting.einvoices.exception.client.ClientVendorAlreadyExistsException;
+import com.accounting.einvoices.exception.client.ClientVendorNotFoundException;
 import com.accounting.einvoices.repository.ClientVendorRepository;
 import com.accounting.einvoices.service.ClientVendorService;
 import com.accounting.einvoices.service.CompanyService;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientVendorServiceImpl implements ClientVendorService {

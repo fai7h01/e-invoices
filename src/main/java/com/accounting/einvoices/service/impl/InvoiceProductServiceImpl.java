@@ -6,8 +6,8 @@ import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.InvoiceProduct;
 import com.accounting.einvoices.entity.Product;
-import com.accounting.einvoices.exception.InvoiceProductNotFoundException;
-import com.accounting.einvoices.exception.ProductLowLimitAlertException;
+import com.accounting.einvoices.exception.invoice.InvoiceProductNotFoundException;
+import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.repository.InvoiceProductRepository;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.InvoiceProductService;
@@ -17,14 +17,11 @@ import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

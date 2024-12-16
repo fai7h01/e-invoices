@@ -4,8 +4,8 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.RoleDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
-import com.accounting.einvoices.exception.UserAlreadyExistsException;
-import com.accounting.einvoices.exception.UserNotFoundException;
+import com.accounting.einvoices.exception.user.UserAlreadyExistsException;
+import com.accounting.einvoices.exception.user.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.KeycloakService;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

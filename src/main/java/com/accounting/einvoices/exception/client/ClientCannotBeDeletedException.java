@@ -1,4 +1,4 @@
-package com.accounting.einvoices.exception;
+package com.accounting.einvoices.exception.client;
 
 public class ClientCannotBeDeletedException extends RuntimeException{
 

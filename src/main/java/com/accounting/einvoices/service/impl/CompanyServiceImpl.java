@@ -3,7 +3,8 @@ package com.accounting.einvoices.service.impl;
 import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.Company;
-import com.accounting.einvoices.exception.CompanyAlreadyExistsException;
+import com.accounting.einvoices.exception.company.CompanyAlreadyExistsException;
+import com.accounting.einvoices.exception.company.CompanyNotFoundException;
 import com.accounting.einvoices.repository.CompanyRepository;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.KeycloakService;
@@ -41,6 +42,17 @@ public class CompanyServiceImpl implements CompanyService {
         Company saved = companyRepository.save(converted);
         return mapperUtil.convert(saved, new CompanyDTO());
     }
+
+    @Override
+    public CompanyDTO update(Long id, CompanyDTO company) {
+        Company found = companyRepository.findById(id).orElseThrow(() -> new CompanyNotFoundException("Company not found."));
+        company.setId(id);
+        company.getAddress().setId(found.getAddress().getId());
+        Company converted = mapperUtil.convert(company, new Company());
+        Company saved = companyRepository.save(converted);
+        return mapperUtil.convert(saved, new CompanyDTO());
+    }
+
 
     @Override
     public CompanyDTO findByTitle(String title) {

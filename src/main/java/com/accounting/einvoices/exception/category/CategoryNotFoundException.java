@@ -1,4 +1,4 @@
-package com.accounting.einvoices.exception;
+package com.accounting.einvoices.exception.category;
 
 public class CategoryNotFoundException extends RuntimeException{
 

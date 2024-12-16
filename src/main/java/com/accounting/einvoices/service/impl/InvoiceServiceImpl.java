@@ -4,7 +4,7 @@ import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.entity.Invoice;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
-import com.accounting.einvoices.exception.InvoiceNotFoundException;
+import com.accounting.einvoices.exception.invoice.InvoiceNotFoundException;
 import com.accounting.einvoices.repository.InvoiceRepository;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;

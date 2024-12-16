@@ -3,7 +3,7 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
-import com.accounting.einvoices.exception.ProductLowLimitAlertException;
+import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;

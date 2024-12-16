@@ -2,13 +2,11 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CategoryDTO;
 import com.accounting.einvoices.dto.CompanyDTO;
-import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.enums.Currency;
-import com.accounting.einvoices.exception.ProductAlreadyExistsException;
-import com.accounting.einvoices.exception.ProductCannotBeDeletedException;
-import com.accounting.einvoices.exception.ProductNotFoundException;
+import com.accounting.einvoices.exception.product.ProductCannotBeDeletedException;
+import com.accounting.einvoices.exception.product.ProductNotFoundException;
 import com.accounting.einvoices.repository.ProductRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
@@ -19,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

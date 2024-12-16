@@ -1,4 +1,4 @@
-package com.accounting.einvoices.exception;
+package com.accounting.einvoices.exception.invoice;
 
 public class InvoiceProductNotFoundException extends RuntimeException{
 

@@ -5,10 +5,9 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Category;
-import com.accounting.einvoices.entity.Product;
-import com.accounting.einvoices.exception.CategoryAlreadyExistsException;
-import com.accounting.einvoices.exception.CategoryCannotBeDeletedException;
-import com.accounting.einvoices.exception.CategoryNotFoundException;
+import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
+import com.accounting.einvoices.exception.category.CategoryCannotBeDeletedException;
+import com.accounting.einvoices.exception.category.CategoryNotFoundException;
 import com.accounting.einvoices.repository.CategoryRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.CompanyService;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {

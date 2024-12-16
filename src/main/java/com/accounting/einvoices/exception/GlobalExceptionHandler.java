@@ -2,6 +2,21 @@ package com.accounting.einvoices.exception;
 
 import com.accounting.einvoices.dto.response.ExceptionWrapper;
 import com.accounting.einvoices.dto.response.ValidationExceptionWrapper;
+import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
+import com.accounting.einvoices.exception.category.CategoryCannotBeDeletedException;
+import com.accounting.einvoices.exception.category.CategoryNotFoundException;
+import com.accounting.einvoices.exception.client.ClientCannotBeDeletedException;
+import com.accounting.einvoices.exception.client.ClientVendorAlreadyExistsException;
+import com.accounting.einvoices.exception.client.ClientVendorNotFoundException;
+import com.accounting.einvoices.exception.company.CompanyNotFoundException;
+import com.accounting.einvoices.exception.invoice.InvoiceNotFoundException;
+import com.accounting.einvoices.exception.invoice.InvoiceProductNotFoundException;
+import com.accounting.einvoices.exception.product.ProductAlreadyExistsException;
+import com.accounting.einvoices.exception.product.ProductCannotBeDeletedException;
+import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
+import com.accounting.einvoices.exception.product.ProductNotFoundException;
+import com.accounting.einvoices.exception.user.UserAlreadyExistsException;
+import com.accounting.einvoices.exception.user.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +28,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -33,7 +47,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UserNotFoundException.class, InvoiceNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class,
-            ProductNotFoundException.class, InvoiceProductNotFoundException.class})
+            ProductNotFoundException.class, InvoiceProductNotFoundException.class, CompanyNotFoundException.class})
     public ResponseEntity<ExceptionWrapper> handleNotFoundExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
