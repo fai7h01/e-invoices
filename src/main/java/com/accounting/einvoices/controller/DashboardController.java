@@ -76,7 +76,8 @@ public class DashboardController {
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("month") String month,
                                                               @PathVariable("currCode") String code) {
-        List<ProductSalesStatDTO> stats = dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(month), code);
+        Map<String, ProductSalesStatDTO> stats =
+                dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(month), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Top Selling Products in " + year + " " + Month.of(Integer.parseInt(month)))

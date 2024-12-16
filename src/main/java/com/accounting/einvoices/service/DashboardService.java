@@ -16,7 +16,7 @@ public interface DashboardService {
     List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency);
 
     //top 3 selling products by year and month
-    List<ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency);
+    Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency);
 
 
 

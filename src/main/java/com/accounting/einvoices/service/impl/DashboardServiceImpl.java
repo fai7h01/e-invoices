@@ -91,9 +91,9 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     @Override
-    public List<ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency) {
+    public Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency) {
 
-        List<ProductSalesStatDTO> stats = new ArrayList<>();
+        Map<String, ProductSalesStatDTO> stats = new HashMap<>();
 
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
 
@@ -103,8 +103,8 @@ public class DashboardServiceImpl implements DashboardService {
 
         ProductSalesStatDTO productSalesStat;
 
-        for (int index = 0; index < invoices.size(); index++) {
-            List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoices.get(index).getId());
+        for (InvoiceDTO invoice : invoices) {
+            List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoice.getId());
             List<Map.Entry<Pair<ProductDTO, BigDecimal>, Integer>> productQtyEntryList = invoiceProducts.stream()
                     .collect(Collectors.groupingBy(dto -> Pair.of(dto.getProduct(), dto.getPrice()),
                             Collectors.summingInt(InvoiceProductDTO::getQuantity)))
@@ -116,16 +116,25 @@ public class DashboardServiceImpl implements DashboardService {
             log.info("\n\n>> Product Quantity Map: {}", productQtyEntryList);
 
             for (Map.Entry<Pair<ProductDTO, BigDecimal>, Integer> each : productQtyEntryList) {
+                String name = each.getKey().getFirst().getName();
+                Integer qty = each.getValue();
                 BigDecimal totalAmount = each.getKey().getSecond().multiply(BigDecimal.valueOf(each.getValue()));
-                productSalesStat = ProductSalesStatDTO.builder()
-                        .name(each.getKey().getFirst().getName())
-                        .quantity(each.getValue())
-                        .amount(totalAmount)
-                        .currency(invoices.get(index).getCurrency())
-                        .build();
-                stats.add(productSalesStat);
-            }
 
+                if (stats.containsKey(name)) {
+
+                    ProductSalesStatDTO productSalesStatDTO = stats.get(name);
+                    productSalesStatDTO.setQuantity(productSalesStatDTO.getQuantity() + qty);
+                    productSalesStatDTO.setAmount(productSalesStatDTO.getAmount().add(totalAmount));
+
+                } else {
+                    productSalesStat = ProductSalesStatDTO.builder()
+                            .quantity(each.getValue())
+                            .amount(totalAmount)
+                            .currency(invoice.getCurrency())
+                            .build();
+                    stats.put(name, productSalesStat);
+                }
+            }
         }
         return stats;
     }
