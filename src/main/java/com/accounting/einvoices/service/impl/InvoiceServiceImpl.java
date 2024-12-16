@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -186,8 +185,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> lastThreeApprovedInvoices() {
-        return invoiceRepository.findTop3ByCompanyIdAndInvoiceStatusOrderByDateOfIssueAsc(companyService.getByLoggedInUser().getId(),
+    public List<InvoiceDTO> recentlyApprovedInvoices() {
+        return invoiceRepository.findAllByCompanyIdAndInvoiceStatusOrderByDateOfIssueDesc(companyService.getByLoggedInUser().getId(),
                 InvoiceStatus.APPROVED).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());

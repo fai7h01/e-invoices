@@ -37,6 +37,7 @@ public interface InvoiceService {
 
     List<InvoiceDTO> findAllByClientId(Long id);
 
-    List<InvoiceDTO> lastThreeApprovedInvoices();
+    List<InvoiceDTO> recentlyApprovedInvoices();
+
 
 }

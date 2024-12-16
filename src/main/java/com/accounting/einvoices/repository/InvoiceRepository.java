@@ -26,6 +26,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findAllByClientVendorId(Long id);
 
-    List<Invoice> findTop3ByCompanyIdAndInvoiceStatusOrderByDateOfIssueAsc(Long id, InvoiceStatus status);
+    List<Invoice> findAllByCompanyIdAndInvoiceStatusOrderByDateOfIssueDesc(Long id, InvoiceStatus status);
 
 }

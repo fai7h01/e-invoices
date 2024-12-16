@@ -93,12 +93,12 @@ public class DashboardController {
                 .data(rates).build());
     }
 
-    @GetMapping("/lastThreeApproved")
+    @GetMapping("/recentlyApproved")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
-        List<InvoiceDTO> invoices = invoiceService.lastThreeApprovedInvoices();
+        List<InvoiceDTO> invoices = invoiceService.recentlyApprovedInvoices();
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
-                .message("Last three approved invoices are successfully retrieved.")
+                .message("Recently approved invoices are successfully retrieved.")
                 .data(invoices).build());
     }
 

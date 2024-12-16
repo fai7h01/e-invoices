@@ -15,4 +15,5 @@ public interface ReportingService {
 
     Map<String, BigDecimal> getFinancialSummary(int year, int month, String currency);
 
+
 }
