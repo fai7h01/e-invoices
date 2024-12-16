@@ -146,6 +146,7 @@ public class DashboardServiceImpl implements DashboardService {
             BigDecimal cny = BigDecimal.valueOf(conversionRates.getCny());
             BigDecimal aud = BigDecimal.valueOf(conversionRates.getAud());
             BigDecimal gel = BigDecimal.valueOf(conversionRates.getGel());
+            BigDecimal eur = BigDecimal.valueOf(conversionRates.getEur());
 
             if (amount != null) {
 
@@ -154,6 +155,7 @@ public class DashboardServiceImpl implements DashboardService {
                 cny = BigDecimalUtil.format(cny.multiply(n));
                 aud = BigDecimalUtil.format(aud.multiply(n));
                 gel = BigDecimalUtil.format(gel.multiply(n));
+                eur = BigDecimalUtil.format(eur.multiply(n));
             }
 
             return CurrencyExchangeDTO.builder()
@@ -162,6 +164,7 @@ public class DashboardServiceImpl implements DashboardService {
                     .gbp(gbp)
                     .aud(aud)
                     .gel(gel)
+                    .eur(eur)
                     .build();
         }
 
