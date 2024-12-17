@@ -2,6 +2,7 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.config.KeycloakProperties;
 import com.accounting.einvoices.dto.UserDTO;
+import com.accounting.einvoices.exception.user.UserNotFoundException;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class KeycloakServiceImpl implements KeycloakService {
 
 
     @Override
-    public Response userCreate(UserDTO dto) {
+    public void userCreate(UserDTO dto) {
 
         UserRepresentation keycloakUser = getUserRepresentation(dto);
 
@@ -67,7 +68,67 @@ public class KeycloakServiceImpl implements KeycloakService {
         }
 
         keycloak.close();
-        return result;
+    }
+
+    @Override
+    public void userUpdate(UserDTO dto) {
+
+        try (Keycloak keycloak = getKeycloakInstance()) {
+
+            RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
+            UsersResource usersResource = realmResource.users();
+
+            List<UserRepresentation> userRepresentations = usersResource.search(dto.getUsername());
+
+            if (userRepresentations.isEmpty()) {
+                throw new UserNotFoundException("User does not exist.");
+            }
+
+            UserRepresentation keycloakUser = userRepresentations.get(0);
+
+            updateRoles(realmResource, keycloakUser.getId(), dto.getRole().getDescription());
+
+            keycloakUser.setFirstName(dto.getFirstName());
+            keycloakUser.setLastName(dto.getLastName());
+
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                updatePassword(usersResource, keycloakUser.getId(), dto.getPassword());
+            }
+
+            usersResource.get(keycloakUser.getId()).update(keycloakUser);
+
+        }
+    }
+
+    private void updateRoles(RealmResource realmResource, String userId, String role) {
+
+        ClientRepresentation appClient = realmResource.clients()
+                .findByClientId(keycloakProperties.getClientId()).get(0);
+
+        String clientId = appClient.getId();
+
+        List<RoleRepresentation> existingRoles = realmResource.users().get(userId)
+                .roles().clientLevel(clientId).listEffective();
+        existingRoles.forEach(existingRole -> realmResource.users().get(userId)
+                .roles().clientLevel(clientId).remove(Collections.singletonList(existingRole)));
+
+        RoleRepresentation userClientRole = realmResource.clients().get(clientId)
+                .roles().get(role).toRepresentation();
+
+        realmResource.users().get(userId).roles().clientLevel(clientId)
+                .add(Collections.singletonList(userClientRole));
+
+    }
+
+    private void updatePassword(UsersResource usersResource, String userId, String newPassword) {
+
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setTemporary(false);
+        credential.setValue(newPassword);
+
+        usersResource.get(userId).resetPassword(credential);
+
     }
 
     private UserRepresentation getUserRepresentation(UserDTO dto) {
@@ -88,7 +149,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     @Override
-    public void delete(String username) {
+    public void userDelete(String username) {
 
         Keycloak keycloak = getKeycloakInstance();
 

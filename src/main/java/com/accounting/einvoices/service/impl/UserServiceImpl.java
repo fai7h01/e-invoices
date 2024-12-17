@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         } else {
             CompanyDTO company = user.getCompany();
             CompanyDTO savedCompany = companyService.save(company);
-            user.getCompany().setId(savedCompany.getId()); // Set the existing managed company
+            user.getCompany().setId(savedCompany.getId());
         }
 
         User convertedUser = mapperUtil.convert(user, new User());
@@ -97,8 +97,8 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
 
         User userToUpdate = mapperUtil.convert(user, new User());
-        //keycloak
         User updatedUser = userRepository.save(userToUpdate);
+        keycloakService.userUpdate(mapperUtil.convert(updatedUser, new UserDTO()));
         return mapperUtil.convert(updatedUser, new UserDTO());
     }
 
@@ -107,9 +107,9 @@ public class UserServiceImpl implements UserService {
         Optional<User> foundUser = userRepository.findById(id);
         if (foundUser.isPresent()){
             User user = foundUser.get();
+            keycloakService.userDelete(user.getUsername());
             user.setUsername(user.getId() + "-" + user.getUsername());
             user.setIsDeleted(true);
-            //keycloakService.delete(user.getUsername())
             userRepository.save(user);
         }
     }
