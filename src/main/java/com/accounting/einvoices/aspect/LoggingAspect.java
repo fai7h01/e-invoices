@@ -19,6 +19,7 @@ public class LoggingAspect {
 
     private String getUsername(){
         try {
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             // Check if authentication is null or if the user is not authenticated
@@ -28,8 +29,7 @@ public class LoggingAspect {
             }
 
             // Ensure authentication details are available
-            if (authentication.getDetails() instanceof SimpleKeycloakAccount) {
-                SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
+            if (authentication.getDetails() instanceof SimpleKeycloakAccount userDetails) {
                 return userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername();
             }
         } catch (RuntimeException e) {
@@ -41,6 +41,7 @@ public class LoggingAspect {
 
     @Pointcut("within(com.accounting.einvoices.controller.*)")
     public void anyControllerOperation() {};
+
 
     @Before("anyControllerOperation()")
     public void beforeAnyControllerOperationAdvice(JoinPoint joinPoint){

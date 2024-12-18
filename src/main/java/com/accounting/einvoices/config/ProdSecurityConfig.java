@@ -45,13 +45,13 @@ public class ProdSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://invoicehub.space",
-                "https://invoicehub-lb-1106916193.us-east-1.elb.amazonaws.com")); // Allow specific origin
+                "https://invoicehub-lb-1106916193.us-east-1.elb.amazonaws.com", "https://api.invoicehub.space"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -35,6 +36,7 @@ public class DashboardController {
     }
 
 
+    //@RolesAllowed("Admin")
     @GetMapping("/financialSummary/{year}/{month}/{code}")
     public ResponseEntity<ResponseWrapper> getSummaryNumbers(@PathVariable("year") String year,
                                                              @PathVariable("month") String month,
@@ -49,6 +51,7 @@ public class DashboardController {
                 .data(financialSummary).build());
     }
 
+    //@RolesAllowed("Admin")
     @GetMapping("/summaryQuantities")
     public ResponseEntity<ResponseWrapper> getSummaryQuantities() {
         Map<String, Integer> summary = reportingService.getSummaryQuantities();
@@ -59,6 +62,7 @@ public class DashboardController {
                 .data(summary).build());
     }
 
+    //@RolesAllowed("Admin")
     @GetMapping("/soldProductsBy/{year}/{month}/{currCode}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
                                                                       @PathVariable("month") String month,
@@ -72,6 +76,7 @@ public class DashboardController {
     }
 
 
+    //@RolesAllowed("Admin")
     @GetMapping("/topSellingProducts/{year}/{month}/{currCode}")
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("month") String month,
@@ -84,6 +89,7 @@ public class DashboardController {
                 .data(stats).build());
     }
 
+    //@RolesAllowed("Admin")
     @GetMapping("/exchangeRates/{code}")
     public ResponseEntity<ResponseWrapper> getExchangeRates(@PathVariable("code") String code,
                                                             @RequestParam(value = "amount", required = false) Long amount) {
@@ -94,6 +100,7 @@ public class DashboardController {
                 .data(rates).build());
     }
 
+    //@RolesAllowed("Admin")
     @GetMapping("/recentlyApproved")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
         List<InvoiceDTO> invoices = invoiceService.recentlyApprovedInvoices();

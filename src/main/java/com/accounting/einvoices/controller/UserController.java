@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Slf4j
@@ -28,6 +29,7 @@ public class UserController {
         this.keycloakService = keycloakService;
     }
 
+    //@RolesAllowed("Admin")
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
@@ -39,6 +41,7 @@ public class UserController {
                 .data(saved).build());
     }
 
+    //@RolesAllowed("Admin")
     @ExecutionTime
     @GetMapping("/list")
     @Operation(summary = "Get All Users")
@@ -51,6 +54,7 @@ public class UserController {
                 .data(users).build());
     }
 
+    //@RolesAllowed("Admin")
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
         UserDTO updated = userService.update(id, user);
@@ -61,12 +65,14 @@ public class UserController {
                 .data(updated).build());
     }
 
+    //@RolesAllowed("Admin")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("id") Long id){
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    //@RolesAllowed("Admin")
     @GetMapping("/loggedInUser")
     public ResponseEntity<ResponseWrapper> getLoggedInUser() {
         UserDTO loggedInUser = keycloakService.getLoggedInUser();

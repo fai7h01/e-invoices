@@ -1,7 +1,7 @@
 package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.UserDTO;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface KeycloakService {
 

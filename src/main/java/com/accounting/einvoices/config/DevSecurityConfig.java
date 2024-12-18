@@ -33,12 +33,14 @@ public class DevSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.cors().and().authorizeRequests()
-                // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
-                // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
-                // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
-                // .antMatchers("/localhost:1010/**").hasAuthority("ai-assistant")
-                .anyRequest().permitAll();
-        http.csrf().disable();
+//                .antMatchers("/api/v1/user/**").hasRole("Admin")
+//                .antMatchers("/api/v1/clientVendor/**").hasAnyRole("Admin", "Manager")
+//                .antMatchers("/api/v1/invoice/**").hasRole("Employee")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .disable();
     }
 
     @Bean

@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.exception.user.UserNotFoundException;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.admin.client.Keycloak;
@@ -14,7 +15,6 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,49 +26,65 @@ import java.util.List;
 
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
-@Profile("dev")
 @Slf4j
 @Service
 public class KeycloakServiceImpl implements KeycloakService {
 
     private final KeycloakProperties keycloakProperties;
     private final UserService userService;
+    private final ObjectMapper objectMapper;
 
-    public KeycloakServiceImpl(KeycloakProperties keycloakProperties, UserService userService) {
+    public KeycloakServiceImpl(KeycloakProperties keycloakProperties, UserService userService, ObjectMapper objectMapper) {
         this.keycloakProperties = keycloakProperties;
         this.userService = userService;
+        this.objectMapper = objectMapper;
     }
 
 
     @Override
     public void userCreate(UserDTO dto) {
 
+        log.info("\n\nUserDTO: {}", dto);
+
         UserRepresentation keycloakUser = getUserRepresentation(dto);
+
+        try {
+            String jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(keycloakUser);
+            log.info("\n\n Json payload keycloak user: {}", jsonPayload);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Keycloak keycloak = getKeycloakInstance();
 
         RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
         UsersResource usersResource = realmResource.users();
 
-        // Create Keycloak user
-        Response result = usersResource.create(keycloakUser);
+        try {
 
-        if (result.getStatus() == Response.Status.CREATED.getStatusCode()) {
-            String userId = getCreatedId(result);
-            ClientRepresentation appClient = realmResource.clients()
-                    .findByClientId(keycloakProperties.getClientId()).get(0);
+            Response result = usersResource.create(keycloakUser);
 
-            RoleRepresentation userClientRole = realmResource.clients().get(appClient.getId())
-                    .roles().get(dto.getRole().getDescription()).toRepresentation();
+            if (result.getStatus() == Response.Status.CREATED.getStatusCode()) {
+                String userId = getCreatedId(result);
 
-            realmResource.users().get(userId).roles().clientLevel(appClient.getId())
-                    .add(Collections.singletonList(userClientRole));
-        } else {
-            log.error("Error creating user in Keycloak: {}", result.getStatusInfo().getReasonPhrase());
+                ClientRepresentation appClient = realmResource.clients()
+                        .findByClientId(keycloakProperties.getClientId()).get(0);
+
+                RoleRepresentation userClientRole = realmResource.clients()
+                        .get(appClient.getId()).roles().get(dto.getRole().getDescription()).toRepresentation();
+
+                realmResource.users().get(userId).roles().clientLevel(appClient.getId())
+                        .add(Collections.singletonList(userClientRole));
+
+            }
+
+        } catch (Exception e) {
+            log.error("Exception in keycloak service user create: {}", e.getMessage());
+        } finally {
+            keycloak.close();
         }
-
-        keycloak.close();
     }
+
 
     @Override
     public void userUpdate(UserDTO dto) {

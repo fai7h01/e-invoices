@@ -14,6 +14,7 @@ import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +29,15 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final CompanyService companyService;
     private final KeycloakService keycloakService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService, @Lazy KeycloakService keycloakService) {
+    public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService, @Lazy KeycloakService keycloakService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.roleService = roleService;
         this.companyService = companyService;
         this.keycloakService = keycloakService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -82,10 +85,12 @@ public class UserServiceImpl implements UserService {
 
         User convertedUser = mapperUtil.convert(user, new User());
 
+//        String encoded = passwordEncoder.encode(convertedUser.getPassword());
+//        convertedUser.setPassword(encoded);
+
         User saved = userRepository.save(convertedUser);
         log.info("\n\n>>User saved in database!");
         keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
-
         return mapperUtil.convert(saved, new UserDTO());
     }
 
