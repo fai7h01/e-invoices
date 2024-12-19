@@ -22,4 +22,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                        @Param("month") int month,
                                        @Param("currency") Currency currency);
 
+    @Query("SELECT p FROM Product p WHERE EXTRACT(YEAR FROM p.createdAt) = :year AND EXTRACT(MONTH FROM p.createdAt) " +
+            "BETWEEN :startMonth AND :endMonth AND p.currency = :currency")
+    List<Product> findAllByCreatedDateBetweenMonths(@Param("year") int year,
+                                                    @Param("startMonth") int startMonth,
+                                                    @Param("endMonth") int endMonth,
+                                                    @Param("currency") Currency currency);
 }
