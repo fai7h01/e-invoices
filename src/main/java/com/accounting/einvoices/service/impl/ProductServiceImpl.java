@@ -43,12 +43,6 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> mapperUtil.convert(product, new ProductDTO())).collect(Collectors.toList());
     }
 
-    @Override
-    public List<ProductDTO> findAllByCreatedDate(int year, int month, String currency) {
-        return productRepository.findAllByCreatedDate(year, month, Currency.valueOf(currency)).stream()
-                .map(product -> mapperUtil.convert(product, new ProductDTO()))
-                .toList();
-    }
 
     @Override
     public List<ProductDTO> findAllByCreatedDateBetweenMonths(int year, int startMonth, int endMonth, String currency) {

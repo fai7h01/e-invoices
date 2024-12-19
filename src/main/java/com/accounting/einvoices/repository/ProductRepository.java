@@ -17,11 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategoryId(Long id);
 
-    @Query("SELECT p FROM Product p WHERE EXTRACT(YEAR FROM p.createdAt) = :year AND EXTRACT(MONTH FROM p.createdAt) = :month AND p.currency = :currency")
-    List<Product> findAllByCreatedDate(@Param("year") int year,
-                                       @Param("month") int month,
-                                       @Param("currency") Currency currency);
-
     @Query("SELECT p FROM Product p WHERE EXTRACT(YEAR FROM p.createdAt) = :year AND EXTRACT(MONTH FROM p.createdAt) " +
             "BETWEEN :startMonth AND :endMonth AND p.currency = :currency")
     List<Product> findAllByCreatedDateBetweenMonths(@Param("year") int year,
