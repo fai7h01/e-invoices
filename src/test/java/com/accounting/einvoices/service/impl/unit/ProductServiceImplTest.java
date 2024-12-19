@@ -1,9 +1,10 @@
-package com.accounting.einvoices.service.impl;
+package com.accounting.einvoices.service.impl.unit;
 
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.repository.ProductRepository;
+import com.accounting.einvoices.service.impl.ProductServiceImpl;
 import com.accounting.einvoices.util.MapperUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
