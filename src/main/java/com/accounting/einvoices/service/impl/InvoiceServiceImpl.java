@@ -163,9 +163,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
     @Override
-    public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month) {
+    public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth) {
         Long companyId = companyService.getByLoggedInUser().getId();
-        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearMonthStatusAndCompany(year, month, InvoiceStatus.APPROVED, companyId)
+        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearMonthStatusAndCompany(year, startMonth, endMonth, InvoiceStatus.APPROVED, companyId)
                 .stream()
                 .map(invoice -> {
                     InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());

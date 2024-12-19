@@ -13,10 +13,10 @@ public interface DashboardService {
     CurrencyExchangeDTO exchangeRatesOf(String code, Long amount);
 
     //chart
-    List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency);
+    List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int startMonth, int endMonth, String currency);
 
     //top 3 selling products by year and month
-    Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency);
+    Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int startMonth, int endMonth, String currency);
 
 
 

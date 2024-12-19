@@ -37,11 +37,11 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
 
-    public List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int month, String currency) {
+    public List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int startMonth, int endMonth, String currency) {
 
         List<ProductSalesStatDTO> stats = new ArrayList<>();
 
-        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
 
@@ -51,7 +51,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         int totalQuantity = 0;
         BigDecimal totalAmount = BigDecimal.ZERO;
-        ProductSalesStatDTO productSalesStat = ProductSalesStatDTO.builder().build();
+        ProductSalesStatDTO productSalesStat;
 
         for (InvoiceDTO invoice : invoices) {
 
@@ -68,7 +68,7 @@ public class DashboardServiceImpl implements DashboardService {
 
             productSalesStat = ProductSalesStatDTO.builder()
                     .year(year)
-                    .month(month)
+                    .month(startMonth++)
                     .dayOfMonth(invoice.getAcceptDate().getDayOfMonth())
                     .quantity(totalQuantity)
                     .amount(totalAmount)
@@ -84,11 +84,11 @@ public class DashboardServiceImpl implements DashboardService {
 
 
     @Override
-    public Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int month, String currency) {
+    public Map<String, ProductSalesStatDTO> topSellingProductsDesc(int year, int startMonth, int endMonth, String currency) {
 
         Map<String, ProductSalesStatDTO> stats = new HashMap<>();
 
-        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, month);
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
 

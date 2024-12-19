@@ -37,13 +37,14 @@ public class DashboardController {
 
 
     //@RolesAllowed("Admin")
-    @GetMapping("/financialSummary/{year}/{month}/{code}")
+    @GetMapping("/financialSummary/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> getSummaryNumbers(@PathVariable("year") String year,
-                                                             @PathVariable("month") String month,
+                                                             @PathVariable("startMonth") String startMonth,
+                                                             @PathVariable("endMonth") String endMonth,
                                                              @PathVariable("code") String code) {
 
         Map<String, BigDecimal> financialSummary =
-                reportingService.getFinancialSummary(Integer.parseInt(year), Integer.parseInt(month), code);
+                reportingService.getFinancialSummary(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
@@ -63,12 +64,13 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/soldProductsBy/{year}/{month}/{currCode}")
+    @GetMapping("/soldProductsBy/{year}/{startMonth}/{endMonth}/{currCode}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
-                                                                      @PathVariable("month") String month,
+                                                                      @PathVariable("startMonth") String startMonth,
+                                                                      @PathVariable("endMonth") String endMonth,
                                                                       @PathVariable("currCode") String code) {
         List<ProductSalesStatDTO> stats =
-                dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(month), code);
+                dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Sold products each day of month.")
@@ -77,15 +79,16 @@ public class DashboardController {
 
 
     //@RolesAllowed("Admin")
-    @GetMapping("/topSellingProducts/{year}/{month}/{currCode}")
+    @GetMapping("/topSellingProducts/{year}/{startMonth}/{endMonth}/{currCode}")
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
-                                                              @PathVariable("month") String month,
+                                                              @PathVariable("startMonth") String startMonth,
+                                                              @PathVariable("endMonth") String endMonth,
                                                               @PathVariable("currCode") String code) {
         Map<String, ProductSalesStatDTO> stats =
-                dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(month), code);
+                dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
-                .message("Top Selling Products in " + year + " " + Month.of(Integer.parseInt(month)))
+                .message("Top Selling Products are successfully retrieved.")
                 .data(stats).build());
     }
 

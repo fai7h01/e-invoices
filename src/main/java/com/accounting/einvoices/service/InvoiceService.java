@@ -33,7 +33,7 @@ public interface InvoiceService {
 
     InvoiceDTO approve(String invNo, String companyTitle);
 
-    Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int month);
+    Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth);
 
     List<InvoiceDTO> findAllByClientId(Long id);
 
