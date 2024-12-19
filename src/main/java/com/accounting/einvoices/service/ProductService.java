@@ -10,6 +10,8 @@ public interface ProductService {
 
     List<ProductDTO> findAllByCreatedDate(int year, int month, String currency);
 
+    List<ProductDTO> findAllByCreatedDateBetweenMonths(int year, int startMonth, int endMonth, String currency);
+
     ProductDTO findByName(String name);
 
     ProductDTO save(ProductDTO product);
