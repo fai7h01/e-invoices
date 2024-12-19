@@ -7,13 +7,16 @@ import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.naming.directory.InvalidAttributesException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class ReportingServiceImpl implements ReportingService {
 
@@ -42,7 +45,7 @@ public class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public Map<String, BigDecimal> getFinancialSummary(int year, int startMonth, int endMonth, String currency) {
+    public Map<String, BigDecimal> getFinancialSummaryByEachCurrency(int year, int startMonth, int endMonth, String currency) {
 
         Map<String, BigDecimal> map = new HashMap<>();
 
@@ -58,13 +61,13 @@ public class ReportingServiceImpl implements ReportingService {
 
 
     @Override
-    public Map<String, BigDecimal> getFinancialSummary(int year, int startMonth, int endMonth) {
+    public Map<String, BigDecimal> getFinancialSummaryInOneCurrency(int year, int startMonth, int endMonth, String currency) {
         return Map.of();
     }
 
 
-
-    private BigDecimal countTotalCostByDate(int year, int startMonth, int endMonth) {
+    @Override
+    public BigDecimal sumTotalCostsByCurrencyForPeriodAndConvert(int year, int startMonth, int endMonth, String currency) throws InvalidAttributesException {
 
         BigDecimal totalCost = BigDecimal.ZERO;
 
@@ -73,21 +76,51 @@ public class ReportingServiceImpl implements ReportingService {
         for (Currency value : Currency.values()) {
             BigDecimal total = productService.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, value.name())
                     .stream()
-                    .map(ProductDTO::getPrice)
+                    .map(productDTO -> {
+                        BigDecimal price = productDTO.getPrice();
+                        Integer quantityInStock = productDTO.getQuantityInStock();
+                        return price.multiply(BigDecimal.valueOf(quantityInStock));
+                    })
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             map.put(value, total);
         }
+
 
         CurrencyExchangeDTO usd = dashboardService.exchangeRatesOf("USD", 1L);
         CurrencyExchangeDTO gel = dashboardService.exchangeRatesOf("GEL", 1L);
         CurrencyExchangeDTO eur = dashboardService.exchangeRatesOf("EUR", 1L);
 
+        BigDecimal totalUsd = map.get(Currency.USD);
+        BigDecimal totalGel = map.get(Currency.GEL);
+        BigDecimal totalEur = map.get(Currency.EUR);
 
-        return null;
+
+        switch (currency) {
+            case "USD":
+                BigDecimal gelToUsd = gel.getUsd();
+                BigDecimal eurToUsd = eur.getUsd();
+
+                totalCost = totalCost.add(totalUsd).add(totalGel.multiply(gelToUsd)).add(totalEur.multiply(eurToUsd));
+                break;
+            case "GEL":
+                BigDecimal usdToGel = usd.getGel();
+                BigDecimal eurToGel = eur.getGel();
+
+                totalCost = totalCost.add(totalGel).add(totalUsd.multiply(usdToGel)).add(totalEur.multiply(eurToGel));
+                break;
+            case "EUR":
+                BigDecimal usdToEur = usd.getEur();
+                BigDecimal gelToEur = gel.getEur();
+
+                totalCost = totalCost.add(totalEur).add(totalUsd.multiply(usdToEur)).add(totalGel.multiply(gelToEur));
+                break;
+            default:
+                throw new InvalidAttributesException("Invalid currency code!");
+        }
+
+
+        return BigDecimalUtil.format(totalCost);
     }
-
-
-
 
 
 

@@ -118,7 +118,6 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public void calculateProfitLoss(Long id) {
-        //find ip based on approved invoice id
         List<InvoiceProductDTO> invoiceProducts = findAllByInvoiceId(id);
         for (InvoiceProductDTO each : invoiceProducts) {
             Long productId = each.getProduct().getId();
@@ -130,15 +129,12 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     private BigDecimal calculateCost(Long productId, int salesQuantity) {
-        // find ip based on approved invoices and product
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         List<InvoiceProduct> invoiceProducts = invoiceProductRepository.findByApprovedInvoices(productId, loggedInCompany.getId());
         BigDecimal totalCost = BigDecimal.ZERO;
         for (InvoiceProduct invoiceProduct : invoiceProducts) {
             int remainingQuantity = invoiceProduct.getRemainingQuantity() - salesQuantity;
             BigDecimal cost = invoiceProduct.getProduct().getPrice().multiply(BigDecimal.valueOf(salesQuantity));
-//            BigDecimal tax = costWithoutTax.multiply(invoiceProduct.getTax()).divide(BigDecimal.valueOf(100), RoundingMode.DOWN);
-            //BigDecimal costWithTax = costWithoutTax.add(tax);
             if (remainingQuantity <= 0) {
                 salesQuantity -= invoiceProduct.getRemainingQuantity();
                 invoiceProduct.setRemainingQuantity(0);
