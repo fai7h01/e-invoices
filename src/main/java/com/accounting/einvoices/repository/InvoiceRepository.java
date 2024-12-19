@@ -17,11 +17,11 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     @Query("SELECT i FROM Invoice i WHERE EXTRACT(YEAR FROM i.acceptDate) = :year AND EXTRACT(MONTH FROM i.acceptDate) BETWEEN :startMonth AND :endMonth " +
             "AND i.invoiceStatus = :status AND i.company.id = :companyId ORDER BY i.acceptDate")
-    List<Invoice> findAllByYearMonthStatusAndCompany(@Param("year") int year,
-                                                  @Param("startMonth") int startMonth,
-                                                  @Param("endMonth") int endMonth,
-                                                  @Param("status") InvoiceStatus status,
-                                                  @Param("companyId") Long companyId);
+    List<Invoice> findAllByYearAndMonthBetweenAndStatusAndCompany(@Param("year") int year,
+                                                                  @Param("startMonth") int startMonth,
+                                                                  @Param("endMonth") int endMonth,
+                                                                  @Param("status") InvoiceStatus status,
+                                                                  @Param("companyId") Long companyId);
 
     Optional<Invoice> findByInvoiceNoAndCompanyTitle(String invNo, String company);
 

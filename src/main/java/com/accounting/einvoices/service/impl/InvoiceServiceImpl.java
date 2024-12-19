@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,16 +31,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
-    private final ProductService productService;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
-                              CompanyService companyService, ClientVendorService clientVendorService, @Lazy ProductService productService) {
+                              CompanyService companyService, ClientVendorService clientVendorService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
-        this.productService = productService;
     }
 
     @Override
@@ -131,10 +130,21 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void setPriceTaxTotal(InvoiceDTO invoice) {
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
-        log.info("\n\n>> Found invoiceproducts with invoice: {}", invoiceProductDtoList);
-        BigDecimal totalPrice = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithoutTax).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalWithTax = invoiceProductDtoList.stream().map(invoiceProductService::getTotalWithTax).reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTax = invoiceProductDtoList.stream().map(InvoiceProductDTO::getTax).reduce(BigDecimal.ZERO, BigDecimal::add); //get total tax
+        BigDecimal totalPrice = invoiceProductDtoList
+                .stream()
+                .map(invoiceProductService::getTotalWithoutTax)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalWithTax = invoiceProductDtoList
+                .stream()
+                .map(invoiceProductService::getTotalWithTax)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalTax = invoiceProductDtoList
+                .stream()
+                .map(InvoiceProductDTO::getTax)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         invoice.setPrice(BigDecimalUtil.format(totalPrice));
         invoice.setTax(BigDecimalUtil.format(totalTax));
         invoice.setTotal(BigDecimalUtil.format(totalWithTax));
@@ -165,7 +175,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth) {
         Long companyId = companyService.getByLoggedInUser().getId();
-        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearMonthStatusAndCompany(year, startMonth, endMonth, InvoiceStatus.APPROVED, companyId)
+        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearAndMonthBetweenAndStatusAndCompany(year, startMonth, endMonth, InvoiceStatus.APPROVED, companyId)
                 .stream()
                 .map(invoice -> {
                     InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
