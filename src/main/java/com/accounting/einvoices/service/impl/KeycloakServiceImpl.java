@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -18,11 +19,13 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.Response;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
@@ -32,28 +35,16 @@ public class KeycloakServiceImpl implements KeycloakService {
 
     private final KeycloakProperties keycloakProperties;
     private final UserService userService;
-    private final ObjectMapper objectMapper;
 
-    public KeycloakServiceImpl(KeycloakProperties keycloakProperties, UserService userService, ObjectMapper objectMapper) {
+    public KeycloakServiceImpl(KeycloakProperties keycloakProperties, UserService userService) {
         this.keycloakProperties = keycloakProperties;
         this.userService = userService;
-        this.objectMapper = objectMapper;
     }
-
 
     @Override
     public void userCreate(UserDTO dto) {
 
-        log.info("\n\nUserDTO: {}", dto);
-
         UserRepresentation keycloakUser = getUserRepresentation(dto);
-
-        try {
-            String jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(keycloakUser);
-            log.info("\n\n Json payload keycloak user: {}", jsonPayload);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         Keycloak keycloak = getKeycloakInstance();
 
@@ -64,7 +55,7 @@ public class KeycloakServiceImpl implements KeycloakService {
 
             Response result = usersResource.create(keycloakUser);
 
-            if (result.getStatus() == Response.Status.CREATED.getStatusCode()) {
+            if (Objects.equals(201, result.getStatus())) {
                 String userId = getCreatedId(result);
 
                 ClientRepresentation appClient = realmResource.clients()
@@ -75,6 +66,12 @@ public class KeycloakServiceImpl implements KeycloakService {
 
                 realmResource.users().get(userId).roles().clientLevel(appClient.getId())
                         .add(Collections.singletonList(userClientRole));
+                try {
+                    emailVerification(userId);
+                    log.info("Verification email was sent!!!");
+                } catch (Exception e) {
+                    log.error("Email verification Could not send: {}", e.getMessage());
+                }
 
             }
 
@@ -159,7 +156,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         keycloakUser.setLastName(dto.getLastName());
         keycloakUser.setEmail(dto.getUsername());
         keycloakUser.setCredentials(List.of(credential));
-        keycloakUser.setEmailVerified(true);
+        keycloakUser.setEmailVerified(false);
         keycloakUser.setEnabled(true);
         return keycloakUser;
     }
@@ -178,6 +175,15 @@ public class KeycloakServiceImpl implements KeycloakService {
 
         keycloak.close();
 
+    }
+
+    @Override
+    public void emailVerification(String userId) {
+        Keycloak keycloak = getKeycloakInstance();
+
+        RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
+        UsersResource usersResource = realmResource.users();
+        usersResource.get(userId).sendVerifyEmail();;
     }
 
     @Override
