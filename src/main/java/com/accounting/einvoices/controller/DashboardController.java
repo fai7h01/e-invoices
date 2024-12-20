@@ -8,16 +8,11 @@ import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.service.ReportingService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-import javax.naming.directory.InvalidAttributesException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -37,23 +32,25 @@ public class DashboardController {
     }
 
 
-//    @GetMapping("/test/{year}/{startMonth}/{endMonth}/{code}")
-//    public ResponseEntity<ResponseWrapper> test(@PathVariable("year") String year,
-//                                                             @PathVariable("startMonth") String startMonth,
-//                                                             @PathVariable("endMonth") String endMonth,
-//                                                             @PathVariable("code") String code)  {
-//        BigDecimal bigDecimal =
-//                reportingService.sumTotalCostsByCurrencyForPeriodAndConvert(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
-//        return ResponseEntity.ok(ResponseWrapper.builder()
-//                .code(HttpStatus.OK.value())
-//                .success(true)
-//                .message("total cost")
-//                .data(bigDecimal).build());
-//    }
+    @GetMapping("/financialSummaryForAllCurrency/{year}/{startMonth}/{endMonth}/{code}")
+    public ResponseEntity<ResponseWrapper> getFinancialSummaryInConvertedInOneCurrency(@PathVariable("year") String year,
+                                                               @PathVariable("startMonth") String startMonth,
+                                                               @PathVariable("endMonth") String endMonth,
+                                                               @PathVariable("code") String code) {
+
+        Map<String, BigDecimal> financialSummary =
+                reportingService.getFinancialSummaryConvertedInOneCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Financial summary are successfully retrieved.")
+                .data(financialSummary).build());
+    }
+
 
     //@RolesAllowed("Admin")
-    @GetMapping("/financialSummary/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getFinancialSummary(@PathVariable("year") String year,
+    @GetMapping("/financialSummaryForOneCurrency/{year}/{startMonth}/{endMonth}/{code}")
+    public ResponseEntity<ResponseWrapper> getFinancialSummarySeparatedInCurrencies(@PathVariable("year") String year,
                                                              @PathVariable("startMonth") String startMonth,
                                                              @PathVariable("endMonth") String endMonth,
                                                              @PathVariable("code") String code) {
@@ -63,7 +60,7 @@ public class DashboardController {
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Financial summary are successfully retrieved.")
+                .message("Financial summary for only " + code + " are successfully retrieved.")
                 .data(financialSummary).build());
     }
 

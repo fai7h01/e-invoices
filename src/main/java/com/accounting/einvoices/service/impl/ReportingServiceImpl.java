@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -48,8 +49,8 @@ public class ReportingServiceImpl implements ReportingService {
 
         Map<String, BigDecimal> map = new HashMap<>();
 
-        map.put("total_cost", countTotalCostByDateInOneCurrency(year, startMonth, endMonth, currency));
-        map.put("total_sales", countTotalSalesByDateInOneCurrency(year, startMonth, endMonth, currency));
+        map.put("total_cost", sumTotalCostByDateInOneCurrency(year, startMonth, endMonth, currency));
+        map.put("total_sales", sumTotalSalesByDateInOneCurrency(year, startMonth, endMonth, currency));
         map.put("total_profit_loss", sumProfitLossByDateInOneCurrency(year, startMonth, endMonth, currency));
 
         return map;
@@ -57,16 +58,14 @@ public class ReportingServiceImpl implements ReportingService {
 
 
 
-
-
     @Override
-    public Map<String, BigDecimal> getFinancialSummaryInOneCurrency(int year, int startMonth, int endMonth, String currency) {
+    public Map<String, BigDecimal> getFinancialSummaryConvertedInOneCurrency(int year, int startMonth, int endMonth, String currency) {
 
         Map<String, BigDecimal> map = new HashMap<>();
 
         map.put("total_cost", sumTotalCostOfEachCurrencyInPeriodAndConvert(year, startMonth, endMonth, currency));
         map.put("total_sales", sumTotalSalesOfEachCurrencyInPeriodAndConvert(year, startMonth, endMonth, currency));
-//        map.put("total_profit_loss", sumTotalProfitLossByDateAndConvert(year, startMonth, endMonth, currency));
+        map.put("total_profit_loss", sumTotalProfitLossEachCurrencyInPeriodAndConvert(year, startMonth, endMonth, currency));
 
         return map;
     }
@@ -78,24 +77,15 @@ public class ReportingServiceImpl implements ReportingService {
         Map<Currency, BigDecimal> map = new HashMap<>();
 
         for (Currency value : Currency.values()) {
-            BigDecimal total = productService.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, value.name())
-                    .stream()
-                    .map(productDTO -> {
-                        BigDecimal price = productDTO.getPrice();
-                        Integer quantityInStock = productDTO.getQuantityInStock();
-                        return price.multiply(BigDecimal.valueOf(quantityInStock));
-                    })
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            map.put(value, total);
+            BigDecimal totalCostInEachCurrency = sumTotalCostByDateInOneCurrency(year, startMonth, endMonth, value.name());
+            map.put(value, totalCostInEachCurrency);
         }
-
 
         BigDecimal totalCostUsd = map.get(Currency.USD);
         BigDecimal totalCostGel = map.get(Currency.GEL);
         BigDecimal totalCostEur = map.get(Currency.EUR);
 
-
-        return calculateTotalCostOrTotalSales(totalCostUsd, totalCostGel, totalCostEur, currency);
+        return calculateTotalCostOrTotalSalesOrTotalProfitLoss(totalCostUsd, totalCostGel, totalCostEur, currency);
     }
 
     @Override
@@ -104,7 +94,7 @@ public class ReportingServiceImpl implements ReportingService {
         Map<Currency, BigDecimal> map = new HashMap<>();
 
         for (Currency value : Currency.values()) {
-            BigDecimal totalSalesInEachCurrency = countTotalSalesByDateInOneCurrency(year, startMonth, endMonth, value.name());
+            BigDecimal totalSalesInEachCurrency = sumTotalSalesByDateInOneCurrency(year, startMonth, endMonth, value.name());
             map.put(value, totalSalesInEachCurrency);
         }
 
@@ -112,14 +102,28 @@ public class ReportingServiceImpl implements ReportingService {
         BigDecimal totalSalesGel = map.get(Currency.GEL);
         BigDecimal totalSalesEur = map.get(Currency.EUR);
 
-        return calculateTotalCostOrTotalSales(totalSalesUsd, totalSalesGel, totalSalesEur, currency);
+        return calculateTotalCostOrTotalSalesOrTotalProfitLoss(totalSalesUsd, totalSalesGel, totalSalesEur, currency);
     }
 
+    @Override
+    public BigDecimal sumTotalProfitLossEachCurrencyInPeriodAndConvert(int year, int startMonth, int endMonth, String currency) {
 
+        Map<Currency, BigDecimal> map = new HashMap<>();
 
+        for (Currency value : Currency.values()) {
+            BigDecimal totalProfitLossInEachCurrency = sumProfitLossByDateInOneCurrency(year, startMonth, endMonth, value.name());
+            map.put(value, totalProfitLossInEachCurrency);
+        }
+
+        BigDecimal totalProfitLossUSd = map.get(Currency.USD);
+        BigDecimal totalProfitLossGel = map.get(Currency.GEL);
+        BigDecimal totalProfitLossEur = map.get(Currency.EUR);
+
+        return calculateTotalCostOrTotalSalesOrTotalProfitLoss(totalProfitLossUSd, totalProfitLossGel, totalProfitLossEur, currency);
+    }
 
     @Override
-    public BigDecimal countTotalCostByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
+    public BigDecimal sumTotalCostByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
 
         BigDecimal totalCost = BigDecimal.ZERO;
         for (ProductDTO each : productService.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency)) {
@@ -132,26 +136,34 @@ public class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public BigDecimal countTotalSalesByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
+    public BigDecimal sumTotalSalesByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
         List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
-        return invoicesByCurrency.stream()
-                .map(InvoiceDTO::getTotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (invoicesByCurrency != null) {
+            return invoicesByCurrency.stream()
+                    .map(InvoiceDTO::getTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return BigDecimal.ZERO;
+
     }
 
     @Override
     public BigDecimal sumProfitLossByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
         List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
-        return invoicesByCurrency.stream()
-                .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
-                        .stream().map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        if (invoicesByCurrency != null) {
+            return invoicesByCurrency.stream()
+                    .map(invoiceDTO -> invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoiceDTO.getId())
+                            .stream()
+                            .map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return BigDecimal.ZERO;
     }
 
 
-    private BigDecimal calculateTotalCostOrTotalSales(BigDecimal totalUsd, BigDecimal totalGel, BigDecimal totalEur, String currency) {
+    private BigDecimal calculateTotalCostOrTotalSalesOrTotalProfitLoss(BigDecimal totalUsd, BigDecimal totalGel, BigDecimal totalEur, String currency) {
 
         BigDecimal total = BigDecimal.ZERO;
 

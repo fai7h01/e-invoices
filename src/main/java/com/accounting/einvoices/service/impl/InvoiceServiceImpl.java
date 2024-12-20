@@ -183,7 +183,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     return dto;
                 })
                 .collect(Collectors.groupingBy(InvoiceDTO::getCurrency));
-        log.info("\n\n found grouped invoices: {}", map);
+        //log.info("\n\n found grouped invoices: {}", map.entrySet());
         return map;
     }
 
