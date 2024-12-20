@@ -76,11 +76,11 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/soldProductsBy/{year}/{startMonth}/{endMonth}/{currCode}")
+    @GetMapping("/soldProductsBy/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
                                                                       @PathVariable("startMonth") String startMonth,
                                                                       @PathVariable("endMonth") String endMonth,
-                                                                      @PathVariable("currCode") String code) {
+                                                                      @PathVariable("code") String code) {
         List<ProductSalesStatDTO> stats =
                 dashboardService.totalProductsSoldEachDayMonthByCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
@@ -91,7 +91,7 @@ public class DashboardController {
 
 
     //@RolesAllowed("Admin")
-    @GetMapping("/topSellingProducts/{year}/{startMonth}/{endMonth}/{currCode}")
+    @GetMapping("/topSellingProducts/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("startMonth") String startMonth,
                                                               @PathVariable("endMonth") String endMonth,
