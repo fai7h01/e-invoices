@@ -10,7 +10,6 @@ import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.naming.directory.InvalidAttributesException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -45,13 +44,13 @@ public class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public Map<String, BigDecimal> getFinancialSummaryByEachCurrency(int year, int startMonth, int endMonth, String currency) {
+    public Map<String, BigDecimal> getFinancialSummaryInSeparateCurrency(int year, int startMonth, int endMonth, String currency) {
 
         Map<String, BigDecimal> map = new HashMap<>();
 
-        map.put("total_cost", countTotalCostByDate(year, startMonth, endMonth, currency));
-        map.put("total_sales", countTotalSalesByDate(year, startMonth, endMonth, currency));
-        map.put("total_profit_loss", sumProfitLossByDate(year, startMonth, endMonth, currency));
+        map.put("total_cost", countTotalCostByDateInOneCurrency(year, startMonth, endMonth, currency));
+        map.put("total_sales", countTotalSalesByDateInOneCurrency(year, startMonth, endMonth, currency));
+        map.put("total_profit_loss", sumProfitLossByDateInOneCurrency(year, startMonth, endMonth, currency));
 
         return map;
     }
@@ -62,14 +61,18 @@ public class ReportingServiceImpl implements ReportingService {
 
     @Override
     public Map<String, BigDecimal> getFinancialSummaryInOneCurrency(int year, int startMonth, int endMonth, String currency) {
-        return Map.of();
+
+        Map<String, BigDecimal> map = new HashMap<>();
+
+        map.put("total_cost", sumTotalCostOfEachCurrencyInPeriodAndConvert(year, startMonth, endMonth, currency));
+        map.put("total_sales", sumTotalSalesOfEachCurrencyInPeriodAndConvert(year, startMonth, endMonth, currency));
+//        map.put("total_profit_loss", sumTotalProfitLossByDateAndConvert(year, startMonth, endMonth, currency));
+
+        return map;
     }
 
 
-    @Override
-    public BigDecimal sumTotalCostsByCurrencyForPeriodAndConvert(int year, int startMonth, int endMonth, String currency) throws InvalidAttributesException {
-
-        BigDecimal totalCost = BigDecimal.ZERO;
+    private BigDecimal sumTotalCostOfEachCurrencyInPeriodAndConvert(int year, int startMonth, int endMonth, String currency) {
 
         Map<Currency, BigDecimal> map = new HashMap<>();
 
@@ -86,46 +89,88 @@ public class ReportingServiceImpl implements ReportingService {
         }
 
 
+        BigDecimal totalCostUsd = map.get(Currency.USD);
+        BigDecimal totalCostGel = map.get(Currency.GEL);
+        BigDecimal totalCostEur = map.get(Currency.EUR);
+
+
+        return calculateTotalCostOrTotalSales(totalCostUsd, totalCostGel, totalCostEur, currency);
+    }
+
+    private BigDecimal sumTotalSalesOfEachCurrencyInPeriodAndConvert(int year, int startMonth, int endMonth, String currency) {
+
+        Map<Currency, BigDecimal> map = new HashMap<>();
+
+        for (Currency value : Currency.values()) {
+            BigDecimal totalSalesInEachCurrency = countTotalSalesByDateInOneCurrency(year, startMonth, endMonth, value.name());
+            map.put(value, totalSalesInEachCurrency);
+        }
+
+        BigDecimal totalSalesUsd = map.get(Currency.USD);
+        BigDecimal totalSalesGel = map.get(Currency.GEL);
+        BigDecimal totalSalesEur = map.get(Currency.EUR);
+
+        return calculateTotalCostOrTotalSales(totalSalesUsd, totalSalesGel, totalSalesEur, currency);
+    }
+
+    
+    private BigDecimal calculateTotalCostOrTotalSales(BigDecimal totalUsd, BigDecimal totalGel, BigDecimal totalEur, String currency) {
+
+        BigDecimal total = BigDecimal.ZERO;
+
+        Map<String, CurrencyExchangeDTO> currencyExchanges = currencyExchangesMap();
+
+        switch (currency) {
+
+            case "USD":
+
+                BigDecimal getToUsd = currencyExchanges.get("GEL").getUsd();
+                BigDecimal eurToUsd = currencyExchanges.get("EUR").getUsd();
+
+                total = total.add(totalUsd).add(totalGel.multiply(getToUsd)).add(totalEur.multiply(eurToUsd));
+
+                break;
+            case "GEL":
+
+                BigDecimal usdToGel = currencyExchanges.get("USD").getGel();
+                BigDecimal eurToGel = currencyExchanges.get("EUR").getGel();
+
+                total = total.add(totalGel).add(totalUsd.multiply(usdToGel)).add(totalEur.multiply(eurToGel));
+
+                break;
+            case "EUR":
+
+                BigDecimal usdToEur = currencyExchanges.get("USD").getEur();
+                BigDecimal gelToEur = currencyExchanges.get("GEL").getEur();
+
+                total = total.add(totalEur).add(totalUsd.multiply(usdToEur)).add(totalGel.multiply(gelToEur));
+
+                break;
+            default:
+                return BigDecimal.ZERO;
+
+        }
+
+        return BigDecimalUtil.format(total);
+        
+    }
+
+    private Map<String, CurrencyExchangeDTO> currencyExchangesMap() {
+
         CurrencyExchangeDTO usd = dashboardService.exchangeRatesOf("USD", 1L);
         CurrencyExchangeDTO gel = dashboardService.exchangeRatesOf("GEL", 1L);
         CurrencyExchangeDTO eur = dashboardService.exchangeRatesOf("EUR", 1L);
 
-        BigDecimal totalUsd = map.get(Currency.USD);
-        BigDecimal totalGel = map.get(Currency.GEL);
-        BigDecimal totalEur = map.get(Currency.EUR);
+        return Map.of(
+                "USD", usd,
+                "GEL", gel,
+                "EUR", eur
+        );
 
-
-        switch (currency) {
-            case "USD":
-                BigDecimal gelToUsd = gel.getUsd();
-                BigDecimal eurToUsd = eur.getUsd();
-
-                totalCost = totalCost.add(totalUsd).add(totalGel.multiply(gelToUsd)).add(totalEur.multiply(eurToUsd));
-                break;
-            case "GEL":
-                BigDecimal usdToGel = usd.getGel();
-                BigDecimal eurToGel = eur.getGel();
-
-                totalCost = totalCost.add(totalGel).add(totalUsd.multiply(usdToGel)).add(totalEur.multiply(eurToGel));
-                break;
-            case "EUR":
-                BigDecimal usdToEur = usd.getEur();
-                BigDecimal gelToEur = gel.getEur();
-
-                totalCost = totalCost.add(totalEur).add(totalUsd.multiply(usdToEur)).add(totalGel.multiply(gelToEur));
-                break;
-            default:
-                throw new InvalidAttributesException("Invalid currency code!");
-        }
-
-
-        return BigDecimalUtil.format(totalCost);
     }
 
 
-
-
-    private BigDecimal countTotalCostByDate(int year, int startMonth, int endMonth, String currency) {
+    private BigDecimal countTotalCostByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
 
         BigDecimal totalCost = BigDecimal.ZERO;
         for (ProductDTO each : productService.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency)) {
@@ -137,7 +182,7 @@ public class ReportingServiceImpl implements ReportingService {
         return BigDecimalUtil.format(totalCost);
     }
 
-    private BigDecimal countTotalSalesByDate(int year, int startMonth, int endMonth, String currency) {
+    private BigDecimal countTotalSalesByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
         List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
         return invoicesByCurrency.stream()
@@ -146,7 +191,7 @@ public class ReportingServiceImpl implements ReportingService {
     }
 
 
-    private BigDecimal sumProfitLossByDate(int year, int startMonth, int endMonth, String currency) {
+    private BigDecimal sumProfitLossByDateInOneCurrency(int year, int startMonth, int endMonth, String currency) {
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
         List<InvoiceDTO> invoicesByCurrency = map.get(Currency.valueOf(currency));
         return invoicesByCurrency.stream()

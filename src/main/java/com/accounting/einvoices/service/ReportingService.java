@@ -8,10 +8,10 @@ public interface ReportingService {
 
     Map<String, Integer> getSummaryQuantities();
 
-    Map<String, BigDecimal> getFinancialSummaryByEachCurrency(int year, int startMonth, int endMonth, String currency);
+    Map<String, BigDecimal> getFinancialSummaryInSeparateCurrency(int year, int startMonth, int endMonth, String currency);
 
     Map<String, BigDecimal> getFinancialSummaryInOneCurrency(int year, int startMonth, int endMonth, String currency);
 
-    BigDecimal sumTotalCostsByCurrencyForPeriodAndConvert(int year, int startMonth, int endMonth, String currency) throws InvalidAttributesException;
+//    BigDecimal sumTotalCostsByCurrencyForPeriodAndConvert(int year, int startMonth, int endMonth, String currency);
 
 }

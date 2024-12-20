@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.naming.directory.InvalidAttributesException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
@@ -36,15 +37,29 @@ public class DashboardController {
     }
 
 
+//    @GetMapping("/test/{year}/{startMonth}/{endMonth}/{code}")
+//    public ResponseEntity<ResponseWrapper> test(@PathVariable("year") String year,
+//                                                             @PathVariable("startMonth") String startMonth,
+//                                                             @PathVariable("endMonth") String endMonth,
+//                                                             @PathVariable("code") String code)  {
+//        BigDecimal bigDecimal =
+//                reportingService.sumTotalCostsByCurrencyForPeriodAndConvert(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
+//        return ResponseEntity.ok(ResponseWrapper.builder()
+//                .code(HttpStatus.OK.value())
+//                .success(true)
+//                .message("total cost")
+//                .data(bigDecimal).build());
+//    }
+
     //@RolesAllowed("Admin")
     @GetMapping("/financialSummary/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getSummaryNumbers(@PathVariable("year") String year,
+    public ResponseEntity<ResponseWrapper> getFinancialSummary(@PathVariable("year") String year,
                                                              @PathVariable("startMonth") String startMonth,
                                                              @PathVariable("endMonth") String endMonth,
                                                              @PathVariable("code") String code) {
 
         Map<String, BigDecimal> financialSummary =
-                reportingService.getFinancialSummary(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
+                reportingService.getFinancialSummaryInSeparateCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
