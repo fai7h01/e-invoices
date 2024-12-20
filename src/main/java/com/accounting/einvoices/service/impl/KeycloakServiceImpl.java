@@ -5,12 +5,10 @@ import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.exception.user.UserNotFoundException;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -19,7 +17,6 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.Response;
 
@@ -183,7 +180,20 @@ public class KeycloakServiceImpl implements KeycloakService {
 
         RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
         UsersResource usersResource = realmResource.users();
-        usersResource.get(userId).sendVerifyEmail();;
+        usersResource.get(userId).sendVerifyEmail();
+    }
+
+    @Override
+    public boolean isEmailVerified(UserDTO dto) {
+        Keycloak keycloak = getKeycloakInstance();
+        RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
+        UsersResource usersResource = realmResource.users();
+        List<UserRepresentation> users = usersResource.search(dto.getUsername());
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("User not found.");
+        }
+        UserRepresentation user = users.get(0);
+        return user.isEmailVerified();
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.RoleDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
+import com.accounting.einvoices.enums.UserStatus;
 import com.accounting.einvoices.exception.user.UserAlreadyExistsException;
 import com.accounting.einvoices.exception.user.UserNotFoundException;
 import com.accounting.einvoices.repository.UserRepository;
@@ -46,7 +47,14 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllByCompanyId(loggedInUser.getCompany().getId());
         return users.stream()
                 .filter(user -> !user.getId().equals(loggedInUser.getId()))
-                .map(user -> mapperUtil.convert(user, new UserDTO())).toList();
+                .map(user -> {
+                    UserDTO dto = mapperUtil.convert(user, new UserDTO());
+                    if (keycloakService.isEmailVerified(dto)) {
+                        dto.setUserStatus(UserStatus.ACTIVE);
+                        update(dto.getId(), dto);
+                    }
+                    return dto;
+                }).toList();
     }
 
     @Override

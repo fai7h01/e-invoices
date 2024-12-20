@@ -9,6 +9,7 @@ public interface KeycloakService {
     void userUpdate(UserDTO dto);
     void userDelete(String username);
     void emailVerification(String userId);
+    boolean isEmailVerified(UserDTO dto);
     UserDTO getLoggedInUser();
 
 }
