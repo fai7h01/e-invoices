@@ -25,7 +25,7 @@ public class UserDTO {
     private String phone;
     private LocalDate dateOfEmployment;
     private boolean enabled;
-    private UserStatus userStatus = UserStatus.INACTIVE;
+    private UserStatus userStatus = UserStatus.Inactive;
     private CompanyDTO company;
     private RoleDTO role;
 

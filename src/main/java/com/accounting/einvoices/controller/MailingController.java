@@ -35,7 +35,7 @@ public class MailingController {
     }
 
     @GetMapping("/send-email/{invoiceId}")
-    public ResponseEntity<Void> sendEmail(@PathVariable("invoiceId") Long id) {
+    public ResponseEntity<ResponseWrapper> sendEmail(@PathVariable("invoiceId") Long id) {
         InvoiceDTO invoice = invoiceService.findById(id);
         try {
             Map<String, Object> model = new HashMap<>();
@@ -57,6 +57,10 @@ public class MailingController {
         } catch (IOException e) {
             log.error("Error occurred as sending email: {}", e.getMessage());
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Email was sent successfully")
+                .build());
     }
 }
