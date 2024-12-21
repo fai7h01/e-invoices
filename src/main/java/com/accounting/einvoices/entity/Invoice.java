@@ -2,7 +2,6 @@ package com.accounting.einvoices.entity;
 
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
-import com.accounting.einvoices.enums.InvoiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,9 +21,6 @@ import java.time.LocalDateTime;
 public class Invoice extends BaseEntity {
 
     private String invoiceNo;
-
-    @Enumerated(EnumType.STRING)
-    private InvoiceType invoiceType;
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus invoiceStatus;

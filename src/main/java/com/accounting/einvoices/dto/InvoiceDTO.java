@@ -2,18 +2,13 @@ package com.accounting.einvoices.dto;
 
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
-import com.accounting.einvoices.enums.InvoiceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -28,8 +23,6 @@ public class InvoiceDTO {
     private String invoiceNo;
 
     private InvoiceStatus invoiceStatus = InvoiceStatus.AWAITING_APPROVAL;
-
-    private InvoiceType invoiceType;
 
     private LocalDateTime dateOfIssue;
 
