@@ -5,8 +5,40 @@ import lombok.Getter;
 @Getter
 public enum ProductUnit {
 
-    LBS("Pounds"), GALLON("Gallon"), PCS("Pieces"), KG("Kilogram"), METER("Meter"), INCH("Inch"), FEET("Feet"),
-    LITER("Liter"), PACK("Pack"), LOAF("Loaf"), UNIT("Unit");
+    PCS("Pieces"),
+    UNIT("Unit"),
+    SET("Set"),
+    PAIR("Pair"),
+    BDL("Bundle"),
+    BOX("Box"),
+    CRT("Crate"),
+    REEL("Reel"),
+    KG("Kilogram"),
+    G("Gram"),
+    LBS("Pounds"),
+    OZ("Ounce"),
+    TN("Ton"),
+    L("Litre"),
+    ML("Millilitre"),
+    GALLON("Gallon"),
+    M("Meter"),
+    CM("Centimeter"),
+    MM("Millimeter"),
+    FT("Foot"),
+    INCH("Inch"),
+    SQM("Square meter"),
+    SQFT("Square foot"),
+    CUBICMETER("Cubic Meter"),
+    CUBICFOOT("Cubic Foot"),
+    BTL("Bottle"),
+    CAN("Can"),
+    ROLL("Roll"),
+    SHEET("Sheet"),
+    LITER("Liter"),
+    PACK("Pack"),
+    KGPK("Kilo/Pack"),
+    MPK("Meter/Pack");
+
 
     private final String value;
 
