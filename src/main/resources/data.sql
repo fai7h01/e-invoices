@@ -49,10 +49,10 @@ VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'John', 'Rees
 
 INSERT INTO clients_vendors(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                             name, phone, website, email, client_vendor_type, address_id, company_id)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samsung', '0123456789', 'samsung.com', 'l.varsimashvil10@gmail.com', 'CLIENT', 4, 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Apple', '0123456789', 'apple.com', 'apple@email.com', 'VENDOR', 4, 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Google', '0123456789', 'google.com', 'google@email.com', 'CLIENT', 4, 1),
-       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Amazon', '0123456789', 'amazon.com', 'amazon@email.com', 'VENDOR', 4, 1);
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samsung', '0123456789', 'samsung.com', 'l.varsimashvil10@gmail.com', 'Client', 4, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Apple', '0123456789', 'apple.com', 'apple@email.com', 'Vendor', 4, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Google', '0123456789', 'google.com', 'google@email.com', 'Client', 4, 1),
+       ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Amazon', '0123456789', 'amazon.com', 'amazon@email.com', 'Vendor', 4, 1);
 
 -- Insert categories
 INSERT INTO categories(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
@@ -70,9 +70,9 @@ INSERT INTO products(insert_date_time, insert_user_id, last_update_date_time, la
                      name, description, quantity_in_stock, low_limit_alert, price, created_at, product_unit, status, category_id, currency)
 VALUES
 -- Groceries
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Milk', '1 liter', 100, 10, 5, '2024-10-05', 'LITER', 'ACTIVE', 1, 'USD'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Milk', '1 liter', 100, 10, 5, '2024-10-05', 'L', 'ACTIVE', 1, 'USD'),
 ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Eggs', 'Pack of 12', 100, 5, 3, '2024-10-05', 'PACK', 'ACTIVE', 1, 'USD'),
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Bread', 'Whole wheat', 100, 5, 4, '2024-10-05', 'LOAF', 'ACTIVE', 1, 'USD'), --12usd
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Bread', 'Whole wheat', 100, 5, 4, '2024-10-05', 'PACK', 'ACTIVE', 1, 'USD'), --12usd
 
 -- Electronics
 ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Smartphone', '5G Enabled', 100, 3, 700, '2024-11-05', 'UNIT', 'ACTIVE', 2, 'USD'),
