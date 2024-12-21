@@ -95,7 +95,7 @@ public class DashboardController {
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("startMonth") String startMonth,
                                                               @PathVariable("endMonth") String endMonth,
-                                                              @PathVariable("currCode") String code) {
+                                                              @PathVariable("code") String code) {
         Map<String, ProductSalesStatDTO> stats =
                 dashboardService.topSellingProductsDesc(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
