@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.Path;
 import java.util.List;
 
 @Slf4j
@@ -83,7 +84,15 @@ public class UserController {
                 .data(loggedInUser).build());
     }
 
-//    @GetMapping("/findByUsername/{username}")
+    @GetMapping("/findByUsername/{username}")
+    public ResponseEntity<ResponseWrapper> findByUsername(@PathVariable("username") String username) {
+        UserDTO user = userService.findByUsername(username);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("User was found successfully.")
+                .data(user).build());
+    }
 
 
 }
