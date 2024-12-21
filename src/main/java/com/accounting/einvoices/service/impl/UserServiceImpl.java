@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> {
                     UserDTO dto = mapperUtil.convert(user, new UserDTO());
                     if (keycloakService.isEmailVerified(dto)) {
-                        dto.setUserStatus(UserStatus.ACTIVE);
+                        dto.setUserStatus(UserStatus.Active);
                         update(dto.getId(), dto);
                     }
                     return dto;
@@ -92,10 +92,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User convertedUser = mapperUtil.convert(user, new User());
-
-//        String encoded = passwordEncoder.encode(convertedUser.getPassword());
-//        convertedUser.setPassword(encoded);
-
+        String encoded = passwordEncoder.encode(convertedUser.getPassword());
+        convertedUser.setPassword(encoded);
         User saved = userRepository.save(convertedUser);
         log.info("\n\n>>User saved in database!");
         keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
