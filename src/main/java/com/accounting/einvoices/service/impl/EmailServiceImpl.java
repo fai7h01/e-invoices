@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
         this.templateEngine = templateEngine;
     }
 
-    @Async
+    @Async("asyncTaskExecutor")
     @Override
     public CompletableFuture<String> sendEmailWithAttachment(String to, String subject, String text, byte[] pdfAttachment) {
         MimeMessage message = emailSender.createMimeMessage();
@@ -48,12 +48,13 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Async("asyncTaskExecutor")
     @Override
-    public byte[] generatePdfFromHtmlTemplate(String templateName, Map<String, Object> model) throws IOException {
+    public CompletableFuture<byte[]> generatePdfFromHtmlTemplate(String templateName, Map<String, Object> model) throws IOException {
         Context context = new Context();
         context.setVariables(model);
         String html = templateEngine.process(templateName, context);
-        return generatePdfFromHtml(html);
+        return CompletableFuture.completedFuture(generatePdfFromHtml(html));
     }
 
     private byte[] generatePdfFromHtml(String html) throws IOException {

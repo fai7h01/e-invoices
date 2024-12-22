@@ -8,6 +8,6 @@ public interface EmailService {
 
     CompletableFuture<String> sendEmailWithAttachment(String to, String subject, String text, byte [] pdfAttachment);
 
-    byte[] generatePdfFromHtmlTemplate(String templateName, Map<String, Object> model) throws IOException;
+    CompletableFuture<byte[]> generatePdfFromHtmlTemplate(String templateName, Map<String, Object> model) throws IOException;
 
 }

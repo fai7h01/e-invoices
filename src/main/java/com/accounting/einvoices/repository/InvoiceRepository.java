@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
-    List<Invoice> findAllByCompanyId(Long id);
+    List<Invoice> findAllByCompanyIdOrderByInvoiceNo(Long id);
 
     List<Invoice> findAllByCompanyTitle(String companyTitle);
 

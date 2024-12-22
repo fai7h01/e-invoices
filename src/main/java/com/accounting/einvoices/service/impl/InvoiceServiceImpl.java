@@ -43,7 +43,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<InvoiceDTO> findAllByLoggedInUser() {
-        return invoiceRepository.findAllByCompanyId(companyService.getByLoggedInUser().getId()).stream()
+        return invoiceRepository.findAllByCompanyIdOrderByInvoiceNo(companyService.getByLoggedInUser().getId()).stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
                     setPriceTaxTotal(invoiceDTO);
