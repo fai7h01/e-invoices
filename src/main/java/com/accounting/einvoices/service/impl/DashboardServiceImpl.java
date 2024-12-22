@@ -64,7 +64,7 @@ public class DashboardServiceImpl implements DashboardService {
 
             productSalesStat = ProductSalesStatDTO.builder()
                     .year(year)
-                    .month(startMonth++)
+                    .month(invoice.getAcceptDate().getMonthValue())
                     .dayOfMonth(invoice.getAcceptDate().getDayOfMonth())
                     .quantity(totalQuantity)
                     .amount(totalAmount)
