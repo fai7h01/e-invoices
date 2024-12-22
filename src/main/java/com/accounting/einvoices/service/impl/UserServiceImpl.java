@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
@@ -50,9 +52,15 @@ public class UserServiceImpl implements UserService {
                 .filter(user -> !user.getId().equals(loggedInUser.getId()))
                 .map(user -> {
                     UserDTO dto = mapperUtil.convert(user, new UserDTO());
-                    if (keycloakService.isEmailVerified(dto)) {
-                        dto.setUserStatus(UserStatus.Active);
-                        update(dto.getId(), dto);
+                    CompletableFuture<Boolean> emailVerified = keycloakService.isEmailVerified(dto);
+                    try {
+                        if (emailVerified.get()) {
+                            dto.setUserStatus(UserStatus.Active);
+                            update(dto.getId(), dto);
+                        }
+                    } catch (InterruptedException | ExecutionException e) {
+                        log.error("Error occurred during retrieving status from keycloak: {}", e.getMessage());
+                        throw new RuntimeException(e);
                     }
                     return dto;
                 }).toList();

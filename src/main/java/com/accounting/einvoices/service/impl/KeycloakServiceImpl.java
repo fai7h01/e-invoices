@@ -14,6 +14,7 @@ import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
@@ -183,8 +185,9 @@ public class KeycloakServiceImpl implements KeycloakService {
         usersResource.get(userId).sendVerifyEmail();
     }
 
+    @Async("asyncTaskExecutor")
     @Override
-    public boolean isEmailVerified(UserDTO dto) {
+    public CompletableFuture<Boolean> isEmailVerified(UserDTO dto) {
         Keycloak keycloak = getKeycloakInstance();
         RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
         UsersResource usersResource = realmResource.users();
@@ -193,7 +196,7 @@ public class KeycloakServiceImpl implements KeycloakService {
             throw new UserNotFoundException("User not found.");
         }
         UserRepresentation user = users.get(0);
-        return user.isEmailVerified();
+        return CompletableFuture.completedFuture(user.isEmailVerified());
     }
 
     @Override

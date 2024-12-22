@@ -55,13 +55,9 @@ public class DashboardServiceImpl implements DashboardService {
 
         for (InvoiceDTO invoice : invoices) {
 
-            log.info("\n\n>> Invoice id: {}", invoice.getInvoiceNo());
-
             int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
                     .map(InvoiceProductDTO::getQuantity)
                     .reduce(Integer::sum).orElse(0);
-
-            log.info("\n\n>> Day qty: {}", dayQuantity);
 
             totalQuantity += dayQuantity;
             totalAmount = totalAmount.add(invoice.getTotal());
