@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User convertedUser = mapperUtil.convert(user, new User());
-        String encoded = passwordEncoder.encode(convertedUser.getPassword());
-        convertedUser.setPassword(encoded);
+//        String encoded = passwordEncoder.encode(convertedUser.getPassword());
+//        convertedUser.setPassword(encoded);
         User saved = userRepository.save(convertedUser);
         log.info("\n\n>>User saved in database!");
         keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
