@@ -32,7 +32,7 @@ jobs:
           at: ~/invoicehub
       - run:
           name: Docker Container That Runs Postgresql (Fake DB)
-          command: docker run --name test-db -p 5432:5432 -e POSTGRES_DB=invoicehub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Invoicehub123. postgres:latest
+          command: docker run --name test-db -d -p 5432:5432 -e POSTGRES_DB=invoicehub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Invoicehub123. postgres:latest
       - run:
           name: Run Integration and Unit Tests
           command: |

@@ -8,6 +8,7 @@ import com.accounting.einvoices.exception.category.CategoryNotFoundException;
 import com.accounting.einvoices.exception.client.ClientCannotBeDeletedException;
 import com.accounting.einvoices.exception.client.ClientVendorAlreadyExistsException;
 import com.accounting.einvoices.exception.client.ClientVendorNotFoundException;
+import com.accounting.einvoices.exception.company.CompanyAlreadyExistsException;
 import com.accounting.einvoices.exception.company.CompanyNotFoundException;
 import com.accounting.einvoices.exception.invoice.InvoiceNotFoundException;
 import com.accounting.einvoices.exception.invoice.InvoiceProductNotFoundException;
@@ -86,7 +87,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class, ProductAlreadyExistsException.class})
+    @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class,
+            ProductAlreadyExistsException.class, CompanyAlreadyExistsException.class})
     public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
