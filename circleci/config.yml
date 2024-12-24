@@ -62,7 +62,7 @@ jobs:
           name: Connect to EC2 Server and run the image
           command: |
             ssh -o "StrictHostKeyChecking=no" ubuntu@ec2-3-88-51-214.compute-1.amazonaws.com <<'ENDSSH'
-            
+            /bin/bash ~/invoicehub/deploy_image.sh
             ENDSSH
 workflows:
   version: 2
