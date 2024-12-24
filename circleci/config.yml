@@ -11,7 +11,7 @@ jobs:
           name: Create a Directory
           command: mkdir -p ~/invoicehub
       - restore_cache:
-          - keys:
+          keys:
               - invoicehub-dependencies-{{ checksum "pom.xml" }}
       - run:
           name: Build (Create JAR file)
