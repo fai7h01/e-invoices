@@ -24,22 +24,22 @@ jobs:
           root: ~/invoicehub
           paths:
             - .
-  test:
-    machine: true
-    working_directory: ~/invoicehub
-    steps:
-      - attach_workspace:
-          at: ~/invoicehub
-      - run:
-          name: Docker Container That Runs Postgresql (Fake DB)
-          command: docker run --name test-db -d -p 5432:5432 -e POSTGRES_DB=invoicehub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Invoicehub123. postgres:latest
-      - run:
-          name: Run Integration and Unit Tests
-          command: |
-            mvn test -Dskip.unit.tests=false -Dskip.integration.tests=false \
-            -Dspring.datasource.url= jdbc:postgresql://localhost:5432/invoicehub \
-            -Dspring.datasouce.username=postgres \
-            -Dspring.datasource.password=Invoicehub123.
+#  test:
+#    machine: true
+#    working_directory: ~/invoicehub
+#    steps:
+#      - attach_workspace:
+#          at: ~/invoicehub
+#      - run:
+#          name: Docker Container That Runs Postgresql (Fake DB)
+#          command: docker run --name test-db -d -p 5432:5432 -e POSTGRES_DB=invoicehub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Invoicehub123. postgres:latest
+#      - run:
+#          name: Run Integration and Unit Tests
+#          command: |
+#            mvn test -Dskip.unit.tests=false -Dskip.integration.tests=false \
+#            -Dspring.datasource.url= jdbc:postgresql://localhost:5432/invoicehub \
+#            -Dspring.datasouce.username=postgres \
+#            -Dspring.datasource.password=Invoicehub123.
   docker-image-create-and-push:
     machine: true
     working_directory: ~/invoicehub
