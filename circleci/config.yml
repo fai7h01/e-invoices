@@ -1,0 +1,80 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0.13
+    working_directory: ~/invoicehub
+    steps:
+      - checkout
+      - run:
+          name: Create a Directory
+          command: mkdir -p ~/invoicehub
+      - restore_cache:
+          - keys:
+              - invoicehub-dependencies-{{ checksum "pom.xml" }}
+      - run:
+          name: Build (Create JAR file)
+          command: mvn clean package -DskipTests
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: invoicehub-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace:
+          root: ~/invoicehub
+          paths:
+            - .
+  test:
+    machine: true
+    working_directory: ~/invoicehub
+    steps:
+      - attach_workspace:
+          at: ~/invoicehub
+      - run:
+          name: Docker Container That Runs Postgresql (Fake DB)
+          command: docker run --name test-db -p 5432:5432 -e POSTGRES_DB=invoicehub -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=Invoicehub123. postgres:latest
+      - run:
+          name: Run Integration and Unit Tests
+          command: |
+            mvn test -Dskip.unit.tests=false -Dskip.integration.tests=false \
+            -Dspring.datasource.url= jdbc:postgresql://localhost:5432/invoicehub \
+            -Dspring.datasouce.username=postgres \
+            -Dspring.datasource.password=Invoicehub123.
+  docker-image-create-and-push:
+    machine: true
+    working_directory: ~/invoicehub
+    steps:
+      - attach_workspace:
+          at: ~/invoicehub
+      - run:
+          name: Create Docker Image
+          command: docker build -t 183295441360.dkr.ecr.us-east-1.amazonaws.com/invoicehub:latest .
+      - run:
+          name: Login to Image Repo (AWS ECR)
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 183295441360.dkr.ecr.us-east-1.amazonaws.com
+      - run:
+          name: Push the Image to ECR
+          command: docker push 183295441360.dkr.ecr.us-east-1.amazonaws.com/invoicehub:latest
+  deploy:
+    machine: true
+    steps:
+      - run:
+          name: Connect to EC2 Server and run the image
+          command: |
+            ssh -o "StrictHostKeyChecking=no" ubuntu@ec2-3-88-51-214.compute-1.amazonaws.com <<'ENDSSH'
+            
+            ENDSSH
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - docker-image-create-and-push:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - docker-image-create-and-push
