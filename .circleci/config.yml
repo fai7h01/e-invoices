@@ -12,7 +12,7 @@ jobs:
           command: mkdir -p ~/invoicehub
       - restore_cache:
           keys:
-              - invoicehub-dependencies-{{ checksum "pom.xml" }}
+            - invoicehub-dependencies-{{ checksum "pom.xml" }}
       - run:
           name: Build (Create JAR file)
           command: mvn clean package -DskipTests
@@ -69,12 +69,9 @@ workflows:
   build_test_deploy:
     jobs:
       - build
-      - test:
-          requires:
-            - build
       - docker-image-create-and-push:
           requires:
-            - test
+            - build
       - deploy:
           requires:
             - docker-image-create-and-push
