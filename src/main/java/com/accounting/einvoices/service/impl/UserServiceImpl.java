@@ -50,20 +50,8 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllByCompanyId(loggedInUser.getCompany().getId());
         return users.stream()
                 .filter(user -> !user.getId().equals(loggedInUser.getId()))
-                .map(user -> {
-                    UserDTO dto = mapperUtil.convert(user, new UserDTO());
-                    CompletableFuture<Boolean> emailVerified = keycloakService.isEmailVerified(dto);
-                    try {
-                        if (emailVerified.get()) {
-                            dto.setUserStatus(UserStatus.Active);
-                            update(dto.getId(), dto);
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        log.error("Error occurred during retrieving status from keycloak: {}", e.getMessage());
-                        throw new RuntimeException(e);
-                    }
-                    return dto;
-                }).toList();
+                .map(user -> mapperUtil.convert(user, new UserDTO()))
+                .toList();
     }
 
     @Override
@@ -134,6 +122,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean isEmailVerified(String username) {
+
+        boolean emailVerified = keycloakService.isEmailVerified(username);
+
+        if (emailVerified) {
+            UserDTO foundUser = findByUsername(username);
+            foundUser.setUserStatus(UserStatus.Active);
+            update(foundUser.getId(), foundUser);
+            return true;
+        }
+
+        return false;
+    }
 
 
 }

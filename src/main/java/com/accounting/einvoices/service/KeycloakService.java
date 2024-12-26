@@ -11,7 +11,7 @@ public interface KeycloakService {
     void userUpdate(UserDTO dto);
     void userDelete(String username);
     void emailVerification(String userId);
-    CompletableFuture<Boolean> isEmailVerified(UserDTO dto);
+    boolean isEmailVerified(String username);
     UserDTO getLoggedInUser();
 
 }

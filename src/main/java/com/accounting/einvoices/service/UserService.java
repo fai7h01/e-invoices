@@ -18,6 +18,8 @@ public interface UserService {
 
     void delete(Long id);
 
+    boolean isEmailVerified(String username);
+
 
 
 

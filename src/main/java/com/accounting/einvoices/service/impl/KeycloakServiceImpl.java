@@ -179,24 +179,22 @@ public class KeycloakServiceImpl implements KeycloakService {
     @Override
     public void emailVerification(String userId) {
         Keycloak keycloak = getKeycloakInstance();
-
         RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
         UsersResource usersResource = realmResource.users();
         usersResource.get(userId).sendVerifyEmail();
     }
 
-    @Async("asyncTaskExecutor")
     @Override
-    public CompletableFuture<Boolean> isEmailVerified(UserDTO dto) {
+    public boolean isEmailVerified(String username) {
         Keycloak keycloak = getKeycloakInstance();
         RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
         UsersResource usersResource = realmResource.users();
-        List<UserRepresentation> users = usersResource.search(dto.getUsername());
+        List<UserRepresentation> users = usersResource.search(username);
         if (users.isEmpty()) {
             throw new UserNotFoundException("User not found to verify email.");
         }
         UserRepresentation user = users.get(0);
-        return CompletableFuture.completedFuture(user.isEmailVerified());
+        return user.isEmailVerified();
     }
 
     @Override
