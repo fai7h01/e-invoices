@@ -2,7 +2,6 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
-import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
