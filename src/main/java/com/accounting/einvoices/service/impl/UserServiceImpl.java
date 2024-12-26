@@ -121,12 +121,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isEmailVerified(String username) {
 
-        boolean emailVerified = keycloakService.isEmailVerified(username);
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
 
-        if (emailVerified) {
-            UserDTO foundUser = findByUsername(username);
-            foundUser.setUserStatus(UserStatus.Active);
-            update(foundUser.getId(), foundUser);
+        boolean emailVerified = keycloakService.isEmailVerified(user.getUsername());
+
+        if (!emailVerified) {
+            user.setUserStatus(UserStatus.Active);
+            userRepository.save(user);
             return true;
         }
 
