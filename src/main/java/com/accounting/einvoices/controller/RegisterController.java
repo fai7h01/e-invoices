@@ -42,4 +42,14 @@ public class RegisterController {
                 .message("User email verified status.")
                 .data(emailVerified).build());
     }
+
+    @GetMapping("/sendEmailVerification/{username}")
+    public ResponseEntity<ResponseWrapper> sendEmailVerification(@PathVariable("username") String username) {
+        userService.sendEmailVerification(username);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Verification link was sent successfully.")
+                .build());
+    }
 }

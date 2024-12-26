@@ -20,6 +20,7 @@ public interface UserService {
 
     boolean isEmailVerified(String username);
 
+    void sendEmailVerification(String username);
 
 
 

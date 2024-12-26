@@ -9,12 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 
@@ -66,7 +65,7 @@ public class KeycloakServiceImpl implements KeycloakService {
                 realmResource.users().get(userId).roles().clientLevel(appClient.getId())
                         .add(Collections.singletonList(userClientRole));
                 try {
-                    emailVerification(userId);
+                    usersResource.get(userId).sendVerifyEmail();
                     log.info("Verification email was sent!!!");
                 } catch (Exception e) {
                     log.error("Email verification Could not send: {}", e.getMessage());
@@ -177,24 +176,31 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     @Override
-    public void emailVerification(String userId) {
-        Keycloak keycloak = getKeycloakInstance();
-        RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
-        UsersResource usersResource = realmResource.users();
+    public void sendEmailVerification(String username) {
+        UsersResource usersResource = getUserResource();
+        List<UserRepresentation> users = usersResource.search(username);
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("User not found to verify email.");
+        }
+        String userId = users.get(0).getId();
         usersResource.get(userId).sendVerifyEmail();
     }
 
     @Override
     public boolean isEmailVerified(String username) {
-        Keycloak keycloak = getKeycloakInstance();
-        RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
-        UsersResource usersResource = realmResource.users();
+        UsersResource usersResource = getUserResource();
         List<UserRepresentation> users = usersResource.search(username);
         if (users.isEmpty()) {
             throw new UserNotFoundException("User not found to verify email.");
         }
         UserRepresentation user = users.get(0);
         return user.isEmailVerified();
+    }
+
+    private UsersResource getUserResource() {
+        Keycloak keycloak = getKeycloakInstance();
+        RealmResource realmResource = keycloak.realm(keycloakProperties.getRealm());
+        return realmResource.users();
     }
 
     @Override

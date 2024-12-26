@@ -32,16 +32,14 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final CompanyService companyService;
     private final KeycloakService keycloakService;
-    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, MapperUtil mapperUtil, RoleService roleService, @Lazy CompanyService companyService,
-                           @Lazy KeycloakService keycloakService, PasswordEncoder passwordEncoder) {
+                           @Lazy KeycloakService keycloakService) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.roleService = roleService;
         this.companyService = companyService;
         this.keycloakService = keycloakService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -89,8 +87,6 @@ public class UserServiceImpl implements UserService {
         }
 
         User convertedUser = mapperUtil.convert(user, new User());
-//        String encoded = passwordEncoder.encode(convertedUser.getPassword());
-//        convertedUser.setPassword(encoded);
         User saved = userRepository.save(convertedUser);
         log.info("\n\n>>User saved in database!");
         keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
@@ -135,6 +131,12 @@ public class UserServiceImpl implements UserService {
         }
 
         return false;
+    }
+
+    @Override
+    public void sendEmailVerification(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        keycloakService.sendEmailVerification(user.getUsername());
     }
 
 
