@@ -193,7 +193,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         UsersResource usersResource = realmResource.users();
         List<UserRepresentation> users = usersResource.search(dto.getUsername());
         if (users.isEmpty()) {
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException("User not found to verify email.");
         }
         UserRepresentation user = users.get(0);
         return CompletableFuture.completedFuture(user.isEmailVerified());
@@ -203,6 +203,7 @@ public class KeycloakServiceImpl implements KeycloakService {
     public UserDTO getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SimpleKeycloakAccount userDetails = (SimpleKeycloakAccount) authentication.getDetails();
+        log.info("\n\n>>>> Found userDTO: {}", userService.findByUsername(userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername()));
         return userService.findByUsername(userDetails.getKeycloakSecurityContext().getToken().getPreferredUsername());
     }
 
