@@ -140,4 +140,12 @@ public class UserServiceImpl implements UserService {
         keycloakService.sendEmailVerification(user.getUsername());
     }
 
+    @Override
+    public void updateStatus(UserDTO user) {
+        User converted = mapperUtil.convert(user, new User());
+        converted.setUserStatus(UserStatus.Active);
+        userRepository.save(converted);
+    }
+
+
 }

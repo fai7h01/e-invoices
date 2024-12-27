@@ -22,6 +22,8 @@ public interface UserService {
 
     void sendEmailVerification(String username);
 
+    void updateStatus(UserDTO user);
+
 
 
 }
