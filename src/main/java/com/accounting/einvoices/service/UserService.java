@@ -19,10 +19,6 @@ public interface UserService {
 
     void delete(Long id);
 
-    boolean isEmailVerified(String username);
-
-    void sendEmailVerification(String username);
-
     void resetPassword(String username, ForgotPasswordDTO forgotPasswordDTO);
 
     void updateStatus(UserDTO user);
