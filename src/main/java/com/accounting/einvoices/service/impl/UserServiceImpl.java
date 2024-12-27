@@ -129,10 +129,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateStatus(UserDTO user) {
-        User converted = mapperUtil.convert(user, new User());
-        converted.setUserStatus(UserStatus.Active);
-        userRepository.save(converted);
+    public void updateStatus(String username) {
+        User found = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        found.setUserStatus(UserStatus.Active);
+        userRepository.save(found);
+        keycloakService.verifyUser(found.getUsername());
     }
 
 

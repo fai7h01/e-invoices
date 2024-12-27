@@ -2,7 +2,9 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.ForgotPasswordToken;
-import com.accounting.einvoices.repository.TokenRepository;
+import com.accounting.einvoices.entity.VerificationToken;
+import com.accounting.einvoices.repository.ForgotPasswordTokenRepository;
+import com.accounting.einvoices.repository.VerificationTokenRepository;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.UserService;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -35,14 +37,16 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
     private final UserService userService;
-    private final TokenRepository tokenRepository;
+    private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     public EmailServiceImpl(JavaMailSender emailSender, TemplateEngine templateEngine, UserService userService,
-                            TokenRepository tokenRepository) {
+                            ForgotPasswordTokenRepository forgotPasswordTokenRepository, VerificationTokenRepository verificationTokenRepository) {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
         this.userService = userService;
-        this.tokenRepository = tokenRepository;
+        this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     @Async("asyncTaskExecutor")
@@ -79,21 +83,6 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    @Override
-    public void sendForgotPasswordEmail(String email) {
-        SimpleMailMessage simpleMailMessage = createForgotPasswordEmail(email);
-        this.sendEmail(simpleMailMessage);
-    }
-
-    @Override
-    public void sendVerificationEmail(String email) {
-
-    }
-
-    @Override
-    public void sendConfirmPasswordResetEmail(String email) {
-
-    }
 
     @Async("asyncTaskExecutor")
     @Override
@@ -101,11 +90,91 @@ public class EmailServiceImpl implements EmailService {
         emailSender.send(simpleMailMessage);
     }
 
+
+    @Override
+    public void sendForgotPasswordEmail(String email) {
+        SimpleMailMessage simpleMailMessage = createForgotPasswordEmail(email);
+        this.sendEmail(simpleMailMessage);
+    }
+
+    @Override
+    public void sendConfirmPasswordResetEmail(String email) {
+        SimpleMailMessage simpleMailMessage = createConfirmPasswordResetEmail(email);
+        this.sendEmail(simpleMailMessage);
+    }
+
+    @Override
+    public void sendVerificationEmail(String email) {
+        SimpleMailMessage simpleMailMessage = createVerificationEmail(email);
+        this.sendEmail(simpleMailMessage);
+    }
+
+    private SimpleMailMessage createVerificationEmail(String email) {
+        String fullname = findUserFullName(email);
+
+        VerificationToken verificationToken = new VerificationToken(email);
+        VerificationToken createdToken = verificationTokenRepository.save(verificationToken);
+
+        String message = createVerificationMessage(email, fullname, createdToken.getToken(), createdToken.getExpiryDate());
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setSubject("Email Verification");
+        mail.setText(message);
+
+        return mail;
+    }
+
+    private String createVerificationMessage(String email, String fullname, String token, LocalDate expiryDate) {
+
+        String companyName = "InvoiceHub";
+        String link = BASE_URL + "/register/activate?email=" + email + "&token=" + token;
+        String tokenExpiryDate = expiryDate.toString();
+        String supportEmail = "invoicehub@gmail.com";
+        String teamName = "Invoicehub Support";
+
+        String messageDraft = """
+                Dear %s,
+                
+                Thank you for registering with %s! We're excited to have you on board.
+                
+                To complete your registration and unlock all the features, please confirm your email address by clicking the link below:
+                
+                %s
+                
+                If you did not registered to our application, you can safely ignore this email.
+                
+                For security reasons, this confirmation link will expire at %s. If the link expired, you will need to request a new confirmation.
+                
+                If you have any questions or need further assistance, feel free to contact our support team at %s.
+                
+                Best Regards.
+                The %s Team
+                """;
+        return String.format(messageDraft, fullname, companyName, link, tokenExpiryDate, supportEmail, teamName);
+
+    }
+
+
+    private SimpleMailMessage createConfirmPasswordResetEmail(String email) {
+        String fullname = findUserFullName(email);
+
+        String message = createConfirmPasswordMessage(fullname);
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setSubject("Password Reset Confirmation");
+        mail.setText(message);
+
+        return mail;
+    }
+
+
     private SimpleMailMessage createForgotPasswordEmail(String email) {
         String fullname = findUserFullName(email);
 
         ForgotPasswordToken forgotPasswordToken = new ForgotPasswordToken(email);
-        ForgotPasswordToken createdToken = tokenRepository.save(forgotPasswordToken);
+        ForgotPasswordToken createdToken = forgotPasswordTokenRepository.save(forgotPasswordToken);
 
         String message = createForgotPasswordMessage(email, fullname, createdToken.getToken(), createdToken.getExpiryDate());
 
@@ -142,6 +211,22 @@ public class EmailServiceImpl implements EmailService {
                 The %s Team
                 """;
         return String.format(messageDraft, fullname, companyName, link, tokenExpiryDate, supportEmail, teamName);
+    }
+
+    private String createConfirmPasswordMessage(String fullname) {
+        String supportEmail = "invoicehub@gmail.com";
+        String teamName = "Invoicehub Support";
+        String messageDraft = """
+                Dear %s,
+                
+                Your password has been successfully updated!
+                
+                If you have any questions or need further assistance, feel free to contact our support team at %s.
+                
+                Best Regards.
+                The %s Team
+                """;
+        return String.format(messageDraft, fullname, supportEmail, teamName);
     }
 
     private String findUserFullName(String email) {

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface TokenRepository extends JpaRepository<ForgotPasswordToken, Long> {
+public interface ForgotPasswordTokenRepository extends JpaRepository<ForgotPasswordToken, Long> {
 
     Optional<ForgotPasswordToken> findByEmailAndToken(String email, String token);
 

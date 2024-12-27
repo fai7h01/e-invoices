@@ -176,26 +176,16 @@ public class KeycloakServiceImpl implements KeycloakService {
     }
 
     @Override
-    public void sendEmailVerification(String username) {
+    public void verifyUser(String username) {
         UsersResource usersResource = getUserResource();
         List<UserRepresentation> users = usersResource.search(username);
         if (users.isEmpty()) {
             throw new UserNotFoundException("User not found to verify email.");
         }
-        String userId = users.get(0).getId();
-        usersResource.get(userId).sendVerifyEmail();
+        UserRepresentation userRepresentation = users.get(0);
+        userRepresentation.setEmailVerified(true);
     }
 
-    @Override
-    public boolean isEmailVerified(String username) {
-        UsersResource usersResource = getUserResource();
-        List<UserRepresentation> users = usersResource.search(username);
-        if (users.isEmpty()) {
-            throw new UserNotFoundException("User not found to verify email.");
-        }
-        UserRepresentation user = users.get(0);
-        return user.isEmailVerified();
-    }
 
     private UsersResource getUserResource() {
         Keycloak keycloak = getKeycloakInstance();

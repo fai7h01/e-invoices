@@ -21,7 +21,7 @@ public interface UserService {
 
     void resetPassword(String username, ForgotPasswordDTO forgotPasswordDTO);
 
-    void updateStatus(UserDTO user);
+    void updateStatus(String username);
 
 
 
