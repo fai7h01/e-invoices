@@ -29,5 +29,11 @@ public class UserDTO {
     private CompanyDTO company;
     private RoleDTO role;
 
+    public void checkConfirmPassword() {
+        if (password == null || confirmPassword == null) return;
+        else if (!password.equals(confirmPassword)) {
+            confirmPassword = null;
+        }
+    }
 
 }

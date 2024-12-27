@@ -1,5 +1,6 @@
 package com.accounting.einvoices.service;
 
+import com.accounting.einvoices.dto.ForgotPasswordDTO;
 import com.accounting.einvoices.dto.UserDTO;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public interface UserService {
     boolean isEmailVerified(String username);
 
     void sendEmailVerification(String username);
+
+    void resetPassword(String username, ForgotPasswordDTO forgotPasswordDTO);
 
     void updateStatus(UserDTO user);
 

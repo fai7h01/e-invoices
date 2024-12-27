@@ -1,6 +1,7 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.CompanyDTO;
+import com.accounting.einvoices.dto.ForgotPasswordDTO;
 import com.accounting.einvoices.dto.RoleDTO;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.User;
@@ -138,6 +139,14 @@ public class UserServiceImpl implements UserService {
     public void sendEmailVerification(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         keycloakService.sendEmailVerification(user.getUsername());
+    }
+
+    @Override
+    public void resetPassword(String username, ForgotPasswordDTO forgotPasswordDTO) {
+        UserDTO dto = this.findByUsername(username);
+        dto.setPassword(forgotPasswordDTO.getPassword());
+        keycloakService.userUpdate(dto);
+        userRepository.save(mapperUtil.convert(dto, new User()));
     }
 
     @Override

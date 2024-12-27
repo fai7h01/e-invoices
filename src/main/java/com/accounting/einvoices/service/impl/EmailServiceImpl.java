@@ -2,7 +2,7 @@ package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.entity.ForgotPasswordToken;
-import com.accounting.einvoices.repository.ForgotPasswordTokenRepository;
+import com.accounting.einvoices.repository.TokenRepository;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.UserService;
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -30,19 +30,19 @@ import java.util.concurrent.CompletableFuture;
 public class EmailServiceImpl implements EmailService {
 
     @Value("${app.base-url}")
-    private static String BASE_URL;
+    private String BASE_URL;
 
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
     private final UserService userService;
-    private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
+    private final TokenRepository tokenRepository;
 
     public EmailServiceImpl(JavaMailSender emailSender, TemplateEngine templateEngine, UserService userService,
-                            ForgotPasswordTokenRepository forgotPasswordTokenRepository) {
+                            TokenRepository tokenRepository) {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
         this.userService = userService;
-        this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
+        this.tokenRepository = tokenRepository;
     }
 
     @Async("asyncTaskExecutor")
@@ -95,6 +95,7 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
+    @Async("asyncTaskExecutor")
     @Override
     public void sendEmail(SimpleMailMessage simpleMailMessage) {
         emailSender.send(simpleMailMessage);
@@ -104,7 +105,7 @@ public class EmailServiceImpl implements EmailService {
         String fullname = findUserFullName(email);
 
         ForgotPasswordToken forgotPasswordToken = new ForgotPasswordToken(email);
-        ForgotPasswordToken createdToken = forgotPasswordTokenRepository.save(forgotPasswordToken);
+        ForgotPasswordToken createdToken = tokenRepository.save(forgotPasswordToken);
 
         String message = createForgotPasswordMessage(email, fullname, createdToken.getToken(), createdToken.getExpiryDate());
 
