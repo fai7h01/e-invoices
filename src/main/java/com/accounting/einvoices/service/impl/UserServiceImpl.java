@@ -140,5 +140,4 @@ public class UserServiceImpl implements UserService {
         keycloakService.sendEmailVerification(user.getUsername());
     }
 
-
 }

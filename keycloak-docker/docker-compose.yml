@@ -12,6 +12,7 @@ services:
       POSTGRES_PASSWORD: password
   keycloak:
     image: fai7h01/customkc:legacy
+    container_name: keycloak
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
@@ -23,5 +24,7 @@ services:
       KEYCLOAK_PASSWORD: admin
     ports:
       - 8080:8080
+    volumes:
+      - /e-invoices/target/invoicing-app-0.0.1-SNAPSHOT.jar:/opt/keycloak/providers/custom-event-listener.jar
     depends_on:
       - postgres
