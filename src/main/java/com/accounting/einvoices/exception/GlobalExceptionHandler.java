@@ -16,6 +16,8 @@ import com.accounting.einvoices.exception.product.ProductAlreadyExistsException;
 import com.accounting.einvoices.exception.product.ProductCannotBeDeletedException;
 import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.exception.product.ProductNotFoundException;
+import com.accounting.einvoices.exception.token.TokenNotFoundException;
+import com.accounting.einvoices.exception.token.TokenNotValidException;
 import com.accounting.einvoices.exception.user.UserAlreadyExistsException;
 import com.accounting.einvoices.exception.user.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +50,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({UserNotFoundException.class, InvoiceNotFoundException.class, ClientVendorNotFoundException.class, CategoryNotFoundException.class,
-            ProductNotFoundException.class, InvoiceProductNotFoundException.class, CompanyNotFoundException.class})
+            ProductNotFoundException.class, InvoiceProductNotFoundException.class, CompanyNotFoundException.class, DataIsNotPresentException.class,
+            TokenNotFoundException.class, TokenNotValidException.class})
     public ResponseEntity<ExceptionWrapper> handleNotFoundExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()

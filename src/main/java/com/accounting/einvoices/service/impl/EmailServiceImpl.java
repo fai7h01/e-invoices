@@ -125,36 +125,6 @@ public class EmailServiceImpl implements EmailService {
         return mail;
     }
 
-    private String createVerificationMessage(String email, String fullname, String token, LocalDate expiryDate) {
-
-        String companyName = "InvoiceHub";
-        String link = BASE_URL + "/activate?email=" + email + "&token=" + token;
-        String tokenExpiryDate = expiryDate.toString();
-        String supportEmail = "invoicehub@gmail.com";
-        String teamName = "Invoicehub Support";
-
-        String messageDraft = """
-                Dear %s,
-                
-                Thank you for registering with %s! We're excited to have you on board.
-                
-                To complete your registration and unlock all the features, please confirm your email address by clicking the link below:
-                
-                %s
-                
-                If you did not registered to our application, you can safely ignore this email.
-                
-                For security reasons, this confirmation link will expire at %s. If the link expired, you will need to request a new confirmation.
-                
-                If you have any questions or need further assistance, feel free to contact our support team at %s.
-                
-                Best Regards.
-                The %s Team
-                """;
-        return String.format(messageDraft, fullname, companyName, link, tokenExpiryDate, supportEmail, teamName);
-
-    }
-
 
     private SimpleMailMessage createConfirmPasswordResetEmail(String email) {
         String fullname = findUserFullName(email);
@@ -184,6 +154,36 @@ public class EmailServiceImpl implements EmailService {
         mail.setText(message);
 
         return mail;
+    }
+
+    private String createVerificationMessage(String email, String fullname, String token, LocalDate expiryDate) {
+
+        String companyName = "InvoiceHub";
+        String link = BASE_URL + "/activate?email=" + email + "&token=" + token;
+        String tokenExpiryDate = expiryDate.toString();
+        String supportEmail = "invoicehub@gmail.com";
+        String teamName = "Invoicehub Support";
+
+        String messageDraft = """
+                Dear %s,
+                
+                Thank you for registering with %s! We're excited to have you on board.
+                
+                To complete your registration and unlock all the features, please confirm your email address by clicking the link below:
+                
+                %s
+                
+                If you did not registered to our application, you can safely ignore this email.
+                
+                For security reasons, this confirmation link will expire at %s. If the link expired, you will need to request a new confirmation.
+                
+                If you have any questions or need further assistance, feel free to contact our support team at %s.
+                
+                Best Regards.
+                The %s Team
+                """;
+        return String.format(messageDraft, fullname, companyName, link, tokenExpiryDate, supportEmail, teamName);
+
     }
 
     private String createForgotPasswordMessage(String email, String fullname, String token, LocalDate expiryDate) {

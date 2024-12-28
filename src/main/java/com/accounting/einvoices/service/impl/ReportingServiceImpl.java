@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.enums.Currency;
+import com.accounting.einvoices.exception.DataIsNotPresentException;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -132,7 +133,10 @@ public class ReportingServiceImpl implements ReportingService {
             BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
             totalCost = totalCost.add(cost);
         }
-        return BigDecimalUtil.format(totalCost);
+        if (totalCost.longValue() != 0) {
+            return BigDecimalUtil.format(totalCost);
+        }
+        throw new DataIsNotPresentException("Data is not present.");
     }
 
     @Override
@@ -144,8 +148,7 @@ public class ReportingServiceImpl implements ReportingService {
                     .map(InvoiceDTO::getTotal)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        return BigDecimal.ZERO;
-
+        throw new DataIsNotPresentException("Data is not present.");
     }
 
     @Override
@@ -159,7 +162,7 @@ public class ReportingServiceImpl implements ReportingService {
                             .map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        return BigDecimal.ZERO;
+        throw new DataIsNotPresentException("Data is not present.");
     }
 
 
@@ -196,7 +199,7 @@ public class ReportingServiceImpl implements ReportingService {
 
                 break;
             default:
-                return BigDecimal.ZERO;
+                throw new DataIsNotPresentException("Data is not present.");
 
         }
 
