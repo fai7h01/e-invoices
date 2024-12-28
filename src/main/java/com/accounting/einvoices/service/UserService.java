@@ -23,6 +23,8 @@ public interface UserService {
 
     void updateStatus(String username);
 
+    boolean checkUserStatus(String username);
+
 
 
 }

@@ -136,5 +136,11 @@ public class UserServiceImpl implements UserService {
         keycloakService.verifyUser(found.getUsername());
     }
 
+    @Override
+    public boolean checkUserStatus(String username) {
+        User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        return foundUser.getUserStatus().equals(UserStatus.Active);
+    }
+
 
 }
