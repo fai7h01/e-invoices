@@ -20,12 +20,10 @@ public class RegisterController {
 
     private final UserService userService;
     private final EmailService emailService;
-    private final TokenService tokenService;
 
     public RegisterController(UserService userService, EmailService emailService, TokenService tokenService) {
         this.userService = userService;
         this.emailService = emailService;
-        this.tokenService = tokenService;
     }
 
     @PostMapping
@@ -40,16 +38,6 @@ public class RegisterController {
                 .data(saved).build());
     }
 
-    @PostMapping("/activate")
-    public ResponseEntity<ResponseWrapper> userActivation(@RequestParam("email") String email, @RequestParam("token") String token) {
-        tokenService.confirmVerificationPasswordToken(email, token);
-        userService.updateStatus(email);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
-                .success(true)
-                .message("User is successfully activated.")
-                .build());
-    }
 
 
 }

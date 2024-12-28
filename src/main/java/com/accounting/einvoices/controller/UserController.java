@@ -30,6 +30,7 @@ public class UserController {
         this.keycloakService = keycloakService;
     }
 
+
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {

@@ -27,7 +27,7 @@ public class PasswordController {
         this.tokenService = tokenService;
     }
 
-    @GetMapping("forgot-password")
+    @GetMapping("/forgot-password")
     public ResponseEntity<ResponseWrapper> forgotPassword(@RequestParam("email") String emal) {
         emailService.sendForgotPasswordEmail(emal);
         return ResponseEntity.ok(ResponseWrapper.builder()
