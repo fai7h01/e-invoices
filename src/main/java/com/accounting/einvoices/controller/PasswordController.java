@@ -9,10 +9,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/api/v1/password")
 @Tag(name = "Password Controller", description = "Password API")
 public class PasswordController {
@@ -28,6 +29,7 @@ public class PasswordController {
     }
 
     @GetMapping("/forgot-password")
+    @ResponseBody
     public ResponseEntity<ResponseWrapper> forgotPassword(@RequestParam("email") String emal) {
         emailService.sendForgotPasswordEmail(emal);
         return ResponseEntity.ok(ResponseWrapper.builder()

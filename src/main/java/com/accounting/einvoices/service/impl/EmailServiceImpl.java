@@ -159,7 +159,7 @@ public class EmailServiceImpl implements EmailService {
     private String createVerificationMessage(String email, String fullname, String token, LocalDate expiryDate) {
 
         String companyName = "InvoiceHub";
-        String link = BASE_URL + "/activate?email=" + email + "&token=" + token;
+        String link = BASE_URL + "/register/activate?email=" + email + "&token=" + token;
         String tokenExpiryDate = expiryDate.toString();
         String supportEmail = "invoicehub@gmail.com";
         String teamName = "Invoicehub Support";
