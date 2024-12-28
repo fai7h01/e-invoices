@@ -1,8 +1,6 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.dto.InvoiceDTO;
-import com.accounting.einvoices.dto.InvoiceProductDTO;
-import com.accounting.einvoices.dto.ProductDTO;
+import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.exception.DataIsNotPresentException;
@@ -16,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -39,10 +38,34 @@ public class ReportingServiceImpl implements ReportingService {
 
     @Override
     public Map<String, Integer> getSummaryQuantities() {
-        return Map.of("total_employees", userService.findAll().size(),
-                "total_clients", clientVendorService.findAll().size(),
-                "total_products", productService.findAll().size(),
+        return Map.of("total_employees", findEmployeeNumber(),
+                "total_clients", findClientVendorNumber(),
+                "total_products", findProductNumber(),
                 "total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
+    }
+
+    private int findProductNumber() {
+        List<ProductDTO> products = productService.findAll();
+        if (products == null || products.isEmpty()) {
+            return 0;
+        }
+        return products.size();
+    }
+
+    private int findClientVendorNumber() {
+        List<ClientVendorDTO> clientVendors = clientVendorService.findAll();
+        if (clientVendors == null || clientVendors.isEmpty()) {
+            return 0;
+        }
+        return clientVendors.size();
+    }
+
+    private int findEmployeeNumber() {
+        List<UserDTO> employees = userService.findAll();
+        if (employees == null || employees.isEmpty()) {
+            return 0;
+        }
+        return employees.size();
     }
 
     @Override
@@ -56,7 +79,6 @@ public class ReportingServiceImpl implements ReportingService {
 
         return map;
     }
-
 
 
     @Override
