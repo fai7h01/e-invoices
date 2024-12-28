@@ -184,6 +184,7 @@ public class KeycloakServiceImpl implements KeycloakService {
         }
         UserRepresentation userRepresentation = users.get(0);
         userRepresentation.setEmailVerified(true);
+        usersResource.get(userRepresentation.getId()).update(userRepresentation);
     }
 
 
