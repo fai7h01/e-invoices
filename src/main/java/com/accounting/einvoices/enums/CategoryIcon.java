@@ -8,7 +8,7 @@ public enum CategoryIcon {
     ShoppingBag,
     Airplay,
     Aperture,
-    Books,
+    Book,
     Box,
     Cake,
     Car,
