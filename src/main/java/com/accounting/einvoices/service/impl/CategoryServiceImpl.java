@@ -46,13 +46,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findByDescription(String desc) {
-        Category found = categoryRepository.findByDescriptionIgnoreCase(desc).orElseThrow(() -> new CategoryNotFoundException("Category not found."));
+        Category found = categoryRepository.findByDescriptionIgnoreCaseAndCompany_Id(desc, getLoggedInCompany().getId())
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found."));
         return mapperUtil.convert(found, new CategoryDTO());
     }
 
     @Override
     public CategoryDTO save(CategoryDTO category) {
-        Optional<Category> found = categoryRepository.findByDescriptionIgnoreCase(category.getDescription());
+        Optional<Category> found = categoryRepository.findByDescriptionIgnoreCaseAndCompany_Id(category.getDescription(), getLoggedInCompany().getId());
         if (found.isPresent()) throw new CategoryAlreadyExistsException("Category already exists.");
         category.setCompany(getLoggedInCompany());
         Category saved = categoryRepository.save(mapperUtil.convert(category, new Category()));
