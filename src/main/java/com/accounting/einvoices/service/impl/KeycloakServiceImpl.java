@@ -64,13 +64,6 @@ public class KeycloakServiceImpl implements KeycloakService {
 
                 realmResource.users().get(userId).roles().clientLevel(appClient.getId())
                         .add(Collections.singletonList(userClientRole));
-                try {
-                    usersResource.get(userId).sendVerifyEmail();
-                    log.info("Verification email was sent!!!");
-                } catch (Exception e) {
-                    log.error("Email verification Could not send: {}", e.getMessage());
-                }
-
             }
 
         } catch (Exception e) {

@@ -1,6 +1,5 @@
 package com.accounting.einvoices.entity;
 
-import com.accounting.einvoices.enums.Gender;
 import com.accounting.einvoices.enums.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,14 +28,14 @@ public class User extends BaseEntity{
     private boolean enabled;
     private LocalDate dateOfEmployment;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id")
     private Role role;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
 }

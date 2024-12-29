@@ -91,23 +91,27 @@ public class EmailServiceImpl implements EmailService {
     }
 
 
+    @Async("asyncTaskExecutor")
     @Override
     public void sendForgotPasswordEmail(String email) {
         SimpleMailMessage simpleMailMessage = createForgotPasswordEmail(email);
         this.sendEmail(simpleMailMessage);
     }
 
+    @Async("asyncTaskExecutor")
     @Override
     public void sendConfirmPasswordResetEmail(String email) {
         SimpleMailMessage simpleMailMessage = createConfirmPasswordResetEmail(email);
         this.sendEmail(simpleMailMessage);
     }
 
+    @Async("asyncTaskExecutor")
     @Override
     public void sendVerificationEmail(String email) {
         SimpleMailMessage simpleMailMessage = createVerificationEmail(email);
         this.sendEmail(simpleMailMessage);
     }
+
 
     private SimpleMailMessage createVerificationEmail(String email) {
         String fullname = findUserFullName(email);

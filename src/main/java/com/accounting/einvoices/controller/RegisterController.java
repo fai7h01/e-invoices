@@ -53,6 +53,15 @@ public class RegisterController {
                 .build());
     }
 
+    @GetMapping("/checkUserStatus/{username}")
+    public ResponseEntity<ResponseWrapper> checkUserStatus(@PathVariable("username") String username) {
+        boolean status = userService.checkUserStatus(username);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("User Active status.")
+                .data(status).build());
+    }
 
 
 

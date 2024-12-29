@@ -34,7 +34,6 @@ public class DevSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         super.configure(http);
         http.cors().and().authorizeRequests()
                 .antMatchers("/api/v1/register/**").permitAll()
-                .antMatchers("/api/v1/activate/**").permitAll()
                 .antMatchers("/api/v1/password/**").permitAll()
                 .antMatchers("/api/v1/user/**").hasRole("Admin")
                 .antMatchers("/api/v1/clientVendor/**").hasAnyRole("Admin", "Manager", "Employee")
