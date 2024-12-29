@@ -10,6 +10,7 @@ import com.accounting.einvoices.service.UserService;
 import com.itextpdf.html2pdf.HtmlConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
+@Profile("dev")
 public class EmailServiceImpl implements EmailService {
 
     @Value("${app.base-url}")
