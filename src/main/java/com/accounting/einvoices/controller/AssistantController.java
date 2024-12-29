@@ -24,13 +24,11 @@ public class AssistantController {
 
     private final InvoiceService invoiceService;
     private final EmailService emailService;
-    private final CompanyService companyService;
     private final InvoiceProductService invoiceProductService;
 
-    public AssistantController(InvoiceService invoiceService, EmailService emailService, CompanyService companyService, InvoiceProductService invoiceProductService) {
+    public AssistantController(InvoiceService invoiceService, EmailService emailService, InvoiceProductService invoiceProductService) {
         this.invoiceService = invoiceService;
         this.emailService = emailService;
-        this.companyService = companyService;
         this.invoiceProductService = invoiceProductService;
     }
 

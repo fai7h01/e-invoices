@@ -41,7 +41,15 @@ public class ReportingServiceImpl implements ReportingService {
         return Map.of("total_employees", findEmployeeNumber(),
                 "total_clients", findClientVendorNumber(),
                 "total_products", findProductNumber(),
-                "total_products_sold", invoiceProductService.sumQuantityOfSoldProducts());
+                "total_products_sold", findSumQtyOfSoldProducts());
+    }
+
+    private int findSumQtyOfSoldProducts() {
+        Integer count = invoiceProductService.sumQuantityOfSoldProducts();
+        if (count == null) {
+            return 0;
+        }
+        return count;
     }
 
     private int findProductNumber() {

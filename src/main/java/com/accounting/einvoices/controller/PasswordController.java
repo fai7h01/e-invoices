@@ -30,7 +30,7 @@ public class PasswordController {
 
     @GetMapping("/forgot-password")
     @ResponseBody
-    public ResponseEntity<ResponseWrapper> forgotPassword(@RequestParam("email") String emal) {
+    public ResponseEntity<ResponseWrapper> sendforgotPasswordEmail(@RequestParam("email") String emal) {
         emailService.sendForgotPasswordEmail(emal);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -40,7 +40,7 @@ public class PasswordController {
     }
 
     @PostMapping("/new-password")
-    public ResponseEntity<ResponseWrapper> newPassword(@RequestParam("email") String email, @RequestParam("token") String token,
+    public ResponseEntity<ResponseWrapper> confirmNewPassword(@RequestParam("email") String email, @RequestParam("token") String token,
                                                               @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
         tokenService.confirmForgotPasswordToken(email, token);
         userService.resetPassword(email, forgotPasswordDTO);

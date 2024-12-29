@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/api/v1/register")
 @Tag(name = "Register Controller", description = "User Register")
 public class RegisterController {
@@ -43,12 +43,25 @@ public class RegisterController {
     }
 
     @GetMapping("/activate")
-    public String userActivation(@RequestParam("email") String email, @RequestParam("token") String token) {
+    public ResponseEntity<ResponseWrapper> userActivation(@RequestParam("email") String email, @RequestParam("token") String token) {
         tokenService.confirmVerificationPasswordToken(email, token);
         userService.updateStatus(email);
-        return "EmailConfirmation";
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("User is successfully activated.")
+                .build());
     }
 
+    @GetMapping("/checkUserStatus/{username}")
+    public ResponseEntity<ResponseWrapper> checkUserStatus(@PathVariable("username") String username) {
+        boolean status = userService.checkUserStatus(username);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("User Active status.")
+                .data(status).build());
+    }
 
 
 }

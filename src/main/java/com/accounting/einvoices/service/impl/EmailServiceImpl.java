@@ -183,13 +183,12 @@ public class EmailServiceImpl implements EmailService {
                 The %s Team
                 """;
         return String.format(messageDraft, fullname, companyName, link, tokenExpiryDate, supportEmail, teamName);
-
     }
 
     private String createForgotPasswordMessage(String email, String fullname, String token, LocalDate expiryDate) {
 
         String companyName = "InvoiceHub";
-        String link = BASE_URL + "/password/new-password?email=" + email + "&token=" + token;
+        String link = BASE_URL + "/reset-password-confirmation?email=" + email + "&token=" + token;
         String tokenExpiryDate = expiryDate.toString();
         String supportEmail = "invoicehub@gmail.com";
         String teamName = "Invoicehub Support";
