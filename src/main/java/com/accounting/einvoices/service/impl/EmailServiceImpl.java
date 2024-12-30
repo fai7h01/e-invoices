@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Async("asyncTaskExecutor")
     @Override
-    public CompletableFuture<String> sendEmailWithAttachment(String to, String subject, String text, byte[] pdfAttachment) {
+    public void sendEmailWithAttachment(String to, String subject, String text, byte[] pdfAttachment) {
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -62,10 +62,9 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(text);
             helper.addAttachment("invoice.pdf", new ByteArrayDataSource(pdfAttachment, "application/pdf"));
             emailSender.send(message);
-            return CompletableFuture.completedFuture("Email sent successfully.");
+            log.info("Email with attachment is sent!");
         } catch (MessagingException e) {
-            log.info("Email Service Exception: {}", e.getMessage());
-            return CompletableFuture.completedFuture("Sending email failed!");
+            log.info("Could not send email with attachment: {}", e.getMessage());
         }
     }
 

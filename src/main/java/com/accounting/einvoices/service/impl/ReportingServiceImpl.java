@@ -163,10 +163,8 @@ public class ReportingServiceImpl implements ReportingService {
             BigDecimal cost = price.multiply(BigDecimal.valueOf(quantity));
             totalCost = totalCost.add(cost);
         }
-        if (totalCost.longValue() != 0) {
-            return BigDecimalUtil.format(totalCost);
-        }
-        throw new DataIsNotPresentException("Data is not present.");
+
+        return BigDecimalUtil.format(totalCost);
     }
 
     @Override
@@ -178,7 +176,7 @@ public class ReportingServiceImpl implements ReportingService {
                     .map(InvoiceDTO::getTotal)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        throw new DataIsNotPresentException("Data is not present.");
+        return BigDecimal.ZERO;
     }
 
     @Override
@@ -192,7 +190,7 @@ public class ReportingServiceImpl implements ReportingService {
                             .map(InvoiceProductDTO::getProfitLoss).reduce(BigDecimal.ZERO, BigDecimal::add))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
-        throw new DataIsNotPresentException("Data is not present.");
+        return BigDecimal.ZERO;
     }
 
 
@@ -229,7 +227,7 @@ public class ReportingServiceImpl implements ReportingService {
 
                 break;
             default:
-                throw new DataIsNotPresentException("Data is not present.");
+                throw new DataIsNotPresentException("Data is not present for " + currency);
 
         }
 
