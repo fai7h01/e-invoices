@@ -33,12 +33,21 @@ public class ProdSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.cors().and().authorizeRequests()
-                // .antMatchers("/api/v1/user/**").hasAnyAuthority("Admin", "Manager")
-                // .antMatchers("/api/v1/clientVendor/**").hasAnyAuthority("Admin", "Manager")
-                // .antMatchers("/api/v1/invoice/**").hasAnyAuthority("Employee")
-                // .antMatchers("/localhost:1010/**").hasAuthority("ai-assistant")
-                .anyRequest().permitAll();
-        http.csrf().disable();
+                .antMatchers("/api/v1/register/**").permitAll()
+                .antMatchers("/api/v1/password/**").permitAll()
+                .antMatchers("/api/v1/user/**").hasRole("Admin")
+                .antMatchers("/api/v1/clientVendor/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/category/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/company/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/dashboard/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/product/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/invoice/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/mailing/**").hasAnyRole("Admin", "Manager", "Employee")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .csrf()
+                .disable();
     }
 
     @Bean
