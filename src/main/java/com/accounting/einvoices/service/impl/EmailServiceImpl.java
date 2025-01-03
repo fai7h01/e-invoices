@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
-@Profile("prod")
+@Profile("dev")
 public class EmailServiceImpl implements EmailService {
 
     @Value("${app.base-url}")
