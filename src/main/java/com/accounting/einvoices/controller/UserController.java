@@ -34,6 +34,7 @@ public class UserController {
     }
 
 
+    @RolesAllowed({"Admin"})
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
@@ -46,9 +47,11 @@ public class UserController {
                 .data(saved).build());
     }
 
+
     @ExecutionTime
-    @GetMapping("/list")
     @Operation(summary = "Get All Users")
+    @RolesAllowed({"Admin"})
+    @GetMapping("/list")
     public ResponseEntity<ResponseWrapper> getAllUsers() {
         List<UserDTO> users = userService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
@@ -58,6 +61,7 @@ public class UserController {
                 .data(users).build());
     }
 
+    @RolesAllowed({"Admin"})
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
         UserDTO updated = userService.update(id, user);
@@ -68,12 +72,14 @@ public class UserController {
                 .data(updated).build());
     }
 
+    @RolesAllowed({"Admin"})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("id") Long id){
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @RolesAllowed({"Admin", "Manager", "Employee"})
     @GetMapping("/loggedInUser")
     public ResponseEntity<ResponseWrapper> getLoggedInUser() {
         UserDTO loggedInUser = keycloakService.getLoggedInUser();
@@ -84,6 +90,8 @@ public class UserController {
                 .data(loggedInUser).build());
     }
 
+
+    @RolesAllowed({"Admin", "Manager", "Employee"})
     @GetMapping("/findByUsername/{username}")
     public ResponseEntity<ResponseWrapper> findByUsername(@PathVariable("username") String username) {
         UserDTO user = userService.findByUsername(username);
