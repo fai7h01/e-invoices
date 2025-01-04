@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> findAllByCreatedDateBetweenMonths(int year, int startMonth, int endMonth, String currency) {
-        return productRepository.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, Currency.valueOf(currency))
+        return productRepository.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, Currency.valueOf(currency), getLoggedInCompany().getId())
                 .stream()
                 .map(product -> mapperUtil.convert(product, new ProductDTO()))
                 .toList();
