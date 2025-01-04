@@ -11,7 +11,6 @@ import java.util.Map;
 
 public interface DashboardService {
 
-
     CurrencyExchangeDTO exchangeRatesOf(String code, Long amount);
 
     //chart

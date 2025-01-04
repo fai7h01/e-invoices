@@ -45,8 +45,10 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
 
+        //return success if list is empty
         if (invoices == null) {
-            throw new InvoiceNotFoundException("Invoices not found.");
+//            throw new InvoiceNotFoundException("Invoices not found.");
+            return new ArrayList<>();
         }
 
         int totalQuantity = 0;
@@ -88,7 +90,10 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
 
-        if (invoices == null) throw new InvoiceNotFoundException("Approved Invoices not found.");
+        //return success if list is empty
+        if (invoices == null) {
+            return new HashMap<>();
+        }
 
         ProductSalesStatDTO productSalesStat;
 
@@ -167,7 +172,6 @@ public class DashboardServiceImpl implements DashboardService {
         }
 
         throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
-
     }
 
 
