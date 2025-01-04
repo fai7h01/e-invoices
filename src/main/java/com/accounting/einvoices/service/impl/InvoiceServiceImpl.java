@@ -9,6 +9,7 @@ import com.accounting.einvoices.repository.InvoiceRepository;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -22,10 +23,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
-    private static final Logger log = LoggerFactory.getLogger(InvoiceServiceImpl.class);
     private final InvoiceRepository invoiceRepository;
     private final MapperUtil mapperUtil;
     private final InvoiceProductService invoiceProductService;
@@ -95,7 +96,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setCompany(loggedInCompany);
         invoice.setClientVendor(client);
         Invoice converted = mapperUtil.convert(invoice, new Invoice());
-        //choose currency for invoice before saving
         Invoice saved = invoiceRepository.save(converted);
         return mapperUtil.convert(saved, new InvoiceDTO());
     }
@@ -106,7 +106,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (foundInvoice.isPresent()) {
             invoice.setId(id);
             invoice.setCompany(companyService.getByLoggedInUser());
-            //find clientVendor by name
             ClientVendorDTO client = clientVendorService.findByName(invoice.getClientVendor().getName());
             invoice.getClientVendor().setId(client.getId());
             Invoice saved = invoiceRepository.save(mapperUtil.convert(invoice, new Invoice()));
@@ -140,7 +139,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .map(invoiceProductService::getTotalWithTax)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTax = invoiceProductDtoList
+        BigDecimal totalTax = invoiceProductDtoList //TODO calculate tax for each ip and reduce
                 .stream()
                 .map(InvoiceProductDTO::getTax)
                 .filter(Objects::nonNull)
