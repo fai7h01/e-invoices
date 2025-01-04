@@ -3,6 +3,7 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,10 +25,12 @@ public class UserController {
 
     private final UserService userService;
     private final KeycloakService keycloakService;
+    private final EmailService emailService;
 
-    public UserController(UserService userService, KeycloakService keycloakService) {
+    public UserController(UserService userService, KeycloakService keycloakService, EmailService emailService) {
         this.userService = userService;
         this.keycloakService = keycloakService;
+        this.emailService = emailService;
     }
 
 
@@ -35,6 +38,7 @@ public class UserController {
     @Operation(summary = "Create/Register User")
     public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
         UserDTO saved = userService.save(user);
+        emailService.sendVerificationEmail(user.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
