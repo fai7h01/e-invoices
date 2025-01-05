@@ -35,7 +35,6 @@ public class ProdSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.cors().and().authorizeRequests()
                 .antMatchers("/api/v1/register/**").permitAll()
                 .antMatchers("/api/v1/password/**").permitAll()
-                .antMatchers("/api/v1/user/**").hasRole("Admin")
                 .antMatchers("/api/v1/clientVendor/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/category/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/company/**").hasAnyRole("Admin", "Manager", "Employee")
@@ -54,7 +53,7 @@ public class ProdSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://invoicehub.space",
-                "https://invoicehub-lb-1106916193.us-east-1.elb.amazonaws.com", "https://api.invoicehub.space"));
+                "https://invoicehub-load-balancer-1078235730.us-east-1.elb.amazonaws.com", "https://api.invoicehub.space"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
