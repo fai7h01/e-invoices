@@ -66,7 +66,7 @@ class ProductServiceImplTest {
 
         List<ProductDTO> productDTOList = List.of(productDTO1, productDTO2);
 
-        when(productRepository.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency)).thenReturn(productEntityList);
+        when(productRepository.findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency, anyLong())).thenReturn(productEntityList);
 
         for (int i = 0; i < productEntityList.size(); i++) {
             Product product = productEntityList.get(i);
@@ -81,7 +81,7 @@ class ProductServiceImplTest {
         assertEquals(productDTOList.get(0), result.get(0));
         assertEquals(productDTOList.get(1), result.get(1));
 
-        verify(productRepository, times(1)).findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency);
+        verify(productRepository, times(1)).findAllByCreatedDateBetweenMonths(year, startMonth, endMonth, currency, anyLong());
         verify(mapperUtil, times(productEntityList.size())).convert(any(Product.class), any(ProductDTO.class));
 
     }

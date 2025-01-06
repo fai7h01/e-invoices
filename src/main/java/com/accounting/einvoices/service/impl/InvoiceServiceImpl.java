@@ -10,8 +10,6 @@ import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +53,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<InvoiceDTO> findAllByCompanyTitle(String company) {
-        List<Invoice> invoices = invoiceRepository.findAllByCompanyTitle(company);
+        List<Invoice> invoices = invoiceRepository.findAllByCompanyTitleIgnoreCase(company);
         return invoices.stream()
                 .map(invoice -> {
                     InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
