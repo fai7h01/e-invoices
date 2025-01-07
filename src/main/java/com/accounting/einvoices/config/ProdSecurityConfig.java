@@ -52,7 +52,7 @@ public class ProdSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://invoicehub.space",
+        configuration.setAllowedOrigins(List.of("https://www.invoicehub.space",
                 "https://invoicehub-load-balancer-1078235730.us-east-1.elb.amazonaws.com", "https://api.invoicehub.space"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
