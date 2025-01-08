@@ -12,7 +12,9 @@ import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,14 +32,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
+    private final StorageService storageService;
+    private final KeycloakService keycloakService;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
-                              CompanyService companyService, ClientVendorService clientVendorService) {
+                              CompanyService companyService, ClientVendorService clientVendorService, StorageService storageService, KeycloakService keycloakService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
+        this.storageService = storageService;
+        this.keycloakService = keycloakService;
     }
 
     @Override
@@ -89,6 +95,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO save(InvoiceDTO invoice) {
+        return saveInvoice(invoice, null);
+    }
+
+    @Override
+    public InvoiceDTO save(InvoiceDTO invoice, MultipartFile file) {
+        return saveInvoice(invoice, file);
+    }
+
+    private InvoiceDTO saveInvoice(InvoiceDTO invoice, MultipartFile file) {
+        if (file != null) {
+            String key = "userId/" + keycloakService.getLoggedInUser().getId() + "/invoice/" + invoice.getInvoiceNo() + "/file/" + file.getOriginalFilename();
+            storageService.uploadFile(file, key);
+            invoice.setAttachmentKey(key);
+        }
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         ClientVendorDTO client = clientVendorService.findByName(invoice.getClientVendor().getName());
         invoice.setCompany(loggedInCompany);

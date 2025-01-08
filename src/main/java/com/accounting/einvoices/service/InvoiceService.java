@@ -2,10 +2,8 @@ package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.enums.Currency;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +20,8 @@ public interface InvoiceService {
     InvoiceDTO generateInvoice();
 
     InvoiceDTO save(InvoiceDTO invoice);
+
+    InvoiceDTO save(InvoiceDTO invoice, MultipartFile file);
 
     InvoiceDTO update(Long id, InvoiceDTO invoice);
 

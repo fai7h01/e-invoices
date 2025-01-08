@@ -34,6 +34,8 @@ public class Invoice extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    private String attachmentKey;
+
     private String paymentTerms;
 
     private String notes;

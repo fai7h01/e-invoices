@@ -6,10 +6,14 @@ import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
+import com.accounting.einvoices.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,15 +30,29 @@ public class InvoiceController {
         this.invoiceProductService = invoiceProductService;
     }
 
+//    @PostMapping("/create")
+//    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
+//        InvoiceDTO saved = invoiceService.save(invoice);
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .body(ResponseWrapper.builder()
+//                .code(HttpStatus.CREATED.value())
+//                .success(true)
+//                .message("Invoice is successfully created.")
+//                .data(saved).build());
+//    }
+
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
-        InvoiceDTO saved = invoiceService.save(invoice);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
-                .success(true)
-                .message("Invoice is successfully created.")
-                .data(saved).build());
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestPart InvoiceDTO invoice, @RequestPart MultipartFile file) {
+
+        InvoiceDTO saved = file != null ? invoiceService.save(invoice, file) : invoiceService.save(invoice);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseWrapper.builder()
+                        .code(HttpStatus.CREATED.value())
+                        .success(true)
+                        .message("Invoice is successfully created.")
+                        .data(saved).build());
     }
+
 
     @GetMapping("/list")
     public ResponseEntity<ResponseWrapper> getAllInvoices() {

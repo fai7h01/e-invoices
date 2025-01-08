@@ -1,5 +1,7 @@
 package com.accounting.einvoices.service.impl;
 
+import com.accounting.einvoices.dto.UserDTO;
+import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.StorageService;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -26,19 +28,20 @@ public class StorageServiceImpl implements StorageService {
     private String bucket;
 
     private final AmazonS3 s3Client;
+    private final KeycloakService keycloakService;
 
-    public StorageServiceImpl(@Qualifier("generateS3Client") AmazonS3 s3Client) {
+    public StorageServiceImpl(@Qualifier("generateS3Client") AmazonS3 s3Client, KeycloakService keycloakService) {
         this.s3Client = s3Client;
+        this.keycloakService = keycloakService;
     }
 
 
     @Override
-    public void uploadFile(MultipartFile file) {
+    public void uploadFile(MultipartFile file, String key) {
         File converted = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucket, fileName, converted));
+        s3Client.putObject(new PutObjectRequest(bucket, key, converted));
         converted.delete();
-        log.info("File uploaded: {}", fileName);
+        log.info("File uploaded: {}", key);
     }
 
     @Override
@@ -60,7 +63,8 @@ public class StorageServiceImpl implements StorageService {
         return null;
     }
 
-    private File convertMultiPartFileToFile(MultipartFile file) {
+    @Override
+    public File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         try (FileOutputStream os = new FileOutputStream(convertedFile)) {
             os.write(file.getBytes());
@@ -68,5 +72,9 @@ public class StorageServiceImpl implements StorageService {
             log.error("Error converting multipart file to file: {}", e.getMessage());
         }
         return convertedFile;
+    }
+
+    private UserDTO getLoggedInUser() {
+        return keycloakService.getLoggedInUser();
     }
 }
