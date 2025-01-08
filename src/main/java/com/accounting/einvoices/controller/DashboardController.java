@@ -31,12 +31,26 @@ public class DashboardController {
         this.invoiceService = invoiceService;
     }
 
+    @GetMapping("/financial-summary/current-sales/{year}/{startMonth}/{endMonth}/{code}")
+    public ResponseEntity<ResponseWrapper> summary(@PathVariable("year") String year,
+                                                                                       @PathVariable("startMonth") String startMonth,
+                                                                                       @PathVariable("endMonth") String endMonth,
+                                                                                       @PathVariable("code") String code) {
 
-    @GetMapping("/financialSummaryForAllCurrency/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getFinancialSummaryInConvertedInOneCurrency(@PathVariable("year") String year,
-                                                               @PathVariable("startMonth") String startMonth,
-                                                               @PathVariable("endMonth") String endMonth,
-                                                               @PathVariable("code") String code) {
+        Map<String, BigDecimal> financialSummary =
+                reportingService.getFinancialSummaryBasedOnCurrentSales(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Financial summary are successfully retrieved.")
+                .data(financialSummary).build());
+    }
+
+    @GetMapping("/financial-summary/multi-currency/{year}/{startMonth}/{endMonth}/{code}")
+    public ResponseEntity<ResponseWrapper> getFinancialSummaryConvertedInOneCurrency(@PathVariable("year") String year,
+                                                                                     @PathVariable("startMonth") String startMonth,
+                                                                                     @PathVariable("endMonth") String endMonth,
+                                                                                     @PathVariable("code") String code) {
 
         Map<String, BigDecimal> financialSummary =
                 reportingService.getFinancialSummaryConvertedInOneCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
@@ -49,11 +63,11 @@ public class DashboardController {
 
 
     //@RolesAllowed("Admin")
-    @GetMapping("/financialSummaryForOneCurrency/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getFinancialSummarySeparatedInCurrencies(@PathVariable("year") String year,
-                                                             @PathVariable("startMonth") String startMonth,
-                                                             @PathVariable("endMonth") String endMonth,
-                                                             @PathVariable("code") String code) {
+    @GetMapping("/financial-summary/single-currency/{year}/{startMonth}/{endMonth}/{code}")
+    public ResponseEntity<ResponseWrapper> getFinancialSummaryInSingleCurrency(@PathVariable("year") String year,
+                                                                               @PathVariable("startMonth") String startMonth,
+                                                                               @PathVariable("endMonth") String endMonth,
+                                                                               @PathVariable("code") String code) {
 
         Map<String, BigDecimal> financialSummary =
                 reportingService.getFinancialSummaryInSeparateCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
@@ -65,7 +79,7 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/summaryQuantities")
+    @GetMapping("/summary-quantities")
     public ResponseEntity<ResponseWrapper> getSummaryQuantities() {
         Map<String, Integer> summary = reportingService.getSummaryQuantities();
         return ResponseEntity.ok(ResponseWrapper.builder()
@@ -76,7 +90,7 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/soldProductsBy/{year}/{startMonth}/{endMonth}/{code}")
+    @GetMapping("/sold-products/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
                                                                       @PathVariable("startMonth") String startMonth,
                                                                       @PathVariable("endMonth") String endMonth,
@@ -91,7 +105,7 @@ public class DashboardController {
 
 
     //@RolesAllowed("Admin")
-    @GetMapping("/topSellingProducts/{year}/{startMonth}/{endMonth}/{code}")
+    @GetMapping("/top-selling-products/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("startMonth") String startMonth,
                                                               @PathVariable("endMonth") String endMonth,
@@ -105,7 +119,7 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/exchangeRates/{code}")
+    @GetMapping("/exchange-rates/{code}")
     public ResponseEntity<ResponseWrapper> getExchangeRates(@PathVariable("code") String code,
                                                             @RequestParam(value = "amount", required = false) Long amount) {
         CurrencyExchangeDTO rates = dashboardService.exchangeRatesOf(code, amount);
@@ -116,7 +130,7 @@ public class DashboardController {
     }
 
     //@RolesAllowed("Admin")
-    @GetMapping("/recentlyApproved")
+    @GetMapping("/recently-approved")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
         List<InvoiceDTO> invoices = invoiceService.recentlyApprovedInvoices();
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())

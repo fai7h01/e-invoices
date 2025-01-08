@@ -22,4 +22,7 @@ public interface ReportingService {
     BigDecimal sumTotalSalesByDateInOneCurrency(int year, int startMonth, int endMonth, String currency);
 
     BigDecimal sumProfitLossByDateInOneCurrency(int year, int startMonth, int endMonth, String currency);
+
+
+    Map<String, BigDecimal> getFinancialSummaryBasedOnCurrentSales(int year, int startMonth, int endMonth, String currency);
 }

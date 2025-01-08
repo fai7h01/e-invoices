@@ -74,6 +74,49 @@ public class ReportingServiceImpl implements ReportingService {
         return employees.size();
     }
 
+    public Map<String, BigDecimal> getFinancialSummaryBasedOnCurrentSales(int year, int startMonth, int endMonth, String currency) {
+
+        Map<Currency, List<InvoiceDTO>> invoices = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
+        List<InvoiceDTO> invoiceByCurrency = invoices.get(Currency.valueOf(currency));
+
+        if (invoiceByCurrency == null)
+            return new HashMap<>();
+
+        BigDecimal totalCostBasedOnCurrentSales = findTotalCostBasedOnCurrentSales(invoiceByCurrency);
+        BigDecimal profitLossBasedOnCurrentSales = findProfitLossBasedOnCurrentSales(invoiceByCurrency);
+
+        return Map.of(
+                "total_cost", totalCostBasedOnCurrentSales,
+                "total_sales", sumTotalSalesByDateInOneCurrency(year, startMonth, endMonth, currency),
+                "profit_loss", profitLossBasedOnCurrentSales
+        );
+
+    }
+
+    private BigDecimal findTotalCostBasedOnCurrentSales(List<InvoiceDTO> approveInvoices) {
+        BigDecimal totalCost = BigDecimal.ZERO;
+        for (InvoiceDTO each : approveInvoices) {
+            List<InvoiceProductDTO> ip = invoiceProductService.findAllByInvoiceId(each.getId());
+            for (InvoiceProductDTO each1 : ip) {
+                totalCost = totalCost.add(each1.getProduct().getPrice().multiply(BigDecimal.valueOf(each1.getQuantity())));
+            }
+        }
+        return totalCost;
+    }
+
+    private BigDecimal findProfitLossBasedOnCurrentSales(List<InvoiceDTO> approveInvoices) {
+        BigDecimal profitLoss = BigDecimal.ZERO;
+        for (InvoiceDTO each : approveInvoices) {
+            List<InvoiceProductDTO> ip = invoiceProductService.findAllByInvoiceId(each.getId());
+            for (InvoiceProductDTO each1 : ip) {
+                profitLoss = profitLoss.add(each1.getProfitLoss());
+            }
+        }
+        return profitLoss;
+    }
+
+
+
     @Override
     public Map<String, BigDecimal> getFinancialSummaryInSeparateCurrency(int year, int startMonth, int endMonth, String currency) {
 

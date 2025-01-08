@@ -42,7 +42,7 @@ public class InvoiceController {
 //    }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestPart InvoiceDTO invoice, @RequestPart MultipartFile file) {
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestPart InvoiceDTO invoice, @RequestPart(required = false) MultipartFile file) {
 
         InvoiceDTO saved = file != null ? invoiceService.save(invoice, file) : invoiceService.save(invoice);
         return ResponseEntity.status(HttpStatus.CREATED)
