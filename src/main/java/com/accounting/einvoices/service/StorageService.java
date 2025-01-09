@@ -7,7 +7,6 @@ import java.io.File;
 
 public interface StorageService {
 
-
     void uploadFile(MultipartFile file, String key);
 
     void deleteFile(String name);

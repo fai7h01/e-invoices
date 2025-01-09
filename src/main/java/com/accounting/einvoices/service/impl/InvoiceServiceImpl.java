@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -78,7 +77,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company) {
-        Optional<Invoice> invoice = invoiceRepository.findByInvoiceNoAndCompanyTitle(invNo, company);
+        Optional<Invoice> invoice = invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, company);
         if (invoice.isEmpty()) throw new InvoiceNotFoundException("Invoice not found.");
         return mapperUtil.convert(invoice.get(), new InvoiceDTO());
     }
@@ -95,20 +94,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO save(InvoiceDTO invoice) {
-        return saveInvoice(invoice, null);
-    }
-
-    @Override
-    public InvoiceDTO save(InvoiceDTO invoice, MultipartFile file) {
-        return saveInvoice(invoice, file);
-    }
-
-    private InvoiceDTO saveInvoice(InvoiceDTO invoice, MultipartFile file) {
-        if (file != null) {
-            String key = "userId/" + keycloakService.getLoggedInUser().getId() + "/invoice/" + invoice.getInvoiceNo() + "/file/" + file.getOriginalFilename();
-            storageService.uploadFile(file, key);
-            invoice.setAttachmentKey(key);
-        }
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         ClientVendorDTO client = clientVendorService.findByName(invoice.getClientVendor().getName());
         invoice.setCompany(loggedInCompany);
@@ -117,6 +102,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice saved = invoiceRepository.save(converted);
         return mapperUtil.convert(saved, new InvoiceDTO());
     }
+
 
     @Override
     public InvoiceDTO update(Long id, InvoiceDTO invoice) {
@@ -179,7 +165,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDTO approve(String invNo, String companyTitle) {
-        Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyTitle(invNo, companyTitle).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
+        Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, companyTitle).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
         invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
         invoice.setAcceptDate(LocalDateTime.now());
         Invoice saved = invoiceRepository.save(invoice);
@@ -219,5 +205,19 @@ public class InvoiceServiceImpl implements InvoiceService {
                     setPriceTaxTotal(invoiceDTO);
                     return invoiceDTO;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void uploadInvoiceAttachment(String invNo, MultipartFile file) {
+        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+        Optional<Invoice> foundInvoice =
+                invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, loggedInCompany.getTitle());
+        if (foundInvoice.isPresent()) {
+            Invoice invoice = foundInvoice.get();
+            String key = "company/" + loggedInCompany.getId() + "/invoice/" + invNo + "_" + file.getOriginalFilename();
+            storageService.uploadFile(file, key);
+            invoice.setAttachmentKey(key);
+            invoiceRepository.save(invoice);
+        }
     }
 }

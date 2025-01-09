@@ -30,27 +30,26 @@ public class InvoiceController {
         this.invoiceProductService = invoiceProductService;
     }
 
-//    @PostMapping("/create")
-//    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
-//        InvoiceDTO saved = invoiceService.save(invoice);
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(ResponseWrapper.builder()
-//                .code(HttpStatus.CREATED.value())
-//                .success(true)
-//                .message("Invoice is successfully created.")
-//                .data(saved).build());
-//    }
-
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestPart InvoiceDTO invoice, @RequestPart(required = false) MultipartFile file) {
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
+        InvoiceDTO saved = invoiceService.save(invoice);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Invoice is successfully created.")
+                .data(saved).build());
+    }
 
-        InvoiceDTO saved = file != null ? invoiceService.save(invoice, file) : invoiceService.save(invoice);
+    @PostMapping("/attachment-upload")
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestParam("invNo") String invNo, @RequestParam("file") MultipartFile file) {
+        invoiceService.uploadInvoiceAttachment(invNo, file);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseWrapper.builder()
                         .code(HttpStatus.CREATED.value())
                         .success(true)
-                        .message("Invoice is successfully created.")
-                        .data(saved).build());
+                        .message("Attachment is successfully upload for invoice " + invNo + ".")
+                        .build());
     }
 
 

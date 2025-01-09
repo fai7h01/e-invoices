@@ -21,8 +21,6 @@ public interface InvoiceService {
 
     InvoiceDTO save(InvoiceDTO invoice);
 
-    InvoiceDTO save(InvoiceDTO invoice, MultipartFile file);
-
     InvoiceDTO update(Long id, InvoiceDTO invoice);
 
     void delete(Long id);
@@ -38,6 +36,8 @@ public interface InvoiceService {
     List<InvoiceDTO> findAllByClientId(Long id);
 
     List<InvoiceDTO> recentlyApprovedInvoices();
+
+    void uploadInvoiceAttachment(String invNo, MultipartFile file);
 
 
 }

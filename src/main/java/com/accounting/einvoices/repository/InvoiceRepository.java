@@ -23,7 +23,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
                                                                   @Param("status") InvoiceStatus status,
                                                                   @Param("companyId") Long companyId);
 
-    Optional<Invoice> findByInvoiceNoAndCompanyTitle(String invNo, String company);
+    Optional<Invoice> findByInvoiceNoAndCompanyTitleIgnoreCase(String invNo, String company);
 
     List<Invoice> findAllByClientVendorId(Long id);
 
