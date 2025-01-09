@@ -1,11 +1,8 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.dto.UserDTO;
 import com.accounting.einvoices.exception.FileCannotBeDownloadedException;
-import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.StorageService;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -30,12 +27,11 @@ public class StorageServiceImpl implements StorageService {
     private String bucket;
 
     private final AmazonS3 s3Client;
-    private final KeycloakService keycloakService;
 
-    public StorageServiceImpl(@Qualifier("generateS3Client") AmazonS3 s3Client, KeycloakService keycloakService) {
+    public StorageServiceImpl(@Qualifier("s3Client") AmazonS3 s3Client) {
         this.s3Client = s3Client;
-        this.keycloakService = keycloakService;
     }
+
 
     @Override
     public void uploadFile(MultipartFile file, String key) {

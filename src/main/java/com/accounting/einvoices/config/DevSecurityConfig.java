@@ -42,7 +42,7 @@ public class DevSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/product/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/invoice/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/mailing/**").hasAnyRole("Admin", "Manager", "Employee")
-                .antMatchers("/api/v1/bucket/**").hasAnyRole("Admin", "Manager", "Employee")
+//                .antMatchers("/api/v1/assistant/**").hasRole("ai_assistant_role")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -53,7 +53,7 @@ public class DevSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:9090"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:9090", "http://localhost:1010"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
