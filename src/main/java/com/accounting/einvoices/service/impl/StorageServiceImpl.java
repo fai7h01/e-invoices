@@ -1,9 +1,11 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.UserDTO;
+import com.accounting.einvoices.exception.FileCannotBeDownloadedException;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.StorageService;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -35,7 +37,6 @@ public class StorageServiceImpl implements StorageService {
         this.keycloakService = keycloakService;
     }
 
-
     @Override
     public void uploadFile(MultipartFile file, String key) {
         File converted = convertMultiPartFileToFile(file);
@@ -58,9 +59,8 @@ public class StorageServiceImpl implements StorageService {
             byte[] content = IOUtils.toByteArray(inputStream);
             return new ByteArrayResource(content);
         } catch (IOException e) {
-            log.error("Error downloading file from bucket: {}", e.getMessage());
+            throw new FileCannotBeDownloadedException("File can not be downloaded.");
         }
-        return null;
     }
 
     @Override
@@ -74,7 +74,5 @@ public class StorageServiceImpl implements StorageService {
         return convertedFile;
     }
 
-    private UserDTO getLoggedInUser() {
-        return keycloakService.getLoggedInUser();
-    }
+
 }

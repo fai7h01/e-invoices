@@ -24,10 +24,12 @@ public class InvoiceController {
 
     private final InvoiceService invoiceService;
     private final InvoiceProductService invoiceProductService;
+    private final StorageService storageService;
 
-    public InvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService) {
+    public InvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService, StorageService storageService) {
         this.invoiceService = invoiceService;
         this.invoiceProductService = invoiceProductService;
+        this.storageService = storageService;
     }
 
     @PostMapping("/create")
@@ -44,11 +46,24 @@ public class InvoiceController {
     @PostMapping("/attachment-upload")
     public ResponseEntity<ResponseWrapper> createInvoice(@RequestParam("invNo") String invNo, @RequestParam("file") MultipartFile file) {
         invoiceService.uploadInvoiceAttachment(invNo, file);
-        return ResponseEntity.status(HttpStatus.CREATED)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(ResponseWrapper.builder()
-                        .code(HttpStatus.CREATED.value())
+                        .code(HttpStatus.OK.value())
                         .success(true)
                         .message("Attachment is successfully upload for invoice " + invNo + ".")
+                        .build());
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<ResponseWrapper> downloadInvoiceAttachment(@RequestParam("fileName") String key) {
+        key = key.substring(key.lastIndexOf("_") + 1);
+        storageService.downloadFile(key);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
+                .body(ResponseWrapper.builder()
+                        .code(HttpStatus.OK.value())
+                        .success(true)
+                        .message("File is successfully downloaded.")
                         .build());
     }
 
