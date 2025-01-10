@@ -32,10 +32,10 @@ public class DashboardController {
     }
 
     @GetMapping("/financial-summary/current-sales/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> summary(@PathVariable("year") String year,
-                                                                                       @PathVariable("startMonth") String startMonth,
-                                                                                       @PathVariable("endMonth") String endMonth,
-                                                                                       @PathVariable("code") String code) {
+    public ResponseEntity<ResponseWrapper> getFinancialSummary(@PathVariable("year") String year,
+                                                   @PathVariable("startMonth") String startMonth,
+                                                   @PathVariable("endMonth") String endMonth,
+                                                   @PathVariable("code") String code) {
 
         Map<String, BigDecimal> financialSummary =
                 reportingService.getFinancialSummaryBasedOnCurrentSales(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
@@ -61,22 +61,6 @@ public class DashboardController {
                 .data(financialSummary).build());
     }
 
-
-    //@RolesAllowed("Admin")
-    @GetMapping("/financial-summary/single-currency/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getFinancialSummaryInSingleCurrency(@PathVariable("year") String year,
-                                                                               @PathVariable("startMonth") String startMonth,
-                                                                               @PathVariable("endMonth") String endMonth,
-                                                                               @PathVariable("code") String code) {
-
-        Map<String, BigDecimal> financialSummary =
-                reportingService.getFinancialSummaryInSeparateCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
-        return ResponseEntity.ok(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
-                .success(true)
-                .message("Financial summary for only " + code + " are successfully retrieved.")
-                .data(financialSummary).build());
-    }
 
     //@RolesAllowed("Admin")
     @GetMapping("/summary-quantities")

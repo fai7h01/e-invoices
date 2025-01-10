@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -77,21 +78,82 @@ public class ReportingServiceImpl implements ReportingService {
     public Map<String, BigDecimal> getFinancialSummaryBasedOnCurrentSales(int year, int startMonth, int endMonth, String currency) {
 
         Map<Currency, List<InvoiceDTO>> invoices = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
-        List<InvoiceDTO> invoiceByCurrency = invoices.get(Currency.valueOf(currency));
 
-        if (invoiceByCurrency == null)
-            return new HashMap<>();
-
-        BigDecimal totalCostBasedOnCurrentSales = findTotalCostBasedOnCurrentSales(invoiceByCurrency);
-        BigDecimal profitLossBasedOnCurrentSales = findProfitLossBasedOnCurrentSales(invoiceByCurrency);
-
-        return Map.of(
-                "total_cost", totalCostBasedOnCurrentSales,
-                "total_sales", sumTotalSalesByDateInOneCurrency(year, startMonth, endMonth, currency),
-                "profit_loss", profitLossBasedOnCurrentSales
-        );
+        return findFinancialSummaryConvertedOneCurrency(invoices, currency);
 
     }
+
+    private Map<String, BigDecimal> findFinancialSummaryConvertedOneCurrency(Map<Currency, List<InvoiceDTO>> invoices, String currency) {
+
+        List<InvoiceDTO> invoicesUSD = invoices.get(Currency.valueOf("USD"));
+        List<InvoiceDTO> invoicesEUR = invoices.get(Currency.valueOf("EUR"));
+        List<InvoiceDTO> invoicesGEL = invoices.get(Currency.valueOf("GEL"));
+
+
+        Map<String, BigDecimal> financialSummaryInUSD = invoicesUSD != null ? findFinancialSummaryInUSD(invoicesUSD) : Map.of(
+                "total_cost_USD", BigDecimal.ZERO,
+                "total_sales_USD", BigDecimal.ZERO,
+                "profit_loss_USD", BigDecimal.ZERO
+        );
+        Map<String, BigDecimal> financialSummaryInEUR = invoicesEUR != null ? findFinancialSummaryInEUR(invoicesEUR) : Map.of(
+                "total_cost_EUR", BigDecimal.ZERO,
+                "total_sales_EUR", BigDecimal.ZERO,
+                "profit_loss_EUR", BigDecimal.ZERO
+        );
+        Map<String, BigDecimal> financialSummaryInGEL = invoicesGEL != null ? findFinancialSummaryInGEL(invoicesGEL) : Map.of(
+                "total_cost_GEL", BigDecimal.ZERO,
+                "total_sales_GEL", BigDecimal.ZERO,
+                "profit_loss_GEL", BigDecimal.ZERO
+        );
+
+
+        BigDecimal totalCostConverted =
+                calculateTotalCostOrTotalSalesOrTotalProfitLoss(financialSummaryInUSD.get("total_cost_USD"), financialSummaryInGEL.get("total_cost_GEL"), financialSummaryInEUR.get("total_cost_EUR"), currency);
+        BigDecimal totalSalesConverted =
+                calculateTotalCostOrTotalSalesOrTotalProfitLoss(financialSummaryInUSD.get("total_sales_USD"), financialSummaryInGEL.get("total_sales_GEL"), financialSummaryInEUR.get("total_sales_EUR"), currency);
+        BigDecimal profitLossConverted =
+                calculateTotalCostOrTotalSalesOrTotalProfitLoss(financialSummaryInUSD.get("profit_loss_USD"), financialSummaryInGEL.get("profit_loss_GEL"), financialSummaryInEUR.get("profit_loss_EUR"), currency);
+
+        return Map.of(
+                "total_cost", totalCostConverted,
+                "total_sales", totalSalesConverted,
+                "profit_loss", profitLossConverted
+        );
+    }
+
+    private Map<String, BigDecimal> findFinancialSummaryInEUR(List<InvoiceDTO> invoicesEUR) {
+        BigDecimal totalCostEUR = findTotalCostBasedOnCurrentSales(invoicesEUR);
+        BigDecimal totalSalesEUR = findTotalSalesBasedOnCurrentSales(invoicesEUR);
+        BigDecimal profitLossEUR = findProfitLossBasedOnCurrentSales(invoicesEUR);
+        return Map.of(
+                "total_cost_EUR", totalCostEUR,
+                "total_sales_EUR", totalSalesEUR,
+                "profit_loss_EUR", profitLossEUR
+        );
+    }
+
+    private Map<String, BigDecimal> findFinancialSummaryInGEL(List<InvoiceDTO> invoicesUSD) {
+        BigDecimal totalCostGEL = findTotalCostBasedOnCurrentSales(invoicesUSD);
+        BigDecimal totalSalesGEL = findTotalSalesBasedOnCurrentSales(invoicesUSD);
+        BigDecimal profitLossGEL = findProfitLossBasedOnCurrentSales(invoicesUSD);
+        return Map.of(
+                "total_cost_USD", totalCostGEL,
+                "total_sales_USD", totalSalesGEL,
+                "profit_loss_USD", profitLossGEL
+        );
+    }
+
+    private Map<String, BigDecimal> findFinancialSummaryInUSD(List<InvoiceDTO> invoicesUSD) {
+        BigDecimal totalCostUSD = findTotalCostBasedOnCurrentSales(invoicesUSD);
+        BigDecimal totalSalesUSD = findTotalSalesBasedOnCurrentSales(invoicesUSD);
+        BigDecimal profitLossUSD = findProfitLossBasedOnCurrentSales(invoicesUSD);
+        return Map.of(
+                "total_cost_USD", totalCostUSD,
+                "total_sales_USD", totalSalesUSD,
+                "profit_loss_USD", profitLossUSD
+        );
+    }
+
 
     private BigDecimal findTotalCostBasedOnCurrentSales(List<InvoiceDTO> approveInvoices) {
         BigDecimal totalCost = BigDecimal.ZERO;
@@ -104,6 +166,15 @@ public class ReportingServiceImpl implements ReportingService {
         return totalCost;
     }
 
+    private BigDecimal findTotalSalesBasedOnCurrentSales(List<InvoiceDTO> invoiceByCurrency) {
+        if (invoiceByCurrency != null) {
+            return invoiceByCurrency.stream()
+                    .map(InvoiceDTO::getTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        return BigDecimal.ZERO;
+    }
+
     private BigDecimal findProfitLossBasedOnCurrentSales(List<InvoiceDTO> approveInvoices) {
         BigDecimal profitLoss = BigDecimal.ZERO;
         for (InvoiceDTO each : approveInvoices) {
@@ -114,7 +185,6 @@ public class ReportingServiceImpl implements ReportingService {
         }
         return profitLoss;
     }
-
 
 
     @Override
@@ -239,7 +309,7 @@ public class ReportingServiceImpl implements ReportingService {
 
         BigDecimal total = BigDecimal.ZERO;
 
-        Map<String, CurrencyExchangeDTO> currencyExchanges = currencyExchangesMap();
+        Map<String, CurrencyExchangeDTO> currencyExchanges = getCurrencyExchangesMap();
 
         switch (currency) {
 
@@ -277,7 +347,7 @@ public class ReportingServiceImpl implements ReportingService {
     }
 
 
-    private Map<String, CurrencyExchangeDTO> currencyExchangesMap() {
+    private Map<String, CurrencyExchangeDTO> getCurrencyExchangesMap() {
 
         CurrencyExchangeDTO usd = dashboardService.exchangeRatesOf("USD", 1L);
         CurrencyExchangeDTO gel = dashboardService.exchangeRatesOf("GEL", 1L);
