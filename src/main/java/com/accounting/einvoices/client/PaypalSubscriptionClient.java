@@ -1,14 +1,14 @@
 package com.accounting.einvoices.client;
 
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
 import com.accounting.einvoices.dto.response.paypal.PlanDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.PlanListResponse;
 import com.accounting.einvoices.dto.response.paypal.PlanResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.ws.rs.core.MediaType;
 
 @FeignClient(name = "paypalSubscriptionClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalSubscriptionClient {
@@ -21,4 +21,7 @@ public interface PaypalSubscriptionClient {
 
     @GetMapping("/v1/billing/plans/{id}")
     PlanDetailsResponse getPlanDetails(@PathVariable("id") String id);
+
+    @PatchMapping(value = "/v1/billing/plans/{id}", consumes = MediaType.APPLICATION_JSON_PATCH_JSON)
+    void updatePlan(@PathVariable("id") String id, @RequestBody PlanUpdateRequest request);
 }

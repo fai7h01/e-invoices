@@ -2,12 +2,14 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/v1/paypal")
@@ -41,8 +43,8 @@ public class PaypalController {
                 .build());
     }
 
-    @GetMapping("/details/product/{productId}")
-    public ResponseEntity<ResponseWrapper> getProductDetails(@PathVariable("productId") String productId) {
+    @GetMapping("/details/product/{id}")
+    public ResponseEntity<ResponseWrapper> getProductDetails(@PathVariable("id") String productId) {
         CatalogProductDetailsResponse response = paypalService.getProductDetails(productId);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -74,14 +76,27 @@ public class PaypalController {
                 .build());
     }
 
-    @GetMapping("/details/plan/{planId}")
-    public ResponseEntity<ResponseWrapper> getPlanDetails(@PathVariable("planId") String planId) {
+    @GetMapping("/details/plan/{id}")
+    public ResponseEntity<ResponseWrapper> getPlanDetails(@PathVariable("id") String planId) {
         PlanDetailsResponse response = paypalService.getPlanDetails(planId);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Subscription Plan details is successfully retrieved.")
                 .data(response)
+                .build());
+    }
+
+    @PatchMapping(value = "/update/plan/{id}")
+    public ResponseEntity<ResponseWrapper> updatePlan(@PathVariable("id") String id,
+                                                      @RequestBody PlanUpdateRequest request) {
+        paypalService.updatePlan(id, request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type", "application/json-patch+json")
+                .body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Subscription Plan is successfully updated.")
                 .build());
     }
 

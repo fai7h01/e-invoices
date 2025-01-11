@@ -4,6 +4,7 @@ import com.accounting.einvoices.client.PaypalProductClient;
 import com.accounting.einvoices.client.PaypalSubscriptionClient;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     @Override
-    public CatalogProductDetailsResponse getProductDetails(String productId) {
-        return paypalProductClient.getProductDetails(productId);
+    public CatalogProductDetailsResponse getProductDetails(String id) {
+        return paypalProductClient.getProductDetails(id);
     }
 
     @Override
@@ -44,7 +45,12 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     @Override
-    public PlanDetailsResponse getPlanDetails(String planId) {
-        return paypalSubscriptionClient.getPlanDetails(planId);
+    public PlanDetailsResponse getPlanDetails(String id) {
+        return paypalSubscriptionClient.getPlanDetails(id);
+    }
+
+    @Override
+    public void updatePlan(String id, PlanUpdateRequest request) {
+        paypalSubscriptionClient.updatePlan(id, request);
     }
 }

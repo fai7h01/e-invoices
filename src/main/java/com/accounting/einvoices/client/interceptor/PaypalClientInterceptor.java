@@ -22,12 +22,10 @@ public class PaypalClientInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-
         if (accessToken.get() == null) {
             fetchAccessToken();
         }
         requestTemplate.header("Authorization", "Bearer " + accessToken.get());
-
     }
 
     private void fetchAccessToken() {
