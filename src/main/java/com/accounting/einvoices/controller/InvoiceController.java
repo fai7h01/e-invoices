@@ -56,8 +56,8 @@ public class InvoiceController {
 
     @GetMapping("/download")
     public ResponseEntity<ResponseWrapper> downloadInvoiceAttachment(@RequestParam("fileName") String key) {
-        key = key.substring(key.lastIndexOf("_") + 1);
         storageService.downloadFile(key);
+        key = key.substring(key.lastIndexOf("_") + 1);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
                 .body(ResponseWrapper.builder()
