@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @FeignClient(name = "paypalClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalProductClient {
 
