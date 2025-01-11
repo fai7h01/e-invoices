@@ -1,9 +1,8 @@
 package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductDetailsResponse;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductListResponse;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductResponse;
+import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.response.paypal.*;
 
 
 public interface PaypalService {
@@ -13,6 +12,10 @@ public interface PaypalService {
     CatalogProductListResponse getProducts();
 
     CatalogProductDetailsResponse getProductDetails(String productId);
+
+    PlanResponse createPlan(PlanRequest request);
+
+    PlanListResponse getPlans();
 
 
 }

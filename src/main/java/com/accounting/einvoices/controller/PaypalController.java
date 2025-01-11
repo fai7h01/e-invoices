@@ -1,10 +1,9 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
+import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductDetailsResponse;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductListResponse;
-import com.accounting.einvoices.dto.response.paypal.CatalogProductResponse;
+import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +51,27 @@ public class PaypalController {
                 .data(response)
                 .build());
     }
+
+    @PostMapping("/create/plan")
+    public ResponseEntity<ResponseWrapper> createPlan(@RequestBody PlanRequest request) {
+        PlanResponse response = paypalService.createPlan(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Subscription Plan is successfully created.")
+                .data(response)
+                .build());
+    }
+
+    @GetMapping("/list/plans")
+    public ResponseEntity<ResponseWrapper> getPlans() {
+        PlanListResponse response = paypalService.getPlans();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Subscription Plans is successfully retrieved.")
+                .data(response)
+                .build());
+    }
+
 }

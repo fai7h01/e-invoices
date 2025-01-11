@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "paypalClient", url = "https://api-m.sandbox.paypal.com")
+@FeignClient(name = "paypalSubscriptionClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalSubscriptionClient {
 
     @PostMapping("/v1/billing/plans")

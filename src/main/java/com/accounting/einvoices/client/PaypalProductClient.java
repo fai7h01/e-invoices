@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "paypalClient", url = "https://api-m.sandbox.paypal.com")
+@FeignClient(name = "paypalProductClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalProductClient {
 
     @PostMapping("/v1/catalogs/products")
@@ -21,4 +21,5 @@ public interface PaypalProductClient {
 
     @GetMapping("/v1/catalogs/products/{productId}")
     CatalogProductDetailsResponse getProductDetails(@PathVariable("productId") String productId);
+
 }

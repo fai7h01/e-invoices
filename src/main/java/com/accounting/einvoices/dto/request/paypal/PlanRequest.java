@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 
-import com.accounting.einvoices.dto.response.Taxes;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
