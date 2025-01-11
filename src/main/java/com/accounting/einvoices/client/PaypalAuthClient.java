@@ -10,7 +10,7 @@ import java.util.Map;
 @FeignClient(name = "paypalAuthClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalAuthClient {
 
-    @PostMapping
+    @PostMapping(value = "/v1/oauth2/token", consumes = "application/x-www-form-urlencoded")
     Map<String, Object> getAccessToken(@RequestHeader("Authorization") String basicAuth,
                                        @RequestParam("grant_type") String grantType);
 }
