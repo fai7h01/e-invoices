@@ -42,4 +42,9 @@ public class PaypalServiceImpl implements PaypalService {
     public PlanListResponse getPlans() {
         return paypalSubscriptionClient.getPlans();
     }
+
+    @Override
+    public PlanDetailsResponse getPlanDetails(String planId) {
+        return paypalSubscriptionClient.getPlanDetails(planId);
+    }
 }

@@ -17,5 +17,7 @@ public interface PaypalService {
 
     PlanListResponse getPlans();
 
+    PlanDetailsResponse getPlanDetails(String planId);
+
 
 }

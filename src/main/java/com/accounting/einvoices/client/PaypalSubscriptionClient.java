@@ -1,10 +1,12 @@
 package com.accounting.einvoices.client;
 
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.response.paypal.PlanDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.PlanListResponse;
 import com.accounting.einvoices.dto.response.paypal.PlanResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -16,4 +18,7 @@ public interface PaypalSubscriptionClient {
 
     @GetMapping("/v1/billing/plans")
     PlanListResponse getPlans();
+
+    @GetMapping("/v1/billing/plans/{id}")
+    PlanDetailsResponse getPlanDetails(@PathVariable("id") String id);
 }

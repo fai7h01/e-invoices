@@ -74,4 +74,15 @@ public class PaypalController {
                 .build());
     }
 
+    @GetMapping("/details/plan/{planId}")
+    public ResponseEntity<ResponseWrapper> getPlanDetails(@PathVariable("planId") String planId) {
+        PlanDetailsResponse response = paypalService.getPlanDetails(planId);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Subscription Plan details is successfully retrieved.")
+                .data(response)
+                .build());
+    }
+
 }
