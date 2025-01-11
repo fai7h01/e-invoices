@@ -2,14 +2,13 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.paypal.CatalogProductDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.CatalogProductListResponse;
 import com.accounting.einvoices.dto.response.paypal.CatalogProductResponse;
 import com.accounting.einvoices.service.PaypalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/paypal")
@@ -21,7 +20,7 @@ public class PaypalController {
         this.paypalService = paypalService;
     }
 
-    @PostMapping("/create/products")
+    @PostMapping("/create/product")
     public ResponseEntity<ResponseWrapper> createProduct(@RequestBody CatalogProductRequest request) {
         CatalogProductResponse response = paypalService.createProduct(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -39,6 +38,17 @@ public class PaypalController {
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Catalog product list is successfully retrieved.")
+                .data(response)
+                .build());
+    }
+
+    @GetMapping("/details/product/{productId}")
+    public ResponseEntity<ResponseWrapper> getProductDetails(@PathVariable("productId") String productId) {
+        CatalogProductDetailsResponse response = paypalService.getProductDetails(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Catalog product details is successfully retrieved.")
                 .data(response)
                 .build());
     }
