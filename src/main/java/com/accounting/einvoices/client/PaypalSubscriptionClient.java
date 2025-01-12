@@ -24,4 +24,8 @@ public interface PaypalSubscriptionClient {
 
     @PatchMapping(value = "/v1/billing/plans/{id}", consumes = MediaType.APPLICATION_JSON_PATCH_JSON)
     void updatePlan(@PathVariable("id") String id, @RequestBody PlanUpdateRequest request);
+
+    @PostMapping("/v1/billing/plans/{id}/activate")
+    void activatePlan(@PathVariable("id") String id, @RequestBody String any);
 }
+

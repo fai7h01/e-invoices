@@ -87,7 +87,7 @@ public class PaypalController {
                 .build());
     }
 
-    @PatchMapping(value = "/update/plan/{id}")
+    @PatchMapping("/update/plan/{id}")
     public ResponseEntity<ResponseWrapper> updatePlan(@PathVariable("id") String id,
                                                       @RequestBody PlanUpdateRequest request) {
         paypalService.updatePlan(id, request);
@@ -97,6 +97,16 @@ public class PaypalController {
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Subscription Plan is successfully updated.")
+                .build());
+    }
+
+    @PostMapping("/activate/plan/{id}")
+    public ResponseEntity<ResponseWrapper> activatePlan(@PathVariable("id") String id, @RequestBody String any) {
+        paypalService.activatePlan(id, any);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
+                .code(HttpStatus.ACCEPTED.value())
+                .success(true)
+                .message("Subscription Plan is successfully activated.")
                 .build());
     }
 

@@ -53,4 +53,9 @@ public class PaypalServiceImpl implements PaypalService {
     public void updatePlan(String id, PlanUpdateRequest request) {
         paypalSubscriptionClient.updatePlan(id, request);
     }
+
+    @Override
+    public void activatePlan(String id, String any) {
+        paypalSubscriptionClient.activatePlan(id, any);
+    }
 }

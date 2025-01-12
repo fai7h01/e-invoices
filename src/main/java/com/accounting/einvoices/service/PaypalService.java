@@ -22,5 +22,7 @@ public interface PaypalService {
 
     void updatePlan(String planId, PlanUpdateRequest request);
 
+    void activatePlan(String id, String any);
+
 
 }
