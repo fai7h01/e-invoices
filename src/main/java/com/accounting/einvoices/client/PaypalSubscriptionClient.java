@@ -27,5 +27,8 @@ public interface PaypalSubscriptionClient {
 
     @PostMapping("/v1/billing/plans/{id}/activate")
     void activatePlan(@PathVariable("id") String id, @RequestBody String any);
+
+    @PostMapping("/v1/billing/plans/{id}/deactivate")
+    void deactivatePlan(@PathVariable("id") String id, @RequestBody String any);
 }
 

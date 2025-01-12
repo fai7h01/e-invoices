@@ -110,4 +110,14 @@ public class PaypalController {
                 .build());
     }
 
+    @PostMapping("/deactivate/plan/{id}")
+    public ResponseEntity<ResponseWrapper> deactivatePlan(@PathVariable("id") String id, @RequestBody String any) {
+        paypalService.deactivatePlan(id, any);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
+                .code(HttpStatus.ACCEPTED.value())
+                .success(true)
+                .message("Subscription Plan is successfully deactivated.")
+                .build());
+    }
+
 }

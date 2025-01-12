@@ -58,4 +58,9 @@ public class PaypalServiceImpl implements PaypalService {
     public void activatePlan(String id, String any) {
         paypalSubscriptionClient.activatePlan(id, any);
     }
+
+    @Override
+    public void deactivatePlan(String id, String any) {
+        paypalSubscriptionClient.deactivatePlan(id, any);
+    }
 }

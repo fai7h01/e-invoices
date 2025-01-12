@@ -24,5 +24,7 @@ public interface PaypalService {
 
     void activatePlan(String id, String any);
 
+    void deactivatePlan(String id, String any);
+
 
 }
