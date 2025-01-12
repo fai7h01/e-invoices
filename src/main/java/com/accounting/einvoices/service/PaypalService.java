@@ -31,4 +31,6 @@ public interface PaypalService {
     void updatePlanPricing(String id, PlanPricingRequest request);
 
     SubscriptionResponse createSubscription(SubscriptionRequest request);
+
+    SubscriptionDetailsResponse getSubscriptionDetails(String id);
 }

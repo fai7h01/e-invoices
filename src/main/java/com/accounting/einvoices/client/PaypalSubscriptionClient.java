@@ -1,8 +1,11 @@
 package com.accounting.einvoices.client;
 
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
+import com.accounting.einvoices.dto.response.paypal.SubscriptionDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.SubscriptionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -11,5 +14,8 @@ public interface PaypalSubscriptionClient {
 
     @PostMapping("/v1/billing/subscriptions")
     SubscriptionResponse createSubscription(@RequestBody SubscriptionRequest request);
+
+    @GetMapping("/v1/billing/subscriptions/{id}")
+    SubscriptionDetailsResponse getSubscriptionDetails(@PathVariable("id") String id);
 
 }

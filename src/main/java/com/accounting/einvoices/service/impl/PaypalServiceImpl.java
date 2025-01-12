@@ -77,4 +77,9 @@ public class PaypalServiceImpl implements PaypalService {
     public SubscriptionResponse createSubscription(SubscriptionRequest request) {
         return paypalSubscriptionClient.createSubscription(request);
     }
+
+    @Override
+    public SubscriptionDetailsResponse getSubscriptionDetails(String id) {
+        return paypalSubscriptionClient.getSubscriptionDetails(id);
+    }
 }
