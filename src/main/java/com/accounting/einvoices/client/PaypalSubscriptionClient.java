@@ -1,38 +1,15 @@
 package com.accounting.einvoices.client;
 
-import com.accounting.einvoices.dto.request.paypal.PlanRequest;
-import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
-import com.accounting.einvoices.dto.response.paypal.PlanDetailsResponse;
-import com.accounting.einvoices.dto.response.paypal.PlanListResponse;
-import com.accounting.einvoices.dto.response.paypal.PlanResponse;
-import com.github.fge.jsonpatch.JsonPatch;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
+import com.accounting.einvoices.dto.response.paypal.SubscriptionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.*;
-
-import javax.ws.rs.core.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "paypalSubscriptionClient", url = "https://api-m.sandbox.paypal.com")
 public interface PaypalSubscriptionClient {
 
-    @PostMapping("/v1/billing/plans")
-    PlanResponse createPlan(@RequestBody PlanRequest plan);
+    @PostMapping("/v1/billing/subscriptions")
+    SubscriptionResponse createSubscription(@RequestBody SubscriptionRequest request);
 
-    @GetMapping("/v1/billing/plans")
-    PlanListResponse getPlans();
-
-    @GetMapping("/v1/billing/plans/{id}")
-    PlanDetailsResponse getPlanDetails(@PathVariable("id") String id);
-
-    @PatchMapping(value = "/v1/billing/plans/{id}", consumes = MediaType.APPLICATION_JSON_PATCH_JSON)
-    void updatePlan(@PathVariable("id") String id, @RequestBody JsonPatch request);
-
-    @PostMapping("/v1/billing/plans/{id}/activate")
-    void activatePlan(@PathVariable("id") String id, @RequestBody String any);
-
-    @PostMapping("/v1/billing/plans/{id}/deactivate")
-    void deactivatePlan(@PathVariable("id") String id, @RequestBody String any);
-
-    @PostMapping("/v1/billing/plans/{id}/update-pricing-schemes")
-    void updatePlanPricing(@PathVariable("id") String id, @RequestBody PlanPricingRequest planPricingRequest);
 }
-

@@ -3,6 +3,7 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
@@ -129,6 +130,17 @@ public class PaypalController {
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Subscription Plan pricing is successfully updated.")
+                .build());
+    }
+
+    @PostMapping("/create/subscription")
+    public ResponseEntity<ResponseWrapper> createSubscription(@RequestBody SubscriptionRequest request) {
+        SubscriptionResponse response = paypalService.createSubscription(request);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Subscription is successfully created.")
+                .data(response)
                 .build());
     }
 

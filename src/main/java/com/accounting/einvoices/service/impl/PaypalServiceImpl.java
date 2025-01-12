@@ -1,10 +1,12 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.client.PaypalProductClient;
+import com.accounting.einvoices.client.PaypalPlanClient;
 import com.accounting.einvoices.client.PaypalSubscriptionClient;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class PaypalServiceImpl implements PaypalService {
 
     private final PaypalProductClient paypalProductClient;
+    private final PaypalPlanClient paypalPlanClient;
     private final PaypalSubscriptionClient paypalSubscriptionClient;
 
 
@@ -37,36 +40,41 @@ public class PaypalServiceImpl implements PaypalService {
 
     @Override
     public PlanResponse createPlan(PlanRequest request) {
-        return paypalSubscriptionClient.createPlan(request);
+        return paypalPlanClient.createPlan(request);
     }
 
     @Override
     public PlanListResponse getPlans() {
-        return paypalSubscriptionClient.getPlans();
+        return paypalPlanClient.getPlans();
     }
 
     @Override
     public PlanDetailsResponse getPlanDetails(String id) {
-        return paypalSubscriptionClient.getPlanDetails(id);
+        return paypalPlanClient.getPlanDetails(id);
     }
 
     @Override
     public void updatePlan(String id, JsonPatch request) {
-        paypalSubscriptionClient.updatePlan(id, request);
+        paypalPlanClient.updatePlan(id, request);
     }
 
     @Override
     public void activatePlan(String id, String any) {
-        paypalSubscriptionClient.activatePlan(id, any);
+        paypalPlanClient.activatePlan(id, any);
     }
 
     @Override
     public void deactivatePlan(String id, String any) {
-        paypalSubscriptionClient.deactivatePlan(id, any);
+        paypalPlanClient.deactivatePlan(id, any);
     }
 
     @Override
     public void updatePlanPricing(String id, PlanPricingRequest request) {
-        paypalSubscriptionClient.updatePlanPricing(id, request);
+        paypalPlanClient.updatePlanPricing(id, request);
+    }
+
+    @Override
+    public SubscriptionResponse createSubscription(SubscriptionRequest request) {
+        return paypalSubscriptionClient.createSubscription(request);
     }
 }
