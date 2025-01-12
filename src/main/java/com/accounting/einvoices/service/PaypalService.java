@@ -2,8 +2,9 @@ package com.accounting.einvoices.service;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
-import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
+import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
+import com.github.fge.jsonpatch.JsonPatch;
 
 
 public interface PaypalService {
@@ -20,11 +21,12 @@ public interface PaypalService {
 
     PlanDetailsResponse getPlanDetails(String id);
 
-    void updatePlan(String planId, PlanUpdateRequest request);
+    void updatePlan(String planId, JsonPatch request);
 
     void activatePlan(String id, String any);
 
     void deactivatePlan(String id, String any);
 
+    void updatePlanPricing(String id, PlanPricingRequest request);
 
 }

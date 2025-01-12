@@ -4,9 +4,10 @@ import com.accounting.einvoices.client.PaypalProductClient;
 import com.accounting.einvoices.client.PaypalSubscriptionClient;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
-import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
+import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
+import com.github.fge.jsonpatch.JsonPatch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,7 @@ public class PaypalServiceImpl implements PaypalService {
     }
 
     @Override
-    public void updatePlan(String id, PlanUpdateRequest request) {
+    public void updatePlan(String id, JsonPatch request) {
         paypalSubscriptionClient.updatePlan(id, request);
     }
 
@@ -62,5 +63,10 @@ public class PaypalServiceImpl implements PaypalService {
     @Override
     public void deactivatePlan(String id, String any) {
         paypalSubscriptionClient.deactivatePlan(id, any);
+    }
+
+    @Override
+    public void updatePlanPricing(String id, PlanPricingRequest request) {
+        paypalSubscriptionClient.updatePlanPricing(id, request);
     }
 }

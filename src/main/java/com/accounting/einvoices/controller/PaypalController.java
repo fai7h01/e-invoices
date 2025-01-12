@@ -2,10 +2,11 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
-import com.accounting.einvoices.dto.request.paypal.PlanUpdateRequest;
+import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
+import com.github.fge.jsonpatch.JsonPatch;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,7 +90,7 @@ public class PaypalController {
 
     @PatchMapping("/update/plan/{id}")
     public ResponseEntity<ResponseWrapper> updatePlan(@PathVariable("id") String id,
-                                                      @RequestBody PlanUpdateRequest request) {
+                                                      @RequestBody JsonPatch request) {
         paypalService.updatePlan(id, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json-patch+json")
@@ -117,6 +118,17 @@ public class PaypalController {
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
                 .message("Subscription Plan is successfully deactivated.")
+                .build());
+    }
+
+    @PostMapping("/update/plan/pricing/{id}")
+    public ResponseEntity<ResponseWrapper> updatePlanPricing(@PathVariable("id") String id,
+                                                             @RequestBody PlanPricingRequest request) {
+        paypalService.updatePlanPricing(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Subscription Plan pricing is successfully updated.")
                 .build());
     }
 

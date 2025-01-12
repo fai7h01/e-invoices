@@ -1,5 +1,5 @@
 
-package com.accounting.einvoices.dto.request.paypal;
+package com.accounting.einvoices.dto.request.paypal.pricing;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,41 +13,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "op",
-    "path",
-    "value"
+    "value",
+    "currency_code"
 })
 @Generated("jsonschema2pojo")
-public class PlanUpdateRequest {
+public class Amount {
 
-    @JsonProperty("op")
-    private String op;
-    @JsonProperty("path")
-    private String path;
     @JsonProperty("value")
     private String value;
+    @JsonProperty("currency_code")
+    private String currencyCode;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
-
-    @JsonProperty("op")
-    public String getOp() {
-        return op;
-    }
-
-    @JsonProperty("op")
-    public void setOp(String op) {
-        this.op = op;
-    }
-
-    @JsonProperty("path")
-    public String getPath() {
-        return path;
-    }
-
-    @JsonProperty("path")
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     @JsonProperty("value")
     public String getValue() {
@@ -57,6 +34,16 @@ public class PlanUpdateRequest {
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @JsonProperty("currency_code")
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    @JsonProperty("currency_code")
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @JsonAnyGetter
