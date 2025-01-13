@@ -18,4 +18,13 @@ public interface PaypalSubscriptionClient {
     @GetMapping("/v1/billing/subscriptions/{id}")
     SubscriptionDetailsResponse getSubscriptionDetails(@PathVariable("id") String id);
 
+    @PostMapping("/v1/billing/subscriptions/{id}/suspend")
+    void suspendSubscription(@PathVariable("id") String id);
+
+    @PostMapping("/v1/billing/subscriptions/{id}/cancel")
+    void cancelSubscription(@PathVariable("id") String id);
+
+    @PostMapping("/v1/billing/subscriptions/{id}/activate")
+    void activateSubscription(@PathVariable("id") String id);
+
 }
