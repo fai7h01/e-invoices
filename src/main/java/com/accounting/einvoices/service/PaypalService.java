@@ -3,6 +3,7 @@ package com.accounting.einvoices.service;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -33,4 +34,10 @@ public interface PaypalService {
     SubscriptionResponse createSubscription(SubscriptionRequest request);
 
     SubscriptionDetailsResponse getSubscriptionDetails(String id);
+
+    void suspendSubscription(String id, SubscriptionReason reason);
+
+    void cancelSubscription(String id, SubscriptionReason reason);
+
+    void activateSubscription(String id, SubscriptionReason reason);
 }

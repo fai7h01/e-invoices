@@ -1,5 +1,6 @@
 package com.accounting.einvoices.client;
 
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.paypal.SubscriptionDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.SubscriptionResponse;
@@ -19,12 +20,12 @@ public interface PaypalSubscriptionClient {
     SubscriptionDetailsResponse getSubscriptionDetails(@PathVariable("id") String id);
 
     @PostMapping("/v1/billing/subscriptions/{id}/suspend")
-    void suspendSubscription(@PathVariable("id") String id);
+    void suspendSubscription(@PathVariable("id") String id, @RequestBody SubscriptionReason reason);
 
     @PostMapping("/v1/billing/subscriptions/{id}/cancel")
-    void cancelSubscription(@PathVariable("id") String id);
+    void cancelSubscription(@PathVariable("id") String id, @RequestBody SubscriptionReason reason);
 
     @PostMapping("/v1/billing/subscriptions/{id}/activate")
-    void activateSubscription(@PathVariable("id") String id);
+    void activateSubscription(@PathVariable("id") String id, @RequestBody SubscriptionReason reason);
 
 }

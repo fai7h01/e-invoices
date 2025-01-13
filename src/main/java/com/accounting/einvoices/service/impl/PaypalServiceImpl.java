@@ -6,6 +6,7 @@ import com.accounting.einvoices.client.PaypalSubscriptionClient;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
@@ -21,7 +22,6 @@ public class PaypalServiceImpl implements PaypalService {
     private final PaypalProductClient paypalProductClient;
     private final PaypalPlanClient paypalPlanClient;
     private final PaypalSubscriptionClient paypalSubscriptionClient;
-
 
     @Override
     public CatalogProductResponse createProduct(CatalogProductRequest request) {
@@ -81,5 +81,20 @@ public class PaypalServiceImpl implements PaypalService {
     @Override
     public SubscriptionDetailsResponse getSubscriptionDetails(String id) {
         return paypalSubscriptionClient.getSubscriptionDetails(id);
+    }
+
+    @Override
+    public void suspendSubscription(String id, SubscriptionReason reason) {
+        paypalSubscriptionClient.suspendSubscription(id, reason);
+    }
+
+    @Override
+    public void cancelSubscription(String id, SubscriptionReason reason) {
+        paypalSubscriptionClient.cancelSubscription(id, reason);
+    }
+
+    @Override
+    public void activateSubscription(String id, SubscriptionReason reason) {
+        paypalSubscriptionClient.activateSubscription(id, reason);
     }
 }
