@@ -3,6 +3,7 @@ package com.accounting.einvoices.controller;
 import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
 import com.accounting.einvoices.dto.request.paypal.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
+import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
 import com.accounting.einvoices.dto.response.paypal.*;
@@ -152,6 +153,17 @@ public class PaypalController {
                 .success(true)
                 .message("Subscription Details is successfully retrieved.")
                 .data(response)
+                .build());
+    }
+
+    @PostMapping("/suspend/subscription/{id}")
+    public ResponseEntity<ResponseWrapper> suspendSubscription(@PathVariable("id") String id,
+                                                               @RequestBody SubscriptionReason reason) {
+        paypalService.suspendSubscription(id, reason);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
+                .code(HttpStatus.ACCEPTED.value())
+                .success(true)
+                .message("Subscription status changed to SUSPENDED.")
                 .build());
     }
 
