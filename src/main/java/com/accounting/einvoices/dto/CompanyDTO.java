@@ -1,6 +1,5 @@
 package com.accounting.einvoices.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -23,5 +22,7 @@ public class CompanyDTO {
     private String website;
     private String email;
     private AddressDTO address;
+
+    private boolean subscribed;
     //private Integer estimatedRevenue;
 }

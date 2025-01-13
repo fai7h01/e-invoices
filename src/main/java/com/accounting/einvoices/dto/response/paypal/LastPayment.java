@@ -4,6 +4,8 @@ package com.accounting.einvoices.dto.response.paypal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Generated;
+
+import com.accounting.einvoices.dto.request.paypal.pricing.Amount;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

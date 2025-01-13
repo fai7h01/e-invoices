@@ -136,10 +136,21 @@ public class PaypalController {
     @PostMapping("/create/subscription")
     public ResponseEntity<ResponseWrapper> createSubscription(@RequestBody SubscriptionRequest request) {
         SubscriptionResponse response = paypalService.createSubscription(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
+                .success(true)
+                .message("Subscription is successfully created.")
+                .data(response)
+                .build());
+    }
+
+    @GetMapping("/details/subscription/{id}")
+    public ResponseEntity<ResponseWrapper> getSubscriptionDetails(@PathVariable("id") String id) {
+        SubscriptionDetailsResponse response = paypalService.getSubscriptionDetails(id);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Subscription is successfully created.")
+                .message("Subscription Details is successfully retrieved.")
                 .data(response)
                 .build());
     }
