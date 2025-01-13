@@ -178,4 +178,15 @@ public class PaypalController {
                 .build());
     }
 
+    @PostMapping("/activate/subscription/{id}")
+    public ResponseEntity<ResponseWrapper> activateSubscription(@PathVariable("id") String id,
+                                                               @RequestBody SubscriptionReason reason) {
+        paypalService.activateSubscription(id, reason);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
+                .code(HttpStatus.ACCEPTED.value())
+                .success(true)
+                .message("Subscription is successfully activated.")
+                .build());
+    }
+
 }
