@@ -97,10 +97,10 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json-patch+json")
                 .body(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
-                .success(true)
-                .message("Subscription Plan is successfully updated.")
-                .build());
+                        .code(HttpStatus.OK.value())
+                        .success(true)
+                        .message("Subscription Plan is successfully updated.")
+                        .build());
     }
 
     @PostMapping("/activate/plan/{id}")
@@ -164,6 +164,17 @@ public class PaypalController {
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
                 .message("Subscription status changed to SUSPENDED.")
+                .build());
+    }
+
+    @PostMapping("/cancel/subscription/{id}")
+    public ResponseEntity<ResponseWrapper> cancelSubscription(@PathVariable("id") String id,
+                                                              @RequestBody SubscriptionReason reason) {
+        paypalService.cancelSubscription(id, reason);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
+                .code(HttpStatus.ACCEPTED.value())
+                .success(true)
+                .message("Subscription is successfully canceled.")
                 .build());
     }
 
