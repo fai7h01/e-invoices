@@ -84,48 +84,54 @@ public class DashboardServiceImpl implements DashboardService {
 
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
 
-        List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
-
-        //return success if list is empty
-        if (invoices == null) {
-            return new HashMap<>();
-        }
-
         ProductSalesStatDTO productSalesStat;
 
-        for (InvoiceDTO invoice : invoices) {
+        for (Currency value : Currency.values()) {
 
-            List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoice.getId());
+            List<InvoiceDTO> invoicesByCurrency = map.get(value);
 
-            List<Map.Entry<Pair<ProductDTO, BigDecimal>, Integer>> productQtyEntryList = invoiceProducts.stream()
-                    .collect(Collectors.groupingBy(dto -> Pair.of(dto.getProduct(), dto.getPrice()),
-                            Collectors.summingInt(InvoiceProductDTO::getQuantity)))
-                    .entrySet()
-                    .stream()
-                    .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
-                    .toList();
+            if (invoicesByCurrency == null) {
+                continue;
+            }
 
-            for (Map.Entry<Pair<ProductDTO, BigDecimal>, Integer> each : productQtyEntryList) {
-                String name = each.getKey().getFirst().getName();
-                Integer qty = each.getValue();
-                BigDecimal totalAmount = each.getKey().getSecond().multiply(BigDecimal.valueOf(each.getValue()));
+            for (InvoiceDTO invoice : invoicesByCurrency) {
 
-                if (stats.containsKey(name)) {
+                List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoice.getId());
 
-                    ProductSalesStatDTO productSalesStatDTO = stats.get(name);
-                    productSalesStatDTO.setQuantity(productSalesStatDTO.getQuantity() + qty);
-                    productSalesStatDTO.setAmount(productSalesStatDTO.getAmount().add(totalAmount));
+                List<Map.Entry<Pair<ProductDTO, BigDecimal>, Integer>> productQtyEntryList = invoiceProducts.stream()
+                        .collect(Collectors.groupingBy(dto -> Pair.of(dto.getProduct(), dto.getPrice()),
+                                Collectors.summingInt(InvoiceProductDTO::getQuantity)))
+                        .entrySet()
+                        .stream()
+                        .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                        .toList();
 
-                } else {
-                    productSalesStat = ProductSalesStatDTO.builder()
-                            .quantity(each.getValue())
-                            .amount(totalAmount)
-                            .currency(invoice.getCurrency())
-                            .build();
-                    stats.put(name, productSalesStat);
+                for (Map.Entry<Pair<ProductDTO, BigDecimal>, Integer> each : productQtyEntryList) {
+                    String name = each.getKey().getFirst().getName();
+                    Integer qty = each.getValue();
+                    BigDecimal totalAmount = each.getKey().getSecond().multiply(BigDecimal.valueOf(each.getValue()));
+
+                    if (stats.containsKey(name)) {
+
+                        ProductSalesStatDTO productSalesStatDTO = stats.get(name);
+                        productSalesStatDTO.setQuantity(productSalesStatDTO.getQuantity() + qty);
+                        BigDecimal addedAmount = productSalesStatDTO.getAmount().add(totalAmount);
+                        addedAmount = currencyExchangeService.convertToCommonCurrency(addedAmount, value.name(), currency);
+                        productSalesStatDTO.setAmount(addedAmount);
+
+                    } else {
+                        productSalesStat = ProductSalesStatDTO.builder()
+                                .quantity(each.getValue())
+                                .amount(currencyExchangeService.convertToCommonCurrency(totalAmount, value.name(), currency))
+                                .currency(invoice.getCurrency())
+                                .build();
+                        stats.put(name, productSalesStat);
+                    }
                 }
             }
+
         }
+
         return stats;
     }
 
