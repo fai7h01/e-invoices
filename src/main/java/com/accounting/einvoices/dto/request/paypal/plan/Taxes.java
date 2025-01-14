@@ -1,12 +1,9 @@
 
-package com.accounting.einvoices.dto.request.paypal.pricing;
+package com.accounting.einvoices.dto.request.paypal.plan;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
-
-import com.accounting.einvoices.dto.request.paypal.plan.PricingScheme;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,24 +13,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "pricing_schemes"
+    "percentage",
+    "inclusive"
 })
 @Generated("jsonschema2pojo")
-public class PlanPricingRequest {
+public class Taxes {
 
-    @JsonProperty("pricing_schemes")
-    private List<PricingScheme> pricingSchemes;
+    @JsonProperty("percentage")
+    private String percentage;
+    @JsonProperty("inclusive")
+    private Boolean inclusive;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("pricing_schemes")
-    public List<PricingScheme> getPricingSchemes() {
-        return pricingSchemes;
+    @JsonProperty("percentage")
+    public String getPercentage() {
+        return percentage;
     }
 
-    @JsonProperty("pricing_schemes")
-    public void setPricingSchemes(List<PricingScheme> pricingSchemes) {
-        this.pricingSchemes = pricingSchemes;
+    @JsonProperty("percentage")
+    public void setPercentage(String percentage) {
+        this.percentage = percentage;
+    }
+
+    @JsonProperty("inclusive")
+    public Boolean getInclusive() {
+        return inclusive;
+    }
+
+    @JsonProperty("inclusive")
+    public void setInclusive(Boolean inclusive) {
+        this.inclusive = inclusive;
     }
 
     @JsonAnyGetter

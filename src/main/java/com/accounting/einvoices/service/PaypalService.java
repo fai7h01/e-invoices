@@ -1,12 +1,14 @@
 package com.accounting.einvoices.service;
 
-import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
-import com.accounting.einvoices.dto.request.paypal.PlanRequest;
+import com.accounting.einvoices.dto.request.paypal.plan.CatalogProductRequest;
+import com.accounting.einvoices.dto.request.paypal.plan.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.github.fge.jsonpatch.JsonPatch;
+
+import java.util.Map;
 
 
 public interface PaypalService {
@@ -40,4 +42,6 @@ public interface PaypalService {
     void cancelSubscription(String id, SubscriptionReason reason);
 
     void activateSubscription(String id, SubscriptionReason reason);
+
+    void handleWebHookEvent(String payload, Map<String, String> headers);
 }

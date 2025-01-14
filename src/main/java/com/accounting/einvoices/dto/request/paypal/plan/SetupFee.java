@@ -1,5 +1,5 @@
 
-package com.accounting.einvoices.dto.request.paypal;
+package com.accounting.einvoices.dto.request.paypal.plan;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "currency_code"
 })
 @Generated("jsonschema2pojo")
-public class FixedPrice {
+public class SetupFee {
 
     @JsonProperty("value")
     private String value;

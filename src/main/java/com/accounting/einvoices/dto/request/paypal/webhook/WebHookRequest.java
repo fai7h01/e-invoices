@@ -1,7 +1,8 @@
 
-package com.accounting.einvoices.dto.request.paypal;
+package com.accounting.einvoices.dto.request.paypal.webhook;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -13,37 +14,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "value",
-    "currency_code"
+    "url",
+    "event_types"
 })
 @Generated("jsonschema2pojo")
-public class SetupFee {
+public class WebHookRequest {
 
-    @JsonProperty("value")
-    private String value;
-    @JsonProperty("currency_code")
-    private String currencyCode;
+    @JsonProperty("url")
+    private String url;
+    @JsonProperty("event_types")
+    private List<EventType> eventTypes;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("value")
-    public String getValue() {
-        return value;
+    @JsonProperty("url")
+    public String getUrl() {
+        return url;
     }
 
-    @JsonProperty("value")
-    public void setValue(String value) {
-        this.value = value;
+    @JsonProperty("url")
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    @JsonProperty("currency_code")
-    public String getCurrencyCode() {
-        return currencyCode;
+    @JsonProperty("event_types")
+    public List<EventType> getEventTypes() {
+        return eventTypes;
     }
 
-    @JsonProperty("currency_code")
-    public void setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
+    @JsonProperty("event_types")
+    public void setEventTypes(List<EventType> eventTypes) {
+        this.eventTypes = eventTypes;
     }
 
     @JsonAnyGetter

@@ -1,12 +1,9 @@
 
-package com.accounting.einvoices.dto.request.paypal.pricing;
+package com.accounting.einvoices.dto.request.paypal.webhook;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
-
-import com.accounting.einvoices.dto.request.paypal.plan.PricingScheme;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,24 +13,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "pricing_schemes"
+    "name"
 })
 @Generated("jsonschema2pojo")
-public class PlanPricingRequest {
+public class EventType {
 
-    @JsonProperty("pricing_schemes")
-    private List<PricingScheme> pricingSchemes;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("pricing_schemes")
-    public List<PricingScheme> getPricingSchemes() {
-        return pricingSchemes;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("pricing_schemes")
-    public void setPricingSchemes(List<PricingScheme> pricingSchemes) {
-        this.pricingSchemes = pricingSchemes;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter

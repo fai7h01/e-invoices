@@ -15,6 +15,7 @@ public class SubscriptionDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     private CompanyDTO company;
+    private String subscriptionId;
     private String planId;
     private String status;
     private String activationTime;

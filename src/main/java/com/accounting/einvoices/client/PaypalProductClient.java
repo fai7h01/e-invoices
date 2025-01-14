@@ -1,6 +1,6 @@
 package com.accounting.einvoices.client;
 
-import com.accounting.einvoices.dto.request.paypal.CatalogProductRequest;
+import com.accounting.einvoices.dto.request.paypal.plan.CatalogProductRequest;
 import com.accounting.einvoices.dto.response.paypal.CatalogProductDetailsResponse;
 import com.accounting.einvoices.dto.response.paypal.CatalogProductListResponse;
 import com.accounting.einvoices.dto.response.paypal.CatalogProductResponse;

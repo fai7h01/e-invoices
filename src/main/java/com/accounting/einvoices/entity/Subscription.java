@@ -23,6 +23,7 @@ public class Subscription extends BaseEntity{
     @OneToOne
     private Company company;
 
+    private String subscriptionId;
     private String planId;
     private String status;
     private String activationTime;

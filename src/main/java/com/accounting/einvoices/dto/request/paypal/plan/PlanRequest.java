@@ -1,5 +1,5 @@
 
-package com.accounting.einvoices.dto.request.paypal;
+package com.accounting.einvoices.dto.request.paypal.plan;
 
 import java.util.LinkedHashMap;
 import java.util.List;

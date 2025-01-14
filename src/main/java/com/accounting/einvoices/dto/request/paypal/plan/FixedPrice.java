@@ -1,5 +1,5 @@
 
-package com.accounting.einvoices.dto.request.paypal;
+package com.accounting.einvoices.dto.request.paypal.plan;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,24 +13,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "fixed_price"
+    "value",
+    "currency_code"
 })
 @Generated("jsonschema2pojo")
-public class PricingScheme {
+public class FixedPrice {
 
-    @JsonProperty("fixed_price")
-    private FixedPrice fixedPrice;
+    @JsonProperty("value")
+    private String value;
+    @JsonProperty("currency_code")
+    private String currencyCode;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("fixed_price")
-    public FixedPrice getFixedPrice() {
-        return fixedPrice;
+    @JsonProperty("value")
+    public String getValue() {
+        return value;
     }
 
-    @JsonProperty("fixed_price")
-    public void setFixedPrice(FixedPrice fixedPrice) {
-        this.fixedPrice = fixedPrice;
+    @JsonProperty("value")
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @JsonProperty("currency_code")
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    @JsonProperty("currency_code")
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @JsonAnyGetter

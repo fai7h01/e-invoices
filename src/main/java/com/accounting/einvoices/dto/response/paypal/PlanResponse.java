@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 
-import com.accounting.einvoices.dto.request.paypal.BillingCycle;
-import com.accounting.einvoices.dto.request.paypal.PaymentPreferences;
-import com.accounting.einvoices.dto.request.paypal.Taxes;
+import com.accounting.einvoices.dto.request.paypal.plan.BillingCycle;
+import com.accounting.einvoices.dto.request.paypal.plan.PaymentPreferences;
+import com.accounting.einvoices.dto.request.paypal.plan.Taxes;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

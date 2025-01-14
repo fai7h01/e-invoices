@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 
-import com.accounting.einvoices.dto.request.paypal.FixedPrice;
+import com.accounting.einvoices.dto.request.paypal.plan.FixedPrice;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class PricingScheme__1 {
 
     @JsonProperty("fixed_price")
-    private com.accounting.einvoices.dto.request.paypal.FixedPrice fixedPrice;
+    private FixedPrice fixedPrice;
     @JsonProperty("pricing_model")
     private String pricingModel;
     @JsonProperty("tiers")
@@ -33,7 +33,7 @@ public class PricingScheme__1 {
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     @JsonProperty("fixed_price")
-    public com.accounting.einvoices.dto.request.paypal.FixedPrice getFixedPrice() {
+    public FixedPrice getFixedPrice() {
         return fixedPrice;
     }
 
