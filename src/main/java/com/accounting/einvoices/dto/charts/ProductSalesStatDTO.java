@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Builder
 @Getter
 @Setter
+@ToString
 public class ProductSalesStatDTO {
 
     private String name;

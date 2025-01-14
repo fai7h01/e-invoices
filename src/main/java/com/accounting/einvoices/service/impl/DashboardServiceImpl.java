@@ -10,7 +10,6 @@ import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.exception.exchangeRates.ExchangeRatesNotRetrievedException;
-import com.accounting.einvoices.exception.invoice.InvoiceNotFoundException;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +27,12 @@ public class DashboardServiceImpl implements DashboardService {
 
     private final InvoiceService invoiceService;
     private final InvoiceProductService invoiceProductService;
-    private final ExchangeRateClient exchangeRateClient;
+    private final CurrencyExchangeService currencyExchangeService;
 
-    public DashboardServiceImpl(InvoiceService invoiceService, InvoiceProductService invoiceProductService, ExchangeRateClient exchangeRateClient) {
+    public DashboardServiceImpl(InvoiceService invoiceService, InvoiceProductService invoiceProductService, CurrencyExchangeService currencyExchangeService) {
         this.invoiceService = invoiceService;
         this.invoiceProductService = invoiceProductService;
-        this.exchangeRateClient = exchangeRateClient;
+        this.currencyExchangeService = currencyExchangeService;
     }
 
 
@@ -43,39 +42,36 @@ public class DashboardServiceImpl implements DashboardService {
 
         Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
 
-        List<InvoiceDTO> invoices = map.get(Currency.valueOf(currency));
-
-        //return success if list is empty
-        if (invoices == null) {
-//            throw new InvoiceNotFoundException("Invoices not found.");
-            return new ArrayList<>();
-        }
-
-        int totalQuantity = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
+        BigDecimal totalAmount;
         ProductSalesStatDTO productSalesStat;
 
-        for (InvoiceDTO invoice : invoices) {
+        for (Currency value : Currency.values()) {
+            List<InvoiceDTO> invoicesByCurrency = map.get(value);
+            if (invoicesByCurrency == null) {
+                continue;
+            }
+            for (InvoiceDTO invoice : invoicesByCurrency) {
+                int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
+                        .map(InvoiceProductDTO::getQuantity)
+                        .reduce(Integer::sum).orElse(0);
 
-            int dayQuantity = invoiceProductService.findAllByInvoiceId(invoice.getId()).stream()
-                    .map(InvoiceProductDTO::getQuantity)
-                    .reduce(Integer::sum).orElse(0);
+                totalAmount = currencyExchangeService.convertToCommonCurrency(invoice.getTotal(), value.name(), currency);
 
-            totalQuantity += dayQuantity;
-            totalAmount = totalAmount.add(invoice.getTotal());
+                productSalesStat = ProductSalesStatDTO.builder()
+                        .year(year)
+                        .month(invoice.getAcceptDate().getMonthValue())
+                        .dayOfMonth(invoice.getAcceptDate().getDayOfMonth())
+                        .quantity(dayQuantity)
+                        .amount(totalAmount )
+                        .currency(invoice.getCurrency())
+                        .build();
 
-            productSalesStat = ProductSalesStatDTO.builder()
-                    .year(year)
-                    .month(invoice.getAcceptDate().getMonthValue())
-                    .dayOfMonth(invoice.getAcceptDate().getDayOfMonth())
-                    .quantity(totalQuantity)
-                    .amount(totalAmount)
-                    .currency(invoice.getCurrency())
-                    .build();
+                stats.add(productSalesStat);
+            }
 
-            stats.add(productSalesStat);
         }
 
+        log.info("Product sales stats: {}", stats);
 
         return stats;
     }
@@ -131,47 +127,6 @@ public class DashboardServiceImpl implements DashboardService {
             }
         }
         return stats;
-    }
-
-
-    @Cacheable(value = "exchangeRates", key = "#code + '_' + (#amount != null ? #amount : 1)")
-    @Override
-    public CurrencyExchangeDTO exchangeRatesOf(String code, Long amount) {
-
-        ExchangeRateResponse response = exchangeRateClient.getExchanges(code);
-
-        BigDecimal n = (amount == null) ? BigDecimal.ONE : BigDecimal.valueOf(amount);
-
-        if (Objects.requireNonNull(response.getResult()).equals("success")) {
-            ConversionRates conversionRates = response.getConversionRates();
-            BigDecimal usd = BigDecimal.valueOf(conversionRates.getUsd());
-            BigDecimal gbp = BigDecimal.valueOf(conversionRates.getGbp());
-            BigDecimal cny = BigDecimal.valueOf(conversionRates.getCny());
-            BigDecimal aud = BigDecimal.valueOf(conversionRates.getAud());
-            BigDecimal gel = BigDecimal.valueOf(conversionRates.getGel());
-            BigDecimal eur = BigDecimal.valueOf(conversionRates.getEur());
-
-            if (amount != null) {
-
-                usd = BigDecimalUtil.format(usd.multiply(n));
-                gbp = BigDecimalUtil.format(gbp.multiply(n));
-                cny = BigDecimalUtil.format(cny.multiply(n));
-                aud = BigDecimalUtil.format(aud.multiply(n));
-                gel = BigDecimalUtil.format(gel.multiply(n));
-                eur = BigDecimalUtil.format(eur.multiply(n));
-            }
-
-            return CurrencyExchangeDTO.builder()
-                    .usd(usd)
-                    .cny(cny)
-                    .gbp(gbp)
-                    .aud(aud)
-                    .gel(gel)
-                    .eur(eur)
-                    .build();
-        }
-
-        throw new ExchangeRatesNotRetrievedException("Exchange rates could not retrieve.");
     }
 
 

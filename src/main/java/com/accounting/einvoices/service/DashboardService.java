@@ -11,8 +11,6 @@ import java.util.Map;
 
 public interface DashboardService {
 
-    CurrencyExchangeDTO exchangeRatesOf(String code, Long amount);
-
     //chart
     List<ProductSalesStatDTO> totalProductsSoldEachDayMonthByCurrency(int year, int startMonth, int endMonth, String currency);
 

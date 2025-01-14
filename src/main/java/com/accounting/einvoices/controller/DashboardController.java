@@ -4,6 +4,7 @@ import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
 import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.service.CurrencyExchangeService;
 import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;
 import com.accounting.einvoices.service.ReportingService;
@@ -24,11 +25,14 @@ public class DashboardController {
     private final DashboardService dashboardService;
     private final ReportingService reportingService;
     private final InvoiceService invoiceService;
+    private final CurrencyExchangeService currencyExchangeService;
 
-    public DashboardController(DashboardService dashboardService, ReportingService reportingService, InvoiceService invoiceService) {
+    public DashboardController(DashboardService dashboardService, ReportingService reportingService, InvoiceService invoiceService,
+                               CurrencyExchangeService currencyExchangeService) {
         this.dashboardService = dashboardService;
         this.reportingService = reportingService;
         this.invoiceService = invoiceService;
+        this.currencyExchangeService = currencyExchangeService;
     }
 
     @GetMapping("/financial-summary/current-sales/{year}/{startMonth}/{endMonth}/{code}")
@@ -46,20 +50,20 @@ public class DashboardController {
                 .data(financialSummary).build());
     }
 
-    @GetMapping("/financial-summary/multi-currency/{year}/{startMonth}/{endMonth}/{code}")
-    public ResponseEntity<ResponseWrapper> getFinancialSummaryConvertedInOneCurrency(@PathVariable("year") String year,
-                                                                                     @PathVariable("startMonth") String startMonth,
-                                                                                     @PathVariable("endMonth") String endMonth,
-                                                                                     @PathVariable("code") String code) {
-
-        Map<String, BigDecimal> financialSummary =
-                reportingService.getFinancialSummaryConvertedInOneCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
-        return ResponseEntity.ok(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
-                .success(true)
-                .message("Financial summary are successfully retrieved.")
-                .data(financialSummary).build());
-    }
+//    @GetMapping("/financial-summary/multi-currency/{year}/{startMonth}/{endMonth}/{code}")
+//    public ResponseEntity<ResponseWrapper> getFinancialSummaryConvertedInOneCurrency(@PathVariable("year") String year,
+//                                                                                     @PathVariable("startMonth") String startMonth,
+//                                                                                     @PathVariable("endMonth") String endMonth,
+//                                                                                     @PathVariable("code") String code) {
+//
+//        Map<String, BigDecimal> financialSummary =
+//                reportingService.getFinancialSummaryConvertedInOneCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
+//        return ResponseEntity.ok(ResponseWrapper.builder()
+//                .code(HttpStatus.OK.value())
+//                .success(true)
+//                .message("Financial summary are successfully retrieved.")
+//                .data(financialSummary).build());
+//    }
 
 
     //@RolesAllowed("Admin")
@@ -106,7 +110,7 @@ public class DashboardController {
     @GetMapping("/exchange-rates/{code}")
     public ResponseEntity<ResponseWrapper> getExchangeRates(@PathVariable("code") String code,
                                                             @RequestParam(value = "amount", required = false) Long amount) {
-        CurrencyExchangeDTO rates = dashboardService.exchangeRatesOf(code, amount);
+        CurrencyExchangeDTO rates = currencyExchangeService.exchangeRatesOf(code, amount);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
                 .message("Exchange rates successfully retrieved.")
