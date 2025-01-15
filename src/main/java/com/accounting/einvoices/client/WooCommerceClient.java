@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @FeignClient(name = "wooCommerceClient", url = "https://this-is-a-placeholder.com", configuration = FeignClientConfig.class)
+//@FeignClient(name = "wooCommerceClient", url = "https://this-is-a-placeholder.com")
 public interface WooCommerceClient {
 
     @GetMapping("/wp-json/wc/v3/products")
