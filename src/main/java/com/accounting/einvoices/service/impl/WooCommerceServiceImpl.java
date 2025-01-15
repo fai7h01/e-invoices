@@ -7,31 +7,41 @@ import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 import com.accounting.einvoices.entity.WooCommerceCredentials;
 import com.accounting.einvoices.repository.WooCommerceRepository;
 import com.accounting.einvoices.service.KeycloakService;
+import com.accounting.einvoices.service.UserService;
 import com.accounting.einvoices.service.WooCommerceService;
 import com.accounting.einvoices.util.MapperUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @Service
 public class WooCommerceServiceImpl implements WooCommerceService {
 
     private final WooCommerceRepository wooCommerceRepository;
     private final WooCommerceClient wooCommerceClient;
+    private final UserService userService;
     private final KeycloakService keycloakService;
     private final MapperUtil mapperUtil;
 
-    public WooCommerceServiceImpl(WooCommerceRepository wooCommerceRepository, WooCommerceClient wooCommerceClient,
+    public WooCommerceServiceImpl(WooCommerceRepository wooCommerceRepository, WooCommerceClient wooCommerceClient, UserService userService,
                                   KeycloakService keycloakService, MapperUtil mapperUtil) {
         this.wooCommerceRepository = wooCommerceRepository;
         this.wooCommerceClient = wooCommerceClient;
+        this.userService = userService;
         this.keycloakService = keycloakService;
         this.mapperUtil = mapperUtil;
     }
 
     @Override
     public WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto) {
+        log.info("WOOCOMMERCE: {}", dto);
+        if (dto.getUser() == null) {
+            UserDTO loggedInUser = keycloakService.getLoggedInUser();
+            dto.setUser(loggedInUser);
+        }
         WooCommerceCredentials converted = mapperUtil.convert(dto, new WooCommerceCredentials());
         WooCommerceCredentials saved = wooCommerceRepository.save(converted);
         return mapperUtil.convert(saved, new WooCommerceCredentialsDTO());
