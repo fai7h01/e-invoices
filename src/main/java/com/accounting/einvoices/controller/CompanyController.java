@@ -30,4 +30,14 @@ public class CompanyController {
                 .message("Company is successfully updated.")
                 .data(updated).build());
     }
+
+    @GetMapping
+    public ResponseEntity<ResponseWrapper> getLoggedInCompany() {
+        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Company is successfully updated.")
+                .data(loggedInCompany).build());
+    }
 }

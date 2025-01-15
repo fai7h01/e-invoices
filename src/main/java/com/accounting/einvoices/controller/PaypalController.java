@@ -24,6 +24,7 @@ public class PaypalController {
         this.paypalService = paypalService;
     }
 
+
     @PostMapping("/create/product")
     public ResponseEntity<ResponseWrapper> createProduct(@RequestBody CatalogProductRequest request) {
         CatalogProductResponse response = paypalService.createProduct(request);
@@ -63,7 +64,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
-                .message("SubscriptionDTO Plan is successfully created.")
+                .message("Subscription Plan is successfully created.")
                 .data(response)
                 .build());
     }
@@ -74,7 +75,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("SubscriptionDTO Plans is successfully retrieved.")
+                .message("Subscription Plans is successfully retrieved.")
                 .data(response)
                 .build());
     }
@@ -85,7 +86,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("SubscriptionDTO Plan details is successfully retrieved.")
+                .message("Subscription Plan details is successfully retrieved.")
                 .data(response)
                 .build());
     }
@@ -99,7 +100,7 @@ public class PaypalController {
                 .body(ResponseWrapper.builder()
                         .code(HttpStatus.OK.value())
                         .success(true)
-                        .message("SubscriptionDTO Plan is successfully updated.")
+                        .message("Subscription Plan is successfully updated.")
                         .build());
     }
 
@@ -109,7 +110,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
-                .message("SubscriptionDTO Plan is successfully activated.")
+                .message("Subscription Plan is successfully activated.")
                 .build());
     }
 
@@ -119,7 +120,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
-                .message("SubscriptionDTO Plan is successfully deactivated.")
+                .message("Subscription Plan is successfully deactivated.")
                 .build());
     }
 
@@ -130,7 +131,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("SubscriptionDTO Plan pricing is successfully updated.")
+                .message("Subscription Plan pricing is successfully updated.")
                 .build());
     }
 
@@ -140,7 +141,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)
-                .message("SubscriptionDTO is successfully created.")
+                .message("Subscription is successfully created.")
                 .data(response)
                 .build());
     }
@@ -151,7 +152,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("SubscriptionDTO Details is successfully retrieved.")
+                .message("Subscription Details is successfully retrieved.")
                 .data(response)
                 .build());
     }
@@ -163,7 +164,7 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
-                .message("SubscriptionDTO status changed to SUSPENDED.")
+                .message("Subscription status changed to SUSPENDED.")
                 .build());
     }
 
@@ -174,18 +175,18 @@ public class PaypalController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
-                .message("SubscriptionDTO is successfully canceled.")
+                .message("Subscription is successfully canceled.")
                 .build());
     }
 
     @PostMapping("/activate/subscription/{id}")
     public ResponseEntity<ResponseWrapper> activateSubscription(@PathVariable("id") String id,
-                                                               @RequestBody SubscriptionReason reason) {
+                                                                @RequestBody SubscriptionReason reason) {
         paypalService.activateSubscription(id, reason);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
-                .message("SubscriptionDTO is successfully activated.")
+                .message("Subscription is successfully activated.")
                 .build());
     }
 

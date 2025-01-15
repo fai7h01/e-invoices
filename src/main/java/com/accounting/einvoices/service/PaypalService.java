@@ -8,8 +8,6 @@ import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequ
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.github.fge.jsonpatch.JsonPatch;
 
-import java.util.Map;
-
 
 public interface PaypalService {
 
@@ -43,5 +41,5 @@ public interface PaypalService {
 
     void activateSubscription(String id, SubscriptionReason reason);
 
-    void handleWebHookEvent(String payload, Map<String, String> headers);
+
 }
