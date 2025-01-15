@@ -1,16 +1,12 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.dto.*;
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.enums.Currency;
-import com.accounting.einvoices.exception.DataIsNotPresentException;
 import com.accounting.einvoices.service.*;
-import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

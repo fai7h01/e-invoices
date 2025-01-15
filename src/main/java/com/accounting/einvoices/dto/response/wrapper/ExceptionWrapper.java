@@ -1,4 +1,4 @@
-package com.accounting.einvoices.dto.response;
+package com.accounting.einvoices.dto.response.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

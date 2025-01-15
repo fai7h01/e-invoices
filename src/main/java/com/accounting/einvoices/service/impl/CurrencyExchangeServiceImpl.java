@@ -1,9 +1,9 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.client.ExchangeRateClient;
-import com.accounting.einvoices.dto.response.ConversionRates;
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
-import com.accounting.einvoices.dto.response.ExchangeRateResponse;
+import com.accounting.einvoices.dto.response.currencyExchange.ConversionRates;
+import com.accounting.einvoices.dto.response.currencyExchange.CurrencyExchangeDTO;
+import com.accounting.einvoices.dto.response.currencyExchange.ExchangeRateResponse;
 import com.accounting.einvoices.exception.DataIsNotPresentException;
 import com.accounting.einvoices.exception.exchangeRates.ExchangeRatesNotRetrievedException;
 import com.accounting.einvoices.service.CurrencyExchangeService;

@@ -1,19 +1,12 @@
 package com.accounting.einvoices.service.impl;
 
-import com.accounting.einvoices.client.ExchangeRateClient;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
-import com.accounting.einvoices.dto.response.ConversionRates;
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
-import com.accounting.einvoices.dto.response.ExchangeRateResponse;
 import com.accounting.einvoices.enums.Currency;
-import com.accounting.einvoices.exception.exchangeRates.ExchangeRatesNotRetrievedException;
 import com.accounting.einvoices.service.*;
-import com.accounting.einvoices.util.BigDecimalUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 

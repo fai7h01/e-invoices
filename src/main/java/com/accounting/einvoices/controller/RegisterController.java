@@ -1,7 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.UserDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.TokenService;
 import com.accounting.einvoices.service.UserService;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j

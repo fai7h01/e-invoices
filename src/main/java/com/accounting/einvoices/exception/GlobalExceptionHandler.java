@@ -1,7 +1,7 @@
 package com.accounting.einvoices.exception;
 
-import com.accounting.einvoices.dto.response.ExceptionWrapper;
-import com.accounting.einvoices.dto.response.ValidationExceptionWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ExceptionWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ValidationExceptionWrapper;
 import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
 import com.accounting.einvoices.exception.category.CategoryCannotBeDeletedException;
 import com.accounting.einvoices.exception.category.CategoryNotFoundException;

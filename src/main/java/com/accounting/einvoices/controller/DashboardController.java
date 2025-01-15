@@ -2,8 +2,8 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.charts.ProductSalesStatDTO;
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.currencyExchange.CurrencyExchangeDTO;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.CurrencyExchangeService;
 import com.accounting.einvoices.service.DashboardService;
 import com.accounting.einvoices.service.InvoiceService;

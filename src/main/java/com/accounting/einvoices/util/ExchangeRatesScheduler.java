@@ -1,16 +1,10 @@
 package com.accounting.einvoices.util;
 
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
 import com.accounting.einvoices.service.CurrencyExchangeService;
-import com.accounting.einvoices.service.DashboardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
-import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Component

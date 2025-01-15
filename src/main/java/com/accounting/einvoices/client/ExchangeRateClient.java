@@ -1,6 +1,6 @@
 package com.accounting.einvoices.client;
 
-import com.accounting.einvoices.dto.response.ExchangeRateResponse;
+import com.accounting.einvoices.dto.response.currencyExchange.ExchangeRateResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

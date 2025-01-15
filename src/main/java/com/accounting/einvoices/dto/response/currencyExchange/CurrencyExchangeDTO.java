@@ -1,4 +1,4 @@
-package com.accounting.einvoices.dto.response;
+package com.accounting.einvoices.dto.response.currencyExchange;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

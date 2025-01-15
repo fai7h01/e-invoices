@@ -1,8 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
-import com.accounting.einvoices.service.CompanyService;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;

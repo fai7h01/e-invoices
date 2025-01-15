@@ -2,7 +2,7 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.annotation.ExecutionTime;
 import com.accounting.einvoices.dto.UserDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.KeycloakService;
 import com.accounting.einvoices.service.UserService;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.Path;
 import java.util.List;
 
 @Slf4j

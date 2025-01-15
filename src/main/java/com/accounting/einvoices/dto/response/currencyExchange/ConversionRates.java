@@ -1,5 +1,5 @@
 
-package com.accounting.einvoices.dto.response;
+package com.accounting.einvoices.dto.response.currencyExchange;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.CompanyService;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.InvoiceProductService;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

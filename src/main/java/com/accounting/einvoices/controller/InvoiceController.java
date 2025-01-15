@@ -2,7 +2,7 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -10,7 +10,6 @@ import com.accounting.einvoices.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,6 +1,6 @@
 package com.accounting.einvoices.service;
 
-import com.accounting.einvoices.dto.response.CurrencyExchangeDTO;
+import com.accounting.einvoices.dto.response.currencyExchange.CurrencyExchangeDTO;
 
 import java.math.BigDecimal;
 import java.util.Map;

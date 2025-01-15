@@ -1,7 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.ForgotPasswordDTO;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.TokenService;
 import com.accounting.einvoices.service.UserService;

@@ -5,7 +5,7 @@ import com.accounting.einvoices.dto.request.paypal.plan.PlanRequest;
 import com.accounting.einvoices.dto.request.paypal.pricing.PlanPricingRequest;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionReason;
 import com.accounting.einvoices.dto.request.paypal.subscription.SubscriptionRequest;
-import com.accounting.einvoices.dto.response.ResponseWrapper;
+import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.dto.response.paypal.*;
 import com.accounting.einvoices.service.PaypalService;
 import com.github.fge.jsonpatch.JsonPatch;
