@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Generated;
 
-import com.accounting.einvoices.dto.response.Category;
-import com.accounting.einvoices.dto.response.Dimensions;
-import com.accounting.einvoices.dto.response.Links;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -90,7 +87,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "_links"
 })
 @Generated("jsonschema2pojo")
-public class WooCommerceProductResponse {
+public class WCProductResponse {
 
     @JsonProperty("id")
     private Integer id;
