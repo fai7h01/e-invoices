@@ -160,7 +160,7 @@ public class WCProductResponse {
     @JsonProperty("manage_stock")
     private Boolean manageStock;
     @JsonProperty("stock_quantity")
-    private Object stockQuantity;
+    private Integer stockQuantity;
     @JsonProperty("backorders")
     private String backorders;
     @JsonProperty("backorders_allowed")
@@ -168,7 +168,7 @@ public class WCProductResponse {
     @JsonProperty("backordered")
     private Boolean backordered;
     @JsonProperty("low_stock_amount")
-    private Object lowStockAmount;
+    private Integer lowStockAmount;
     @JsonProperty("sold_individually")
     private Boolean soldIndividually;
     @JsonProperty("weight")
@@ -583,12 +583,12 @@ public class WCProductResponse {
     }
 
     @JsonProperty("stock_quantity")
-    public Object getStockQuantity() {
+    public Integer getStockQuantity() {
         return stockQuantity;
     }
 
     @JsonProperty("stock_quantity")
-    public void setStockQuantity(Object stockQuantity) {
+    public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
 
@@ -623,12 +623,12 @@ public class WCProductResponse {
     }
 
     @JsonProperty("low_stock_amount")
-    public Object getLowStockAmount() {
+    public Integer getLowStockAmount() {
         return lowStockAmount;
     }
 
     @JsonProperty("low_stock_amount")
-    public void setLowStockAmount(Object lowStockAmount) {
+    public void setLowStockAmount(Integer lowStockAmount) {
         this.lowStockAmount = lowStockAmount;
     }
 

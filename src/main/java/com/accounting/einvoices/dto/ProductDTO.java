@@ -40,6 +40,4 @@ public class ProductDTO {
     private ProductStatus status;
 
     private CategoryDTO category;
-
-//    private boolean hasInvoiceProduct;
 }

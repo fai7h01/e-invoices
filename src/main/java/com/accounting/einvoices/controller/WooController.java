@@ -45,4 +45,15 @@ public class WooController {
                 .data(products)
                 .build());
     }
+
+    @PostMapping("/import/products")
+    public ResponseEntity<ResponseWrapper> importProducts() {
+
+        wooCommerceService.importProducts();
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Products is successfully imported.")
+                .build());
+    }
 }
