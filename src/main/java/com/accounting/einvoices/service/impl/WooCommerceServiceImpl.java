@@ -9,6 +9,7 @@ import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 import com.accounting.einvoices.entity.WooCommerceCredentials;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
+import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
 import com.accounting.einvoices.repository.WooCommerceRepository;
 import com.accounting.einvoices.service.CategoryService;
 import com.accounting.einvoices.service.KeycloakService;
@@ -93,7 +94,12 @@ public class WooCommerceServiceImpl implements WooCommerceService {
         productDTO.setStatus(ProductStatus.ACTIVE);
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setDescription(wcProduct.getCategories().get(0).getName());
-        categoryService.save(categoryDTO);
+        try{
+            categoryService.save(categoryDTO);
+        } catch (CategoryAlreadyExistsException e) {
+            log.info(e.getMessage());
+        }
+
         productDTO.setCategory(categoryDTO);
         productService.save(productDTO);
     }

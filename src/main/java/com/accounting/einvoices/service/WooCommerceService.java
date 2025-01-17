@@ -1,6 +1,5 @@
 package com.accounting.einvoices.service;
 
-import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.WooCommerceCredentialsDTO;
 import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 
