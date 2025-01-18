@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/company")
@@ -22,7 +24,7 @@ public class CompanyController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateCompany(@PathVariable("id") Long id, @RequestBody CompanyDTO company) {
+    public ResponseEntity<ResponseWrapper> updateCompany(@PathVariable("id") Long id, @RequestBody @Valid CompanyDTO company) {
         CompanyDTO updated = companyService.update(id, company);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())

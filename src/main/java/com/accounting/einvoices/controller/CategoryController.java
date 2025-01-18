@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createCategory(@RequestBody CategoryDTO category) {
+    public ResponseEntity<ResponseWrapper> createCategory(@RequestBody @Valid CategoryDTO category) {
         CategoryDTO saved = categoryService.save(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
@@ -42,7 +43,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateCategory(@PathVariable("id") Long id, @RequestBody CategoryDTO category) {
+    public ResponseEntity<ResponseWrapper> updateCategory(@PathVariable("id") Long id, @RequestBody @Valid CategoryDTO category) {
         CategoryDTO updated = categoryService.update(id, category);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())

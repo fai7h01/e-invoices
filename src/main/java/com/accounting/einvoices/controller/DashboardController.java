@@ -50,23 +50,6 @@ public class DashboardController {
                 .data(financialSummary).build());
     }
 
-//    @GetMapping("/financial-summary/multi-currency/{year}/{startMonth}/{endMonth}/{code}")
-//    public ResponseEntity<ResponseWrapper> getFinancialSummaryConvertedInOneCurrency(@PathVariable("year") String year,
-//                                                                                     @PathVariable("startMonth") String startMonth,
-//                                                                                     @PathVariable("endMonth") String endMonth,
-//                                                                                     @PathVariable("code") String code) {
-//
-//        Map<String, BigDecimal> financialSummary =
-//                reportingService.getFinancialSummaryConvertedInOneCurrency(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth), code);
-//        return ResponseEntity.ok(ResponseWrapper.builder()
-//                .code(HttpStatus.OK.value())
-//                .success(true)
-//                .message("Financial summary are successfully retrieved.")
-//                .data(financialSummary).build());
-//    }
-
-
-    //@RolesAllowed("Admin")
     @GetMapping("/summary-quantities")
     public ResponseEntity<ResponseWrapper> getSummaryQuantities() {
         Map<String, Integer> summary = reportingService.getSummaryQuantities();
@@ -77,7 +60,6 @@ public class DashboardController {
                 .data(summary).build());
     }
 
-    //@RolesAllowed("Admin")
     @GetMapping("/sold-products/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth(@PathVariable("year") String year,
                                                                       @PathVariable("startMonth") String startMonth,
@@ -92,7 +74,6 @@ public class DashboardController {
     }
 
 
-    //@RolesAllowed("Admin")
     @GetMapping("/top-selling-products/{year}/{startMonth}/{endMonth}/{code}")
     public ResponseEntity<ResponseWrapper> topSellingProducts(@PathVariable("year") String year,
                                                               @PathVariable("startMonth") String startMonth,
@@ -106,7 +87,6 @@ public class DashboardController {
                 .data(stats).build());
     }
 
-    //@RolesAllowed("Admin")
     @GetMapping("/exchange-rates/{code}")
     public ResponseEntity<ResponseWrapper> getExchangeRates(@PathVariable("code") String code,
                                                             @RequestParam(value = "amount", required = false) Long amount) {
@@ -117,7 +97,6 @@ public class DashboardController {
                 .data(rates).build());
     }
 
-    //@RolesAllowed("Admin")
     @GetMapping("/recently-approved")
     public ResponseEntity<ResponseWrapper> soldProductsEachDayOfMonth() {
         List<InvoiceDTO> invoices = invoiceService.recentlyApprovedInvoices();

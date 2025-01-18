@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Slf4j
 @Controller
 @RequestMapping("/api/v1/password")
@@ -41,7 +43,7 @@ public class PasswordController {
 
     @PostMapping("/new-password")
     public ResponseEntity<ResponseWrapper> confirmNewPassword(@RequestParam("email") String email, @RequestParam("token") String token,
-                                                              @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+                                                              @RequestBody @Valid ForgotPasswordDTO forgotPasswordDTO) {
         log.info("confirm_password: {}, {}", forgotPasswordDTO.getPassword(), forgotPasswordDTO.getConfirmPassword());
         tokenService.confirmForgotPasswordToken(email, token);
         userService.resetPassword(email, forgotPasswordDTO);

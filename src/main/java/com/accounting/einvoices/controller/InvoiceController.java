@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody @Valid InvoiceDTO invoice) {
         InvoiceDTO saved = invoiceService.save(invoice);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseWrapper.builder()
@@ -88,7 +89,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoice){
+    public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody @Valid InvoiceDTO invoice){
         InvoiceDTO updatedInvoice = invoiceService.update(id, invoice);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
@@ -104,7 +105,7 @@ public class InvoiceController {
 
     @PostMapping("/add/product/{invoiceId}")
     public ResponseEntity<ResponseWrapper> addInvoiceProductToInvoice(@PathVariable("invoiceId") Long id,
-                                                                      @RequestBody InvoiceProductDTO invoiceProduct){
+                                                                      @RequestBody @Valid InvoiceProductDTO invoiceProduct){
         InvoiceProductDTO added = invoiceProductService.save(id, invoiceProduct);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)

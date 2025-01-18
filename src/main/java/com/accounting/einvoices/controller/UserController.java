@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -36,7 +37,7 @@ public class UserController {
     @RolesAllowed({"Admin"})
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
-    public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
+    public ResponseEntity<ResponseWrapper> createUser(@RequestBody @Valid UserDTO user) {
         UserDTO saved = userService.save(user);
         emailService.sendVerificationEmail(user.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -62,7 +63,7 @@ public class UserController {
 
     @RolesAllowed({"Admin"})
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
+    public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserDTO user){
         UserDTO updated = userService.update(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
