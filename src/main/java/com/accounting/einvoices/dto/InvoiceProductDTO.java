@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -19,29 +21,25 @@ public class InvoiceProductDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
+    @NotBlank
     private String description;
-
+    @NotNull
     private Integer quantity;
-
+    @NotNull
     private BigDecimal price;
-
+    @NotNull
     private Currency currency;
-
-    private BigDecimal tax;
-
+    @NotNull
+    private BigDecimal tax = BigDecimal.ZERO;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal total;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal profitLoss;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer remainingQuantity;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private InvoiceDTO invoice;
-
+    @NotNull
     private ProductDTO product;
 
 }
