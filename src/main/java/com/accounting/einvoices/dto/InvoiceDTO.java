@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,36 +23,33 @@ public class InvoiceDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
+    @NotBlank
     private String invoiceNo;
-
+    @NotNull
     private InvoiceStatus invoiceStatus = InvoiceStatus.AWAITING_APPROVAL;
-
+    @NotNull
     private LocalDateTime dateOfIssue;
-
+    @NotNull
     private LocalDateTime dueDate;
-
+    @NotNull
     private LocalDateTime acceptDate;
-
+    @NotNull
     private String paymentTerms;
-
+    @NotNull
     private String notes;
-
     private String signature;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private CompanyDTO company;
-
+    @NotNull
     private ClientVendorDTO clientVendor;
-
     private String attachmentKey;
-
+    @NotNull
     private BigDecimal price;
-
+    @NotNull
     private Currency currency;
-
+    @NotNull
     private BigDecimal tax;
-
+    @NotNull
     private BigDecimal total;
 
 }
