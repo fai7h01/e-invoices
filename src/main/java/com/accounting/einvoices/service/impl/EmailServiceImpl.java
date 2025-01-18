@@ -33,6 +33,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Value("${app.base-url}")
     private String BASE_URL;
+    @Value("${spring.mail.username}")
+    private String mailSender;
 
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
@@ -120,6 +122,7 @@ public class EmailServiceImpl implements EmailService {
         String message = createVerificationMessage(email, fullname, createdToken.getToken(), createdToken.getExpiryDate());
 
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailSender);
         mail.setTo(email);
         mail.setSubject("Email Verification");
         mail.setText(message);
@@ -134,6 +137,7 @@ public class EmailServiceImpl implements EmailService {
         String message = createConfirmPasswordMessage(fullname);
 
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailSender);
         mail.setTo(email);
         mail.setSubject("Password Reset Confirmation");
         mail.setText(message);
@@ -151,6 +155,7 @@ public class EmailServiceImpl implements EmailService {
         String message = createForgotPasswordMessage(email, fullname, createdToken.getToken(), createdToken.getExpiryDate());
 
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailSender);
         mail.setTo(email);
         mail.setSubject("Forgot Password");
         mail.setText(message);
