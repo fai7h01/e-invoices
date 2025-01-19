@@ -101,6 +101,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
 
     @Override
     public BigDecimal getTotalWithoutTax(InvoiceProductDTO invoiceProduct) {
+        log.info("InvoiceProduct unit price: {}, based on quantity: {}", invoiceProduct.getPrice(), invoiceProduct.getPrice().multiply(BigDecimal.valueOf(invoiceProduct.getQuantity())));
         return invoiceProduct.getPrice().multiply(BigDecimal.valueOf(invoiceProduct.getQuantity()));
     }
 
@@ -112,7 +113,7 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
             ProductDTO productDTO = mapperUtil.convert(product, new ProductDTO());
             int sumQuantityOfProducts = invoiceProductRepository.sumQuantityOfProducts(id, product.getId());
             productDTO.setQuantityInStock(product.getQuantityInStock() - sumQuantityOfProducts);
-            productService.save(productDTO);
+            productService.update(productDTO.getId(), productDTO);
         });
     }
 

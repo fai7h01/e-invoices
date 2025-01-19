@@ -70,12 +70,12 @@ INSERT INTO products(insert_date_time, insert_user_id, last_update_date_time, la
                      name, description, quantity_in_stock, low_limit_alert, price, created_at, product_unit, status, category_id, currency)
 VALUES
 -- Groceries
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Milk', '1 liter', 80, 10, 5, '2025-10-05', 'L', 'ACTIVE', 1, 'USD'),
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Eggs', 'Pack of 12', 80, 5, 3, '2025-10-05', 'PACK', 'ACTIVE', 1, 'USD'),
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Bread', 'Whole wheat', 95, 5, 4, '2025-10-05', 'PACK', 'ACTIVE', 1, 'USD'), --12usd
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Milk', '1 liter', 100, 10, 5, '2025-10-05', 'L', 'ACTIVE', 1, 'USD'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Eggs', 'Pack of 12', 100, 5, 3, '2025-10-05', 'PACK', 'ACTIVE', 1, 'USD'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Bread', 'Whole wheat', 100, 5, 4, '2025-10-05', 'PACK', 'ACTIVE', 1, 'USD'), --12usd
 
 -- Electronics
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Smartphone', '5G Enabled', 99, 3, 700, '2025-11-05', 'UNIT', 'ACTIVE', 2, 'USD'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Smartphone', '5G Enabled', 100, 3, 700, '2025-11-05', 'UNIT', 'ACTIVE', 2, 'USD'),
 ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Laptop', '16GB RAM, 512GB SSD', 100, 2, 1000, '2025-11-05', 'UNIT', 'ACTIVE', 2, 'USD'),
 ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Headphones', 'Wireless', 100, 5, 60, '2025-11-05', 'UNIT', 'ACTIVE', 2, 'USD'), --1758.97usd
 
@@ -118,12 +118,12 @@ INSERT INTO invoice_products(insert_date_time, insert_user_id, is_deleted, last_
                              price, quantity, remaining_quantity, tax, total, profit_loss, invoice_id, product_id, currency)
 VALUES
 -- Invoice 1
-('2024-11-10 00:00:00', 2, false, '2024-11-10 00:00:00', 2, 10, 20, 80, 0, 0, 0,1, 1, 'USD'),
+('2024-11-10 00:00:00', 2, false, '2024-11-10 00:00:00', 2, 10, 20, 100, 0, 0, 0,1, 1, 'USD'),
 
 
-('2024-11-10 00:00:00', 2, false, '2024-11-10 00:00:00', 2, 10, 20, 80, 0, 0, 0, 2, 2, 'USD'),
+('2024-11-10 00:00:00', 2, false, '2024-11-10 00:00:00', 2, 10, 20, 100, 0, 0, 0, 2, 2, 'USD'),
 
-('2024-11-11 00:00:00', 2, false, '2024-11-11 00:00:00', 2, 5, 5, 95, 0, 0, 0, 3, 3, 'USD'),
+('2024-11-11 00:00:00', 2, false, '2024-11-11 00:00:00', 2, 5, 5, 100, 0, 0, 0, 3, 3, 'USD'),
 
 
-('2024-11-12 00:00:00', 2, false, '2024-11-12 00:00:00', 2, 1000, 1, 99, 0, 0, 0, 4, 4, 'USD');
+('2024-11-12 00:00:00', 2, false, '2024-11-12 00:00:00', 2, 1000, 1, 100, 0, 0, 0, 4, 4, 'USD');
