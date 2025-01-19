@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -128,22 +129,27 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public void setPriceTaxTotal(InvoiceDTO invoice) {
+
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
+
         BigDecimal totalPrice = invoiceProductDtoList
                 .stream()
                 .map(invoiceProductService::getTotalWithoutTax)
-                .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         BigDecimal totalWithTax = invoiceProductDtoList
                 .stream()
                 .map(invoiceProductService::getTotalWithTax)
-                .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal totalTax = invoiceProductDtoList //TODO calculate tax for each ip and reduce
-                .stream()
-                .map(InvoiceProductDTO::getTax)
-                .filter(Objects::nonNull)
+
+        BigDecimal totalTax = invoiceProductDtoList.stream()
+                .map(ip -> {
+                    BigDecimal tax = ip.getTax();
+                    BigDecimal price = ip.getPrice();
+                    return price.multiply(tax).divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP);
+                })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         invoice.setPrice(BigDecimalUtil.format(totalPrice));
         invoice.setTax(BigDecimalUtil.format(totalTax));
         invoice.setTotal(BigDecimalUtil.format(totalWithTax));
