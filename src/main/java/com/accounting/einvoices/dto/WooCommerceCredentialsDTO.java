@@ -18,7 +18,7 @@ public class WooCommerceCredentialsDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @NotBlank
-    @Pattern(regexp = "^(https?:\\/\\/)?([a-zA-Z0-9-]+\\.)*[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(:\\d+)?\\/?$\n")
+    @Pattern(regexp = "^(https?://)?(www\\\\.)?([a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}(/\\\\S*)?$")
     @JsonProperty("base_url")
     private String baseUrl;
     @NotBlank
@@ -29,6 +29,5 @@ public class WooCommerceCredentialsDTO {
     @Pattern(regexp = "^cs_[a-f0-9]{40}$")
     @JsonProperty("consumer_secret")
     private String consumerSecret;
-
     private CompanyDTO companyDTO;
 }

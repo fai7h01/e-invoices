@@ -33,9 +33,9 @@ public class InvoiceDTO {
     private LocalDateTime dueDate;
     @NotNull
     private LocalDateTime acceptDate;
-    @NotNull
+    @NotBlank
     private String paymentTerms;
-    @NotNull
+    @NotBlank
     private String notes;
     private String signature;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
