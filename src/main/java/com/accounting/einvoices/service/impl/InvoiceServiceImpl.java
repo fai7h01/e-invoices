@@ -31,18 +31,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
-    private final StorageService storageService;
-    private final KeycloakService keycloakService;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
-                              CompanyService companyService, ClientVendorService clientVendorService, StorageService storageService, KeycloakService keycloakService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, InvoiceProductService invoiceProductService,
+                              CompanyService companyService, ClientVendorService clientVendorService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
-        this.storageService = storageService;
-        this.keycloakService = keycloakService;
     }
 
     @Override
@@ -207,17 +203,17 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }).collect(Collectors.toList());
     }
 
-    @Override
-    public void uploadInvoiceAttachment(String invNo, MultipartFile file) {
-        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
-        Optional<Invoice> foundInvoice =
-                invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, loggedInCompany.getTitle());
-        if (foundInvoice.isPresent()) {
-            Invoice invoice = foundInvoice.get();
-            String key = "company/" + loggedInCompany.getId() + "/invoice/" + invNo + "_" + file.getOriginalFilename();
-            storageService.uploadFile(file, key);
-            invoice.setAttachmentKey(key);
-            invoiceRepository.save(invoice);
-        }
-    }
+//    @Override
+//    public void uploadInvoiceAttachment(String invNo, MultipartFile file) {
+//        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+//        Optional<Invoice> foundInvoice =
+//                invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, loggedInCompany.getTitle());
+//        if (foundInvoice.isPresent()) {
+//            Invoice invoice = foundInvoice.get();
+//            String key = "company/" + loggedInCompany.getId() + "/invoice/" + invNo + "_" + file.getOriginalFilename();
+//            storageService.uploadFile(file, key);
+//            invoice.setAttachmentKey(key);
+//            invoiceRepository.save(invoice);
+//        }
+//    }
 }

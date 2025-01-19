@@ -37,7 +37,7 @@ public interface InvoiceService {
 
     List<InvoiceDTO> recentlyApprovedInvoices();
 
-    void uploadInvoiceAttachment(String invNo, MultipartFile file);
+//    void uploadInvoiceAttachment(String invNo, MultipartFile file);
 
 
 }

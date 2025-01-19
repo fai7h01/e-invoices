@@ -6,7 +6,6 @@ import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.exception.product.ProductLowLimitAlertException;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
-import com.accounting.einvoices.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,18 +53,18 @@ public class InvoiceController {
                         .build());
     }
 
-    @GetMapping("/download")
-    public ResponseEntity<ResponseWrapper> downloadInvoiceAttachment(@RequestParam("fileName") String key) {
-        storageService.downloadFile(key);
-        key = key.substring(key.lastIndexOf("_") + 1);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
-                .body(ResponseWrapper.builder()
-                        .code(HttpStatus.OK.value())
-                        .success(true)
-                        .message("File is successfully downloaded.")
-                        .build());
-    }
+//    @GetMapping("/download")
+//    public ResponseEntity<ResponseWrapper> downloadInvoiceAttachment(@RequestParam("fileName") String key) {
+//        storageService.downloadFile(key);
+//        key = key.substring(key.lastIndexOf("_") + 1);
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
+//                .body(ResponseWrapper.builder()
+//                        .code(HttpStatus.OK.value())
+//                        .success(true)
+//                        .message("File is successfully downloaded.")
+//                        .build());
+//    }
 
 
     @GetMapping("/list")
