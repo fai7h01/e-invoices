@@ -8,6 +8,7 @@ import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.exception.WooCommerceCredentialsAlreadyExistsException;
 import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
+import com.accounting.einvoices.exception.product.ProductAlreadyExistsException;
 import com.accounting.einvoices.repository.WooCommerceRepository;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
@@ -19,6 +20,7 @@ import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,31 +77,44 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     }
 
     @Override
-    public List<WCProductResponse> fetchProducts() {
+    public List<ProductDTO> fetchProducts() {
+        List<WCProductResponse> products = getProductsFromWooCommerce();
+        return getConvertedProducts(products);
+    }
+
+    @Override
+    public void importAllProducts() {
+        List<ProductDTO> wcProducts = fetchProducts();
+        for (ProductDTO wcProduct : wcProducts) {
+            saveCategoryAndProduct(wcProduct);
+        }
+    }
+
+    @Override
+    public void importProducts(List<ProductDTO> wcProducts) {
+        for (ProductDTO wcProduct : wcProducts) {
+            saveCategoryAndProduct(wcProduct);
+        }
+    }
+
+    private List<WCProductResponse> getProductsFromWooCommerce() {
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         WooCommerceCredentialsDTO foundCreds = findByCompany(loggedInCompany.getTitle());
         URI uri = URI.create(foundCreds.getBaseUrl());
         return wooCommerceClient.getProducts(uri, foundCreds.getConsumerKey(), foundCreds.getConsumerSecret());
     }
 
-    @Override
-    public void importProducts() {
-
-        List<WCProductResponse> wcProducts = fetchProducts();
-
-        for (WCProductResponse wcProduct : wcProducts) {
-            createProductDto(wcProduct);
-        }
+    private List<ProductDTO> getConvertedProducts(List<WCProductResponse> list) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        list.forEach(wcProductResponse -> {
+            ProductDTO productDto = createProductDto(wcProductResponse);
+            productDTOList.add(productDto);
+        });
+        return productDTOList;
     }
 
-    @Override
-    public void importProducts(List<WCProductResponse> wcProducts) {
-        for (WCProductResponse wcProduct : wcProducts) {
-            createProductDto(wcProduct);
-        }
-    }
 
-    private void createProductDto(WCProductResponse wcProduct) {
+    private ProductDTO createProductDto(WCProductResponse wcProduct) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(wcProduct.getName());
         productDTO.setDescription(wcProduct.getDescription().substring(3, wcProduct.getDescription().length() - 5));
@@ -111,13 +126,16 @@ public class WooCommerceServiceImpl implements WooCommerceService {
         productDTO.setStatus(ProductStatus.ACTIVE);
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setDescription(wcProduct.getCategories().get(0).getName());
-        try{
-            categoryService.save(categoryDTO);
-        } catch (CategoryAlreadyExistsException e) {
-            log.info(e.getMessage());
-        }
-
         productDTO.setCategory(categoryDTO);
-        productService.save(productDTO);
+        return productDTO;
+    }
+
+    private void saveCategoryAndProduct(ProductDTO productDTO) {
+        if (!categoryService.checkIfCategoryExists(productDTO.getCategory().getDescription())) {
+            categoryService.save(productDTO.getCategory());
+        }
+        if (!productService.checkIfProductExists(productDTO.getName())) {
+            productService.save(productDTO);
+        }
     }
 }

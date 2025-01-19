@@ -84,6 +84,12 @@ public class CategoryServiceImpl implements CategoryService {
         throw new CategoryCannotBeDeletedException("There is at least one product that is used in invoice!");
     }
 
+    @Override
+    public boolean checkIfCategoryExists(String desc) {
+        Optional<Category> foundCategory = categoryRepository.findByDescriptionIgnoreCaseAndCompany_Id(desc, getLoggedInCompany().getId());
+        return foundCategory.isPresent();
+    }
+
     private boolean checkIfCategoryCanBeDeleted(Long id) {
         List<ProductDTO> products = productService.findAllByCategoryId(id);
         if (!products.isEmpty()) {

@@ -1,7 +1,7 @@
 package com.accounting.einvoices.service;
 
+import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.WooCommerceCredentialsDTO;
-import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ public interface WooCommerceService {
 
     WooCommerceCredentialsDTO findByCompanyId(Long id);
 
-    List<WCProductResponse> fetchProducts();
+    List<ProductDTO> fetchProducts();
 
-    void importProducts();
+    void importAllProducts();
 
-    void importProducts(List<WCProductResponse> products);
+    void importProducts(List<ProductDTO> products);
 
 }

@@ -1,7 +1,7 @@
 package com.accounting.einvoices.controller;
 
+import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.dto.WooCommerceCredentialsDTO;
-import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.WooCommerceService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class WooController {
 
     @GetMapping("/list/products")
     public ResponseEntity<ResponseWrapper> getProducts() {
-        List<WCProductResponse> products = wooCommerceService.fetchProducts();
+        List<ProductDTO> products = wooCommerceService.fetchProducts();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
@@ -56,7 +56,7 @@ public class WooController {
     }
 
     @PostMapping("/import/products")
-    public ResponseEntity<ResponseWrapper> importProducts(@RequestBody() List<WCProductResponse> products) {
+    public ResponseEntity<ResponseWrapper> importProducts(@RequestBody() List<ProductDTO> products) {
         wooCommerceService.importProducts(products);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
@@ -68,7 +68,7 @@ public class WooController {
 
     @PostMapping("/import/products/all")
     public ResponseEntity<ResponseWrapper> importAllProducts() {
-        wooCommerceService.importProducts();
+        wooCommerceService.importAllProducts();
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
                 .success(true)

@@ -16,4 +16,6 @@ public interface CategoryService {
 
     void delete(Long id);
 
+    boolean checkIfCategoryExists(String desc);
+
 }

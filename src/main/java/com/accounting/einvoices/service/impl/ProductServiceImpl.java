@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Product;
 import com.accounting.einvoices.enums.Currency;
+import com.accounting.einvoices.exception.product.ProductAlreadyExistsException;
 import com.accounting.einvoices.exception.product.ProductCannotBeDeletedException;
 import com.accounting.einvoices.exception.product.ProductNotFoundException;
 import com.accounting.einvoices.repository.ProductRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -54,12 +56,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO findByName(String name) {
-        Product foundProduct = productRepository.findByNameIgnoreCase(name).orElseThrow(() -> new ProductNotFoundException("Product not found."));
+        Product foundProduct = productRepository.findByNameIgnoreCaseAndCategoryCompanyId(name, getLoggedInCompany().getId())
+                .orElseThrow(() -> new ProductNotFoundException("Product not found."));
         return mapperUtil.convert(foundProduct, new ProductDTO());
     }
 
     @Override
     public ProductDTO save(ProductDTO product) {
+        Optional<Product> foundProduct = productRepository.findByNameIgnoreCaseAndCategoryCompanyId(product.getName(), getLoggedInCompany().getId());
+        if (foundProduct.isPresent()) throw new ProductAlreadyExistsException("Product with this name already exists.");
         CategoryDTO foundCategory = categoryService.findByDescription(product.getCategory().getDescription());
         product.setCategory(foundCategory);
         Product saved = productRepository.save(mapperUtil.convert(product, new Product()));
@@ -103,6 +108,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByCategoryId(id).stream()
                 .map(product -> mapperUtil.convert(product, new ProductDTO()))
                 .toList();
+    }
+
+    @Override
+    public boolean checkIfProductExists(String name) {
+        Optional<Product> foundProduct = productRepository.findByNameIgnoreCaseAndCategoryCompanyId(name, getLoggedInCompany().getId());
+        return foundProduct.isPresent();
     }
 
     private CompanyDTO getLoggedInCompany(){
