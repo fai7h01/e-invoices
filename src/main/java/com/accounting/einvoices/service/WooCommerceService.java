@@ -11,6 +11,8 @@ public interface WooCommerceService {
 
     WooCommerceCredentialsDTO findByCompany(String title);
 
+    WooCommerceCredentialsDTO findByCompanyId(Long id);
+
     List<WCProductResponse> fetchProducts();
 
     void importProducts();

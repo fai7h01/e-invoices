@@ -15,6 +15,7 @@ import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
@@ -63,6 +64,13 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     @Override
     public WooCommerceCredentialsDTO findByCompany(String title) {
         WooCommerceCredentials found = wooCommerceRepository.findByCompanyTitle(title).orElseThrow();
+        return mapperUtil.convert(found, new WooCommerceCredentialsDTO());
+    }
+
+    @Override
+    public WooCommerceCredentialsDTO findByCompanyId(Long id) {
+        WooCommerceCredentials found = wooCommerceRepository.findByCompanyId(id)
+                .orElseThrow(() -> new NotFoundException("Credentials not found"));
         return mapperUtil.convert(found, new WooCommerceCredentialsDTO());
     }
 

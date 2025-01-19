@@ -22,12 +22,23 @@ public class WooController {
         this.wooCommerceService = wooCommerceService;
     }
 
+    @GetMapping("/credentials/{companyId}")
+    public ResponseEntity<ResponseWrapper> findByCompany(@PathVariable("companyId") Long id) {
+        WooCommerceCredentialsDTO found = wooCommerceService.findByCompanyId(id);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Woo-Commerce Credentials is retrieved")
+                .data(found)
+                .build());
+    }
+
     @PostMapping("/save/credentials")
     public ResponseEntity<ResponseWrapper> saveCredentials(@RequestBody WooCommerceCredentialsDTO request) {
         log.info("WOOCOMMERCE: {}", request);
         WooCommerceCredentialsDTO saved = wooCommerceService.saveCredentials(request);
-        return ResponseEntity.ok(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
                 .success(true)
                 .message("Woo-Commerce Credentials is saved..")
                 .data(saved)
@@ -48,8 +59,8 @@ public class WooController {
     @PostMapping("/import/products")
     public ResponseEntity<ResponseWrapper> importProducts(@RequestBody() List<WCProductResponse> products) {
         wooCommerceService.importProducts(products);
-        return ResponseEntity.ok(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
                 .success(true)
                 .message("Products is successfully imported.")
                 .build());
@@ -59,8 +70,8 @@ public class WooController {
     @PostMapping("/import/products/all")
     public ResponseEntity<ResponseWrapper> importAllProducts() {
         wooCommerceService.importProducts();
-        return ResponseEntity.ok(ResponseWrapper.builder()
-                .code(HttpStatus.OK.value())
+        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                .code(HttpStatus.CREATED.value())
                 .success(true)
                 .message("Products is successfully imported.")
                 .build());
