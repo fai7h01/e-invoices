@@ -7,7 +7,5 @@ import java.util.Optional;
 
 public interface WooCommerceRepository extends JpaRepository<WooCommerceCredentials, Long> {
 
-    //Optional<WooCommerceCredentials> findByUser_Username(String username);
-
     Optional<WooCommerceCredentials> findByCompanyTitle(String title);
 }

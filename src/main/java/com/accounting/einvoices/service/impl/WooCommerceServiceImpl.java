@@ -42,12 +42,14 @@ public class WooCommerceServiceImpl implements WooCommerceService {
 
     @Override
     public WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto) {
+        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         if (dto.getCompanyDTO() == null) {
-            CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
             dto.setCompanyDTO(loggedInCompany);
         }
         WooCommerceCredentials converted = mapperUtil.convert(dto, new WooCommerceCredentials());
         WooCommerceCredentials saved = wooCommerceRepository.save(converted);
+        loggedInCompany.setHasWooCommerce(true);
+        companyService.update(dto.getId(), loggedInCompany);
         return mapperUtil.convert(saved, new WooCommerceCredentialsDTO());
     }
 

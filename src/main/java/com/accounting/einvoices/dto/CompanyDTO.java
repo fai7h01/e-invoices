@@ -28,5 +28,6 @@ public class CompanyDTO {
     private String email;
     @NotNull
     private AddressDTO address;
+    private boolean hasWooCommerce;
     private boolean subscribed;
 }
