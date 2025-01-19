@@ -6,6 +6,7 @@ import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 import com.accounting.einvoices.entity.WooCommerceCredentials;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
+import com.accounting.einvoices.exception.WooCommerceCredentialsAlreadyExistsException;
 import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
 import com.accounting.einvoices.repository.WooCommerceRepository;
 import com.accounting.einvoices.service.*;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,6 +45,11 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     @Override
     public WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto) {
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+        Optional<WooCommerceCredentials> found = wooCommerceRepository.findByCompanyTitle(loggedInCompany.getTitle());
+        if (found.isPresent()) {
+            throw new WooCommerceCredentialsAlreadyExistsException("Credentials already exists.");
+        }
+
         if (dto.getCompanyDTO() == null) {
             loggedInCompany.setHasWooCommerce(true);
             CompanyDTO updated = companyService.update(loggedInCompany.getId(), loggedInCompany);
@@ -54,15 +61,15 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     }
 
     @Override
-    public WooCommerceCredentialsDTO findByUsername(String company) {
-        WooCommerceCredentials found = wooCommerceRepository.findByCompanyTitle(company).orElseThrow();
+    public WooCommerceCredentialsDTO findByCompany(String title) {
+        WooCommerceCredentials found = wooCommerceRepository.findByCompanyTitle(title).orElseThrow();
         return mapperUtil.convert(found, new WooCommerceCredentialsDTO());
     }
 
     @Override
     public List<WCProductResponse> fetchProducts() {
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
-        WooCommerceCredentialsDTO foundCreds = findByUsername(loggedInCompany.getTitle());
+        WooCommerceCredentialsDTO foundCreds = findByCompany(loggedInCompany.getTitle());
         URI uri = URI.create(foundCreds.getBaseUrl());
         return wooCommerceClient.getProducts(uri, foundCreds.getConsumerKey(), foundCreds.getConsumerSecret());
     }

@@ -9,7 +9,7 @@ public interface WooCommerceService {
 
     WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto);
 
-    WooCommerceCredentialsDTO findByUsername(String username);
+    WooCommerceCredentialsDTO findByCompany(String title);
 
     List<WCProductResponse> fetchProducts();
 

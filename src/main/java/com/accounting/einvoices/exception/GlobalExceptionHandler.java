@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler({UserAlreadyExistsException.class, ClientVendorAlreadyExistsException.class, CategoryAlreadyExistsException.class,
-            ProductAlreadyExistsException.class, CompanyAlreadyExistsException.class, FileCannotBeDownloadedException.class})
+            ProductAlreadyExistsException.class, CompanyAlreadyExistsException.class, FileCannotBeDownloadedException.class, WooCommerceCredentialsAlreadyExistsException.class})
     public ResponseEntity<ExceptionWrapper> handleConflictExceptions(Throwable exception) {
         log.error(exception.getMessage());
         ExceptionWrapper exceptionWrapper = ExceptionWrapper.builder()
