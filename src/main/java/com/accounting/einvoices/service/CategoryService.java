@@ -8,6 +8,8 @@ public interface CategoryService {
 
     List<CategoryDTO> findAll();
 
+    List<CategoryDTO> findAllByProductCount();
+
     CategoryDTO findByDescription(String desc);
 
     CategoryDTO save(CategoryDTO category);

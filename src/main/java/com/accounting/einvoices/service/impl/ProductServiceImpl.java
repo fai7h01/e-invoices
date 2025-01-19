@@ -49,7 +49,8 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAllByCurrency(String code) {
         Currency currency = Currency.valueOf(code);
         return productRepository.findAllByCategoryCompanyIdAndCurrency(getLoggedInCompany().getId(), currency).stream()
-                .map(product -> mapperUtil.convert(product, new ProductDTO())).collect(Collectors.toList());
+                .map(product -> mapperUtil.convert(product, new ProductDTO()))
+                .collect(Collectors.toList());
     }
 
 

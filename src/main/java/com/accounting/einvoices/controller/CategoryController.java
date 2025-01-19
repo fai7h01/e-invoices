@@ -32,6 +32,16 @@ public class CategoryController {
                 .data(categories).build());
     }
 
+    @GetMapping("/list/has-products")
+    public ResponseEntity<ResponseWrapper> getAllCategoryWithProducts() {
+        List<CategoryDTO> categories = categoryService.findAllByProductCount();
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Category list is successfully retrieved.")
+                .data(categories).build());
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ResponseWrapper> createCategory(@RequestBody CategoryDTO category) {
         CategoryDTO saved = categoryService.save(category);

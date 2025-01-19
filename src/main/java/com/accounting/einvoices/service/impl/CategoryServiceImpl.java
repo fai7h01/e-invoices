@@ -44,6 +44,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
     }
 
+    @Override
+    public List<CategoryDTO> findAllByProductCount() {
+        return categoryRepository.findAllByProductCountGreater(getLoggedInCompany().getId()).stream()
+                .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
+    }
+
     //find categories that have products based on currency
 
     @Override
