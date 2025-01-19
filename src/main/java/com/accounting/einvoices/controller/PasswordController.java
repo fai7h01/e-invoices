@@ -43,7 +43,7 @@ public class PasswordController {
 
     @PostMapping("/new-password")
     public ResponseEntity<ResponseWrapper> confirmNewPassword(@RequestParam("email") String email, @RequestParam("token") String token,
-                                                              @RequestBody @Valid ForgotPasswordDTO forgotPasswordDTO) {
+                                                              @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
         log.info("confirm_password: {}, {}", forgotPasswordDTO.getPassword(), forgotPasswordDTO.getConfirmPassword());
         tokenService.confirmForgotPasswordToken(email, token);
         userService.resetPassword(email, forgotPasswordDTO);

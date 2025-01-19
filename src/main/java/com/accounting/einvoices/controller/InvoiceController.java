@@ -30,7 +30,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody @Valid InvoiceDTO invoice) {
+    public ResponseEntity<ResponseWrapper> createInvoice(@RequestBody InvoiceDTO invoice) {
         InvoiceDTO saved = invoiceService.save(invoice);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ResponseWrapper.builder()
@@ -62,7 +62,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody @Valid InvoiceDTO invoice){
+    public ResponseEntity<ResponseWrapper> updateInvoice(@PathVariable Long id, @RequestBody InvoiceDTO invoice){
         InvoiceDTO updatedInvoice = invoiceService.update(id, invoice);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)
@@ -80,7 +80,7 @@ public class InvoiceController {
 
     @PostMapping("/add/product/{invoiceId}")
     public ResponseEntity<ResponseWrapper> addInvoiceProductToInvoice(@PathVariable("invoiceId") Long id,
-                                                                      @RequestBody @Valid InvoiceProductDTO invoiceProduct){
+                                                                      @RequestBody InvoiceProductDTO invoiceProduct){
         InvoiceProductDTO added = invoiceProductService.save(id, invoiceProduct);
         return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())
                 .success(true)

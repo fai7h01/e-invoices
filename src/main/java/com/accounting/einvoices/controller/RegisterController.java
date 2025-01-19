@@ -33,7 +33,7 @@ public class RegisterController {
     @PostMapping
     @Operation(summary = "Register User")
     @ResponseBody
-    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody @Valid UserDTO user) {
+    public ResponseEntity<ResponseWrapper> userRegister(@RequestBody UserDTO user) {
         UserDTO saved = userService.save(user);
         emailService.sendVerificationEmail(user.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()

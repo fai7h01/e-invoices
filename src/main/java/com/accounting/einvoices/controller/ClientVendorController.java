@@ -23,7 +23,7 @@ public class ClientVendorController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createClientVendor(@RequestBody @Valid ClientVendorDTO clientVendor) {
+    public ResponseEntity<ResponseWrapper> createClientVendor(@RequestBody ClientVendorDTO clientVendor) {
         ClientVendorDTO saved = clientVendorService.save(clientVendor);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
@@ -44,7 +44,7 @@ public class ClientVendorController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateClientVendor(@PathVariable("id") Long id, @RequestBody @Valid ClientVendorDTO clientVendor) {
+    public ResponseEntity<ResponseWrapper> updateClientVendor(@PathVariable("id") Long id, @RequestBody ClientVendorDTO clientVendor) {
         ClientVendorDTO updated = clientVendorService.update(id, clientVendor);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())

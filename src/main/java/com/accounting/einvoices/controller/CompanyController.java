@@ -24,7 +24,7 @@ public class CompanyController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateCompany(@PathVariable("id") Long id, @RequestBody @Valid CompanyDTO company) {
+    public ResponseEntity<ResponseWrapper> updateCompany(@PathVariable("id") Long id, @RequestBody CompanyDTO company) {
         CompanyDTO updated = companyService.update(id, company);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())

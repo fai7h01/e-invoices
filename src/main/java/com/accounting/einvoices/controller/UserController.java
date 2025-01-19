@@ -37,7 +37,7 @@ public class UserController {
     @RolesAllowed({"Admin"})
     @PostMapping("/create")
     @Operation(summary = "Create/Register User")
-    public ResponseEntity<ResponseWrapper> createUser(@RequestBody @Valid UserDTO user) {
+    public ResponseEntity<ResponseWrapper> createUser(@RequestBody UserDTO user) {
         UserDTO saved = userService.save(user);
         emailService.sendVerificationEmail(user.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
@@ -63,7 +63,7 @@ public class UserController {
 
     @RolesAllowed({"Admin"})
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody @Valid UserDTO user){
+    public ResponseEntity<ResponseWrapper> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
         UserDTO updated = userService.update(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -101,9 +101,6 @@ public class UserController {
                 .message("User was found successfully.")
                 .data(user).build());
     }
-
-
-
 
 
 }

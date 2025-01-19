@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseWrapper> createProduct(@RequestBody @Valid ProductDTO product){
+    public ResponseEntity<ResponseWrapper> createProduct(@RequestBody ProductDTO product){
         ProductDTO saved = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseWrapper> updateProduct(@PathVariable("id") Long id, @RequestBody @Valid ProductDTO product){
+    public ResponseEntity<ResponseWrapper> updateProduct(@PathVariable("id") Long id, @RequestBody ProductDTO product){
         ProductDTO updated = productService.update(id, product);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
