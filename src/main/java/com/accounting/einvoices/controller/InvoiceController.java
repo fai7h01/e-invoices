@@ -23,12 +23,10 @@ public class InvoiceController {
 
     private final InvoiceService invoiceService;
     private final InvoiceProductService invoiceProductService;
-    private final StorageService storageService;
 
-    public InvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService, StorageService storageService) {
+    public InvoiceController(InvoiceService invoiceService, InvoiceProductService invoiceProductService) {
         this.invoiceService = invoiceService;
         this.invoiceProductService = invoiceProductService;
-        this.storageService = storageService;
     }
 
     @PostMapping("/create")
@@ -41,30 +39,6 @@ public class InvoiceController {
                 .message("Invoice is successfully created.")
                 .data(saved).build());
     }
-
-    @PostMapping("/attachment-upload")
-    public ResponseEntity<ResponseWrapper> createInvoice(@RequestParam("invNo") String invNo, @RequestParam("file") MultipartFile file) {
-        invoiceService.uploadInvoiceAttachment(invNo, file);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ResponseWrapper.builder()
-                        .code(HttpStatus.OK.value())
-                        .success(true)
-                        .message("Attachment is successfully upload for invoice " + invNo + ".")
-                        .build());
-    }
-
-//    @GetMapping("/download")
-//    public ResponseEntity<ResponseWrapper> downloadInvoiceAttachment(@RequestParam("fileName") String key) {
-//        storageService.downloadFile(key);
-//        key = key.substring(key.lastIndexOf("_") + 1);
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + key + "\"")
-//                .body(ResponseWrapper.builder()
-//                        .code(HttpStatus.OK.value())
-//                        .success(true)
-//                        .message("File is successfully downloaded.")
-//                        .build());
-//    }
 
 
     @GetMapping("/list")
@@ -96,11 +70,13 @@ public class InvoiceController {
                 .data(updatedInvoice).build());
     }
 
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseWrapper> deleteInvoice(@PathVariable Long id){
         invoiceService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 
     @PostMapping("/add/product/{invoiceId}")
     public ResponseEntity<ResponseWrapper> addInvoiceProductToInvoice(@PathVariable("invoiceId") Long id,
@@ -126,7 +102,7 @@ public class InvoiceController {
 
     @DeleteMapping("/remove/product/{id}")
     public ResponseEntity<ResponseWrapper> removeInvoiceProductFromInvoice(@PathVariable Long id){
-        invoiceProductService.delete(id);// find by invoice id and delete by id
+        invoiceProductService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
