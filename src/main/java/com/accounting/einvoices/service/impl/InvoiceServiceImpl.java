@@ -133,40 +133,24 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void setPriceTaxTotal(InvoiceDTO invoice) {
 
-        String invoiceCurrency = invoice.getCurrency().name();
-
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
 
-        //convert each invoice product to currency that has invoice
         BigDecimal totalPrice = invoiceProductDtoList
                 .stream()
-                .map(ip -> {
-                    Currency ipCurrency = ip.getProduct().getCurrency();
-                    BigDecimal total = invoiceProductService.getTotalWithoutTax(ip);
-                    return Pair.of(total, ipCurrency);
-                })
-                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
+                .map(invoiceProductService::getTotalWithoutTax)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalWithTax = invoiceProductDtoList
                 .stream()
-                .map(ip -> {
-                    Currency ipCurrency = ip.getProduct().getCurrency();
-                    BigDecimal total= invoiceProductService.getTotalWithTax(ip);
-                    return Pair.of(total, ipCurrency);
-                })
-                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
+                .map(invoiceProductService::getTotalWithTax)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalTax = invoiceProductDtoList.stream()
                 .map(ip -> {
-                    Currency ipCurrency = ip.getProduct().getCurrency();
                     BigDecimal tax = ip.getTax();
                     BigDecimal price = ip.getPrice();
-                    BigDecimal taxValue = price.multiply(tax).divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP);
-                    return Pair.of(taxValue, ipCurrency);
+                    return price.multiply(tax).divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP);
                 })
-                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         invoice.setPrice(BigDecimalUtil.format(totalPrice));
