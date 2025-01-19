@@ -1,20 +1,14 @@
 package com.accounting.einvoices.service.impl;
 
 import com.accounting.einvoices.client.WooCommerceClient;
-import com.accounting.einvoices.dto.CategoryDTO;
-import com.accounting.einvoices.dto.ProductDTO;
-import com.accounting.einvoices.dto.UserDTO;
-import com.accounting.einvoices.dto.WooCommerceCredentialsDTO;
+import com.accounting.einvoices.dto.*;
 import com.accounting.einvoices.dto.response.woocommerce.WCProductResponse;
 import com.accounting.einvoices.entity.WooCommerceCredentials;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
 import com.accounting.einvoices.repository.WooCommerceRepository;
-import com.accounting.einvoices.service.CategoryService;
-import com.accounting.einvoices.service.KeycloakService;
-import com.accounting.einvoices.service.ProductService;
-import com.accounting.einvoices.service.WooCommerceService;
+import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -33,25 +27,24 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     private final WooCommerceClient wooCommerceClient;
     private final ProductService productService;
     private final CategoryService categoryService;
-    private final KeycloakService keycloakService;
+    private final CompanyService companyService;
     private final MapperUtil mapperUtil;
 
-    public WooCommerceServiceImpl(WooCommerceRepository wooCommerceRepository, WooCommerceClient wooCommerceClient, ProductService productService, CategoryService categoryService,
-                                  KeycloakService keycloakService, MapperUtil mapperUtil) {
+    public WooCommerceServiceImpl(WooCommerceRepository wooCommerceRepository, WooCommerceClient wooCommerceClient, ProductService productService,
+                                  CategoryService categoryService, CompanyService companyService, MapperUtil mapperUtil) {
         this.wooCommerceRepository = wooCommerceRepository;
         this.wooCommerceClient = wooCommerceClient;
         this.productService = productService;
         this.categoryService = categoryService;
-        this.keycloakService = keycloakService;
+        this.companyService = companyService;
         this.mapperUtil = mapperUtil;
     }
 
-
     @Override
     public WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto) {
-        if (dto.getUser() == null) {
-            UserDTO loggedInUser = keycloakService.getLoggedInUser();
-            dto.setUser(loggedInUser);
+        if (dto.getCompanyDTO() == null) {
+            CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+            dto.setCompanyDTO(loggedInCompany);
         }
         WooCommerceCredentials converted = mapperUtil.convert(dto, new WooCommerceCredentials());
         WooCommerceCredentials saved = wooCommerceRepository.save(converted);
@@ -59,15 +52,15 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     }
 
     @Override
-    public WooCommerceCredentialsDTO findByUsername(String username) {
-        WooCommerceCredentials found = wooCommerceRepository.findByUser_Username(username).orElseThrow();
+    public WooCommerceCredentialsDTO findByUsername(String company) {
+        WooCommerceCredentials found = wooCommerceRepository.findByCompanyTitle(company).orElseThrow();
         return mapperUtil.convert(found, new WooCommerceCredentialsDTO());
     }
 
     @Override
     public List<WCProductResponse> fetchProducts() {
-        UserDTO loggedInUser = keycloakService.getLoggedInUser();
-        WooCommerceCredentialsDTO foundCreds = findByUsername(loggedInUser.getUsername());
+        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
+        WooCommerceCredentialsDTO foundCreds = findByUsername(loggedInCompany.getTitle());
         URI uri = URI.create(foundCreds.getBaseUrl());
         return wooCommerceClient.getProducts(uri, foundCreds.getConsumerKey(), foundCreds.getConsumerSecret());
     }

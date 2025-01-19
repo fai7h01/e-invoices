@@ -22,5 +22,5 @@ public class WooCommerceCredentials extends BaseEntity{
     private String consumerSecret;
 
     @OneToOne
-    private User user;
+    private Company company;
 }

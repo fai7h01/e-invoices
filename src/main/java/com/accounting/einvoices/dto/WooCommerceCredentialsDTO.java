@@ -30,5 +30,5 @@ public class WooCommerceCredentialsDTO {
     @JsonProperty("consumer_secret")
     private String consumerSecret;
 
-    private UserDTO user;
+    private CompanyDTO companyDTO;
 }
