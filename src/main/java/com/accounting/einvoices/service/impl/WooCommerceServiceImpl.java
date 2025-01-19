@@ -82,6 +82,13 @@ public class WooCommerceServiceImpl implements WooCommerceService {
         }
     }
 
+    @Override
+    public void importProducts(List<WCProductResponse> wcProducts) {
+        for (WCProductResponse wcProduct : wcProducts) {
+            createProductDto(wcProduct);
+        }
+    }
+
     private void createProductDto(WCProductResponse wcProduct) {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(wcProduct.getName());

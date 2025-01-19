@@ -15,4 +15,6 @@ public interface WooCommerceService {
 
     void importProducts();
 
+    void importProducts(List<WCProductResponse> products);
+
 }
