@@ -35,7 +35,6 @@ public class WooController {
 
     @PostMapping("/save/credentials")
     public ResponseEntity<ResponseWrapper> saveCredentials(@RequestBody WooCommerceCredentialsDTO request) {
-        log.info("WOOCOMMERCE: {}", request);
         WooCommerceCredentialsDTO saved = wooCommerceService.saveCredentials(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
                 .code(HttpStatus.CREATED.value())
