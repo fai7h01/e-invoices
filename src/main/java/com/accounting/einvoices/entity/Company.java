@@ -23,8 +23,8 @@ public class Company extends BaseEntity{
     private String phone;
     private String website;
     private String email;
-    @Column(name = "woo_commerce")
-    private boolean hasWooCommerce;
+
+    private Boolean hasWooCommerce;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "address_id")

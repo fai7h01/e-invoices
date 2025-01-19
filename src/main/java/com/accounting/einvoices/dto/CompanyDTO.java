@@ -2,10 +2,7 @@ package com.accounting.einvoices.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyDTO {
 
@@ -28,6 +26,6 @@ public class CompanyDTO {
     private String email;
     @NotNull
     private AddressDTO address;
-    private boolean hasWooCommerce;
+    private Boolean hasWooCommerce;
     private boolean subscribed;
 }
