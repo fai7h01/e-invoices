@@ -8,6 +8,8 @@ public interface ProductService {
 
     List<ProductDTO> findAll();
 
+    List<ProductDTO> findAllByCurrency(String code);
+
     List<ProductDTO> findAllByCreatedDateBetweenMonths(int year, int startMonth, int endMonth, String currency);
 
     ProductDTO findByName(String name);

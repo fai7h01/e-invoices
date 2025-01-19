@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategoryCompanyId(Long id);
 
+    List<Product> findAllByCategoryCompanyIdAndCurrency(Long id, Currency currency);
+
     Optional<Product> findByNameIgnoreCaseAndCategoryCompanyId(String name, Long id);
 
     List<Product> findAllByCategoryId(Long id);

@@ -45,6 +45,13 @@ public class ProductServiceImpl implements ProductService {
                 .map(product -> mapperUtil.convert(product, new ProductDTO())).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductDTO> findAllByCurrency(String code) {
+        Currency currency = Currency.valueOf(code);
+        return productRepository.findAllByCategoryCompanyIdAndCurrency(getLoggedInCompany().getId(), currency).stream()
+                .map(product -> mapperUtil.convert(product, new ProductDTO())).collect(Collectors.toList());
+    }
+
 
     @Override
     public List<ProductDTO> findAllByCreatedDateBetweenMonths(int year, int startMonth, int endMonth, String currency) {

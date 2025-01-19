@@ -32,6 +32,16 @@ public class ProductController {
                 .data(products).build());
     }
 
+    @GetMapping("/list/{currency_code}")
+    public ResponseEntity<ResponseWrapper> getProductsByCurrency(@PathVariable("currency_code") String currency){
+        List<ProductDTO> products = productService.findAllByCurrency(currency);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Product list is successfully retrieved.")
+                .data(products).build());
+    }
+
     @PostMapping("/create")
     public ResponseEntity<ResponseWrapper> createProduct(@RequestBody ProductDTO product){
         ProductDTO saved = productService.save(product);

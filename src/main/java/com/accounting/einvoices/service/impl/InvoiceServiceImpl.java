@@ -10,6 +10,7 @@ import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
 import com.accounting.einvoices.util.MapperUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.internal.Pair;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,14 +33,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
+    private final CurrencyExchangeService currencyExchangeService;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
-                              CompanyService companyService, ClientVendorService clientVendorService) {
+                              CompanyService companyService, ClientVendorService clientVendorService, CurrencyExchangeService currencyExchangeService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
+        this.currencyExchangeService = currencyExchangeService;
     }
 
     @Override
@@ -130,30 +133,47 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void setPriceTaxTotal(InvoiceDTO invoice) {
 
+        String invoiceCurrency = invoice.getCurrency().name();
+
         List<InvoiceProductDTO> invoiceProductDtoList = invoiceProductService.findAllByInvoiceIdAndCalculateTotalPrice(invoice.getId());
 
+        //convert each invoice product to currency that has invoice
         BigDecimal totalPrice = invoiceProductDtoList
                 .stream()
-                .map(invoiceProductService::getTotalWithoutTax)
+                .map(ip -> {
+                    Currency ipCurrency = ip.getProduct().getCurrency();
+                    BigDecimal total = invoiceProductService.getTotalWithoutTax(ip);
+                    return Pair.of(total, ipCurrency);
+                })
+                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalWithTax = invoiceProductDtoList
                 .stream()
-                .map(invoiceProductService::getTotalWithTax)
+                .map(ip -> {
+                    Currency ipCurrency = ip.getProduct().getCurrency();
+                    BigDecimal total= invoiceProductService.getTotalWithTax(ip);
+                    return Pair.of(total, ipCurrency);
+                })
+                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal totalTax = invoiceProductDtoList.stream()
                 .map(ip -> {
+                    Currency ipCurrency = ip.getProduct().getCurrency();
                     BigDecimal tax = ip.getTax();
                     BigDecimal price = ip.getPrice();
-                    return price.multiply(tax).divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP);
+                    BigDecimal taxValue = price.multiply(tax).divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP);
+                    return Pair.of(taxValue, ipCurrency);
                 })
+                .map(pair -> currencyExchangeService.convertToCommonCurrency(pair.getLeft(), pair.getRight().name(), invoiceCurrency))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         invoice.setPrice(BigDecimalUtil.format(totalPrice));
         invoice.setTax(BigDecimalUtil.format(totalTax));
         invoice.setTotal(BigDecimalUtil.format(totalWithTax));
     }
+
 
     @Override
     public void approve(Long id) {
