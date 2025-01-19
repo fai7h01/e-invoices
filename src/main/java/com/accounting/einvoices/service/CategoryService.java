@@ -16,6 +16,10 @@ public interface CategoryService {
 
     void delete(Long id);
 
+    CategoryDTO increaseProductNumber(CategoryDTO category);
+
+    CategoryDTO decreaseProductNumber(CategoryDTO category);
+
     boolean checkIfCategoryExists(String desc);
 
 }

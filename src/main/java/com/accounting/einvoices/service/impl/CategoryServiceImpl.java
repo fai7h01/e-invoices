@@ -44,6 +44,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
     }
 
+    //find categories that have products based on currency
+
     @Override
     public CategoryDTO findByDescription(String desc) {
         Category found = categoryRepository.findByDescriptionIgnoreCaseAndCompany_Id(desc, getLoggedInCompany().getId())
@@ -82,6 +84,18 @@ public class CategoryServiceImpl implements CategoryService {
             return;
         }
         throw new CategoryCannotBeDeletedException("There is at least one product that is used in invoice!");
+    }
+
+    @Override
+    public CategoryDTO increaseProductNumber(CategoryDTO category) {
+        category.setProductCounter(category.getProductCounter() + 1);
+        return update(category.getId(), category);
+    }
+
+    @Override
+    public CategoryDTO decreaseProductNumber(CategoryDTO category) {
+        category.setProductCounter(category.getProductCounter() - 1);
+        return update(category.getId(), category);
     }
 
     @Override

@@ -25,5 +25,5 @@ public class CategoryDTO {
     private CompanyDTO company;
     private CategoryIcon icon;
     @JsonIgnore
-    private boolean hasProduct;
+    private int productCounter;
 }
