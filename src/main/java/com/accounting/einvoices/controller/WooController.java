@@ -36,7 +36,6 @@ public class WooController {
 
     @GetMapping("/list/products")
     public ResponseEntity<ResponseWrapper> getProducts() {
-
         List<WCProductResponse> products = wooCommerceService.fetchProducts();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -48,7 +47,6 @@ public class WooController {
 
     @PostMapping("/import/products")
     public ResponseEntity<ResponseWrapper> importProducts(@RequestBody() List<WCProductResponse> products) {
-
         wooCommerceService.importProducts(products);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
@@ -60,7 +58,6 @@ public class WooController {
 
     @PostMapping("/import/products/all")
     public ResponseEntity<ResponseWrapper> importAllProducts() {
-
         wooCommerceService.importProducts();
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
