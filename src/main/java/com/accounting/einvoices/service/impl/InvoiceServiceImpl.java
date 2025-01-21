@@ -55,17 +55,14 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }).toList();
     }
 
-
     @Override
-    public List<InvoiceDTO> findAllByCompanyTitle(String company) {
-        List<Invoice> invoices = invoiceRepository.findAllByCompanyTitleIgnoreCase(company);
-        return invoices.stream()
-                .map(invoice -> {
-                    InvoiceDTO invoiceDTO = mapperUtil.convert(invoice, new InvoiceDTO());
-                    setPriceTaxTotal(invoiceDTO);
-                    return invoiceDTO;
-                }).toList();
+    public List<InvoiceDTO> findAllByStatus(InvoiceStatus invoiceStatus) {
+        return invoiceRepository.findAllByInvoiceStatusAndCompanyId(invoiceStatus, companyService.getByLoggedInUser().getId())
+                .stream()
+                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
+                .toList();
     }
+
 
     @Override
     public InvoiceDTO findById(Long id) {
