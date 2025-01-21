@@ -15,6 +15,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
     List<Invoice> findAllByCompanyTitleIgnoreCase(String companyTitle);
 
+    Optional<Invoice> findByInvoiceNoAndCompanyId(String invNo, Long id);
+
     @Query("SELECT i FROM Invoice i WHERE EXTRACT(YEAR FROM i.acceptDate) = :year AND EXTRACT(MONTH FROM i.acceptDate) BETWEEN :startMonth AND :endMonth " +
             "AND i.invoiceStatus = :status AND i.company.id = :companyId ORDER BY i.acceptDate")
     List<Invoice> findAllByYearAndMonthBetweenAndStatusAndCompany(@Param("year") int year,

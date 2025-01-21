@@ -15,7 +15,8 @@ public interface InvoiceService {
 
     InvoiceDTO findById(Long id);
 
-    InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company);
+    //InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company);
+    InvoiceDTO findByInvNo(String invNo);
 
     InvoiceDTO generateInvoice();
 
@@ -29,7 +30,9 @@ public interface InvoiceService {
 
     void approve(Long id);
 
-    InvoiceDTO approve(String invNo, String companyTitle);
+//    InvoiceDTO approve(String invNo, String companyTitle);
+
+    InvoiceDTO approve(String invNo);
 
     Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth);
 

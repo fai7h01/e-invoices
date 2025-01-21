@@ -32,9 +32,9 @@ public class AssistantController {
     }
 
 
-    @GetMapping("/invoice/list/{companyTitle}")
-    public ResponseEntity<ResponseWrapper> getInvoicesByLoggedInCompany(@PathVariable("companyTitle") String company) {
-        List<InvoiceDTO> invoices = invoiceService.findAllByCompanyTitle(company);
+    @GetMapping("/invoice/list")
+    public ResponseEntity<ResponseWrapper> getInvoicesByLoggedInCompany() {
+        List<InvoiceDTO> invoices = invoiceService.findAllByLoggedInUser();
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
@@ -42,10 +42,9 @@ public class AssistantController {
                 .data(invoices).build());
     }
 
-    @PostMapping("/invoice/approve/{invNo}/{companyTitle}")
-    public ResponseEntity<ResponseWrapper> approveInvoiceByInvNoAndCompanyTitle(@PathVariable("invNo") String invNo,
-                                                                                @PathVariable("companyTitle") String company) {
-        InvoiceDTO invoice = invoiceService.approve(invNo, company);
+    @PostMapping("/invoice/approve/{invNo}")
+    public ResponseEntity<ResponseWrapper> approveInvoiceByInvNoAndCompanyTitle(@PathVariable("invNo") String invNo) {
+        InvoiceDTO invoice = invoiceService.approve(invNo);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ResponseWrapper.builder()
                 .code(HttpStatus.ACCEPTED.value())
                 .success(true)
@@ -55,11 +54,10 @@ public class AssistantController {
     }
 
     //send invoice pdf via mail to client
-    @GetMapping("/invoice/send/{invNo}/{companyTitle}")
-    public ResponseEntity<ResponseWrapper> sendInvoicePdfViaMailToClient(@PathVariable("invNo") String invNo,
-                                                                         @PathVariable("companyTitle") String company) {
+    @GetMapping("/invoice/send/{invNo}")
+    public ResponseEntity<ResponseWrapper> sendInvoicePdfViaMailToClient(@PathVariable("invNo") String invNo) {
 
-        InvoiceDTO invoice = invoiceService.findByInvNoAndCompanyTitle(invNo, company);
+        InvoiceDTO invoice = invoiceService.findByInvNo(invNo);
 
         try {
             Map<String, Object> model = new HashMap<>();

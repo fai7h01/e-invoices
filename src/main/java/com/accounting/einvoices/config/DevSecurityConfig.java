@@ -42,6 +42,7 @@ public class DevSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/product/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/invoice/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/mailing/**").hasAnyRole("Admin", "Manager", "Employee")
+                .antMatchers("/api/v1/assistant/**").hasAnyRole("Admin", "Manager", "Employee")
                 .anyRequest()
                 .authenticated()
                 .and()
