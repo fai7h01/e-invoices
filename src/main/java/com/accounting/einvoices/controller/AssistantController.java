@@ -2,6 +2,7 @@ package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
+import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.InvoiceProductService;
 import com.accounting.einvoices.service.InvoiceService;
@@ -32,6 +33,16 @@ public class AssistantController {
     }
 
 
+    @GetMapping("/invoice/list/status-approved")
+    public ResponseEntity<ResponseWrapper> getApprovedInvoices() {
+        List<InvoiceDTO> invoices = invoiceService.findAllByStatus(InvoiceStatus.APPROVED);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Invoice list is successfully retrieved.")
+                .data(invoices).build());
+    }
+
     @GetMapping("/invoice/list")
     public ResponseEntity<ResponseWrapper> getInvoicesByLoggedInCompany() {
         List<InvoiceDTO> invoices = invoiceService.findAllByLoggedInUser();
@@ -53,7 +64,7 @@ public class AssistantController {
                 .build());
     }
 
-    //send invoice pdf via mail to client
+
     @GetMapping("/invoice/send/{invNo}")
     public ResponseEntity<ResponseWrapper> sendInvoicePdfViaMailToClient(@PathVariable("invNo") String invNo) {
 
