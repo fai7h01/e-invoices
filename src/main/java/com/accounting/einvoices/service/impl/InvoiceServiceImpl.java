@@ -33,16 +33,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceProductService invoiceProductService;
     private final CompanyService companyService;
     private final ClientVendorService clientVendorService;
-    private final CurrencyExchangeService currencyExchangeService;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, MapperUtil mapperUtil, @Lazy InvoiceProductService invoiceProductService,
-                              CompanyService companyService, ClientVendorService clientVendorService, CurrencyExchangeService currencyExchangeService) {
+                              CompanyService companyService, ClientVendorService clientVendorService) {
         this.invoiceRepository = invoiceRepository;
         this.mapperUtil = mapperUtil;
         this.invoiceProductService = invoiceProductService;
         this.companyService = companyService;
         this.clientVendorService = clientVendorService;
-        this.currencyExchangeService = currencyExchangeService;
     }
 
     @Override
@@ -79,12 +77,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         return mapperUtil.convert(invoice, new InvoiceDTO());
     }
 
-//    @Override
-//    public InvoiceDTO findByInvNoAndCompanyTitle(String invNo, String company) {
-//        Optional<Invoice> invoice = invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, company);
-//        if (invoice.isEmpty()) throw new InvoiceNotFoundException("Invoice not found.");
-//        return mapperUtil.convert(invoice.get(), new InvoiceDTO());
-//    }
 
     @Override
     public InvoiceDTO generateInvoice() {
@@ -173,16 +165,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceProductService.calculateProfitLoss(id);
     }
 
-//    @Override
-//    public InvoiceDTO approve(String invNo, String companyTitle) {
-//        Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, companyTitle).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
-//        invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
-//        invoice.setAcceptDate(LocalDateTime.now());
-//        Invoice saved = invoiceRepository.save(invoice);
-//        invoiceProductService.updateQuantityInStock(invoice.getId());
-//        invoiceProductService.calculateProfitLoss(invoice.getId());
-//        return mapperUtil.convert(saved, new InvoiceDTO());
-//    }
 
     @Override
     public InvoiceDTO approve(String invNo) {

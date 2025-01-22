@@ -106,11 +106,11 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/approve/{id}")
-    public ResponseEntity<ResponseWrapper> approveInvoice(@PathVariable Long id){
-        invoiceService.approve(id);
+    @GetMapping("/approve/{invNo}")
+    public ResponseEntity<ResponseWrapper> approveInvoice(@PathVariable("invNo") String invNo){
+        InvoiceDTO approved = invoiceService.approve(invNo);
         try {
-            invoiceProductService.lowQuantityAlert(id);
+            invoiceProductService.lowQuantityAlert(approved.getId());
         } catch (ProductLowLimitAlertException e) {
             String message = e.getMessage();
             return ResponseEntity.ok(ResponseWrapper.builder().code(HttpStatus.OK.value())

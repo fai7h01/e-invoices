@@ -28,8 +28,6 @@ public interface InvoiceService {
 
     void setPriceTaxTotal(InvoiceDTO invoice);
 
-    void approve(Long id);
-
     InvoiceDTO approve(String invNo);
 
     Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth);
