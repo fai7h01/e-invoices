@@ -1,4 +1,4 @@
-package com.accounting.einvoices.dto.ai_service;
+package com.accounting.einvoices.dto.ai_analysis;
 
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;

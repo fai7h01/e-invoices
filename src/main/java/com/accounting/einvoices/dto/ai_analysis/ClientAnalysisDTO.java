@@ -1,4 +1,4 @@
-package com.accounting.einvoices.dto.ai_service;
+package com.accounting.einvoices.dto.ai_analysis;
 
 public class ClientAnalysisDTO {
 
