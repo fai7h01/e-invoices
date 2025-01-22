@@ -156,17 +156,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
     @Override
-    public void approve(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
-        invoice.setInvoiceStatus(InvoiceStatus.APPROVED);
-        invoice.setAcceptDate(LocalDateTime.now());
-        invoiceRepository.save(invoice);
-        invoiceProductService.updateQuantityInStock(id);
-        invoiceProductService.calculateProfitLoss(id);
-    }
-
-
-    @Override
     public InvoiceDTO approve(String invNo) {
         Long compId = companyService.getByLoggedInUser().getId();
         Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyId(invNo, compId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
