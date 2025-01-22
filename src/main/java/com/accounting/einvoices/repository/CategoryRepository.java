@@ -1,6 +1,7 @@
 package com.accounting.einvoices.repository;
 
 import com.accounting.einvoices.entity.Category;
+import com.accounting.einvoices.enums.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category c WHERE c.products.size > 0 AND c.company.id = :company_id")
     List<Category> findAllByProductCountGreater(@Param("company_id") Long id);
+
+    @Query("SELECT DISTINCT c FROM Category c JOIN c.products p WHERE p.currency = :currency")
+    List<Category> findCategoriesWithProductsByCurrency(@Param("currency") Currency currency);
+
 }

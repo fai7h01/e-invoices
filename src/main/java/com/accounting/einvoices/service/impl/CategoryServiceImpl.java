@@ -5,6 +5,7 @@ import com.accounting.einvoices.dto.CompanyDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
 import com.accounting.einvoices.dto.ProductDTO;
 import com.accounting.einvoices.entity.Category;
+import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
 import com.accounting.einvoices.exception.category.CategoryCannotBeDeletedException;
 import com.accounting.einvoices.exception.category.CategoryNotFoundException;
@@ -50,7 +51,11 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
     }
 
-    //find categories that have products based on currency
+    @Override
+    public List<CategoryDTO> findCategoriesWithProductsByCurrency(String currency) {
+        return categoryRepository.findCategoriesWithProductsByCurrency(Currency.valueOf(currency)).stream()
+                .map(category -> mapperUtil.convert(category, new CategoryDTO())).toList();
+    }
 
     @Override
     public CategoryDTO findByDescription(String desc) {
@@ -81,8 +86,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(Long id) {
         Category found = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category not found."));
-        //find products by category and delete all of them/
-        //check if category can be deleted
         if (checkIfCategoryCanBeDeleted(found.getId())) {
             productService.deleteAllByCategory(id);
             found.setIsDeleted(true);

@@ -10,6 +10,8 @@ public interface CategoryService {
 
     List<CategoryDTO> findAllByProductCount();
 
+    List<CategoryDTO> findCategoriesWithProductsByCurrency(String currency);
+
     CategoryDTO findByDescription(String desc);
 
     CategoryDTO save(CategoryDTO category);

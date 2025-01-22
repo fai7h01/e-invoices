@@ -32,9 +32,9 @@ public class CategoryController {
                 .data(categories).build());
     }
 
-    @GetMapping("/list/has-products")
-    public ResponseEntity<ResponseWrapper> getAllCategoryWithProducts() {
-        List<CategoryDTO> categories = categoryService.findAllByProductCount();
+    @GetMapping("/list/has-products/{currency}")
+    public ResponseEntity<ResponseWrapper> getAllCategoryWithProductsByCurrency(@PathVariable("currency") String currency) {
+        List<CategoryDTO> categories = categoryService.findCategoriesWithProductsByCurrency(currency);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
