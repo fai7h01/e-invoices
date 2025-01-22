@@ -63,6 +63,13 @@ public class InvoiceProductServiceImpl implements InvoiceProductService {
     }
 
     @Override
+    public List<InvoiceProductDTO> findAllByApprovedInvoices() {
+        return invoiceProductRepository.findAllByApprovedInvoices().stream()
+                .map(invoiceProduct -> mapperUtil.convert(invoiceProduct, new InvoiceProductDTO()))
+                .toList();
+    }
+
+    @Override
     public InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct) {
         InvoiceDTO foundInvoice = invoiceService.findById(invoiceId);
         ProductDTO foundProduct = productService.findByName(invoiceProduct.getProduct().getName());

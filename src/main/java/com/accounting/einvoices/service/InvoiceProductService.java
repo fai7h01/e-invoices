@@ -11,6 +11,8 @@ public interface InvoiceProductService {
 
     List<InvoiceProductDTO> findAllByProductId(Long id);
 
+    List<InvoiceProductDTO> findAllByApprovedInvoices();
+
     InvoiceProductDTO save(Long invoiceId, InvoiceProductDTO invoiceProduct);
 
     void delete(Long id);
