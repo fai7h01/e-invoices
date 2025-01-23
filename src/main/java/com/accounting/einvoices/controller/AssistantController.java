@@ -1,6 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.ai_analysis.InvoiceAnalysisDTO;
 import com.accounting.einvoices.dto.ai_analysis.SalesAnalysisDTO;
 import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
 import com.accounting.einvoices.service.AIReportingService;
@@ -29,17 +30,20 @@ public class AssistantController {
     }
 
 
-    @GetMapping("/sales-analysis/last-month")
-    public ResponseEntity<ResponseWrapper> getSalesAnalysisLastMonth() {
-        SalesAnalysisDTO salesAnalysis =
-                aiReportingService.getSalesAnalysis(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getMonthValue());
+    @GetMapping("/invoice-analysis/{year}/{startMonth}/{endMonth}")
+    public ResponseEntity<ResponseWrapper> getInvoiceAnalysis(@PathVariable("year") String year,
+                                                              @PathVariable("startMonth") String startMonth,
+                                                              @PathVariable("endMonth") String endMonth) {
+        InvoiceAnalysisDTO salesAnalysis =
+                aiReportingService.getInvoiceAnalysis(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth));
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
-                .message("Sales Analysis is successfully retrieved.")
+                .message("Invoice Analysis is successfully retrieved.")
                 .data(salesAnalysis)
                 .build());
     }
+
 
     @GetMapping("/sales-analysis/{year}/{startMonth}/{endMonth}")
     public ResponseEntity<ResponseWrapper> getSalesAnalysis(@PathVariable("year") String year,

@@ -75,7 +75,7 @@ public class ReportingServiceImpl implements ReportingService {
     @Override
     public Map<String, BigDecimal> getFinancialSummaryBasedOnCurrentSales(int year, int startMonth, int endMonth, String currency) {
 
-        Map<Currency, List<InvoiceDTO>> invoices = invoiceService.findAllByDateBetween(year, startMonth, endMonth);
+        Map<Currency, List<InvoiceDTO>> invoices = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
 
         return findFinancialSummaryConvertedOneCurrency(invoices, currency);
 
