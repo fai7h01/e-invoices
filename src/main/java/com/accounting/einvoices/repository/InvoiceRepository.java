@@ -23,6 +23,13 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
                                                                   @Param("status") InvoiceStatus status,
                                                                   @Param("companyId") Long companyId);
 
+    @Query("SELECT i FROM Invoice i WHERE EXTRACT(YEAR FROM i.dateOfIssue) = :year AND EXTRACT(MONTH FROM i.dateOfIssue) BETWEEN :startMonth AND :endMonth " +
+            "AND i.company.id = :companyId ORDER BY i.invoiceNo")
+    List<Invoice> findAllByYearAndMonthBetweenAndCompany(@Param("year") int year,
+                                                         @Param("startMonth") int startMonth,
+                                                         @Param("endMonth") int endMonth,
+                                                         @Param("companyId") Long companyId);
+
     List<Invoice> findAllByInvoiceStatusAndCompanyId(InvoiceStatus invoiceStatus, Long id);
 
     List<Invoice> findAllByClientVendorId(Long id);

@@ -3,7 +3,6 @@ package com.accounting.einvoices.service;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,8 @@ public interface InvoiceService {
     InvoiceDTO approve(String invNo);
 
     Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth);
+
+    List<InvoiceDTO> findAllByDateOfIssue(int year, int startMonth, int endMonth);
 
     List<InvoiceDTO> findAllByClientId(Long id);
 

@@ -33,7 +33,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<ProductSalesStatDTO> stats = new ArrayList<>();
 
-        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByDateBetween(year, startMonth, endMonth);
 
         BigDecimal totalAmount;
         ProductSalesStatDTO productSalesStat;
@@ -75,7 +75,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         Map<String, ProductSalesStatDTO> stats = new HashMap<>();
 
-        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByAcceptDate(year, startMonth, endMonth);
+        Map<Currency, List<InvoiceDTO>> map = invoiceService.findAllByDateBetween(year, startMonth, endMonth);
 
         ProductSalesStatDTO productSalesStat;
 

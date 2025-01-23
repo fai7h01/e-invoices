@@ -3,6 +3,8 @@ package com.accounting.einvoices.dto.ai_analysis;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor

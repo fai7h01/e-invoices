@@ -170,8 +170,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Map<Currency, List<InvoiceDTO>> findAllByAcceptDate(int year, int startMonth, int endMonth) {
-        Long companyId = companyService.getByLoggedInUser().getId();
-        Map<Currency, List<InvoiceDTO>> map = invoiceRepository.findAllByYearAndMonthBetweenAndStatusAndCompany(year, startMonth, endMonth, InvoiceStatus.APPROVED, companyId)
+        return invoiceRepository.findAllByYearAndMonthBetweenAndStatusAndCompany(year, startMonth, endMonth, InvoiceStatus.APPROVED, getLoggedInCompany().getId())
                 .stream()
                 .map(invoice -> {
                     InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
@@ -179,7 +178,18 @@ public class InvoiceServiceImpl implements InvoiceService {
                     return dto;
                 })
                 .collect(Collectors.groupingBy(InvoiceDTO::getCurrency));
-        return map;
+    }
+
+    @Override
+    public List<InvoiceDTO> findAllByDateOfIssue(int year, int startMonth, int endMonth) {
+        return invoiceRepository.findAllByYearAndMonthBetweenAndCompany(year, startMonth, endMonth, getLoggedInCompany().getId())
+                .stream()
+                .map(invoice -> {
+                    InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxTotal(dto);
+                    return dto;
+                })
+                .toList();
     }
 
     @Override
@@ -200,17 +210,8 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }).collect(Collectors.toList());
     }
 
-//    @Override
-//    public void uploadInvoiceAttachment(String invNo, MultipartFile file) {
-//        CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
-//        Optional<Invoice> foundInvoice =
-//                invoiceRepository.findByInvoiceNoAndCompanyTitleIgnoreCase(invNo, loggedInCompany.getTitle());
-//        if (foundInvoice.isPresent()) {
-//            Invoice invoice = foundInvoice.get();
-//            String key = "company/" + loggedInCompany.getId() + "/invoice/" + invNo + "_" + file.getOriginalFilename();
-//            storageService.uploadFile(file, key);
-//            invoice.setAttachmentKey(key);
-//            invoiceRepository.save(invoice);
-//        }
-//    }
+    private CompanyDTO getLoggedInCompany() {
+        return companyService.getByLoggedInUser();
+    }
+
 }
