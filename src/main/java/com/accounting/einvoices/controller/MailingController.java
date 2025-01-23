@@ -27,4 +27,21 @@ public class MailingController {
                 .message("Email was sent successfully")
                 .build());
     }
+
+    @GetMapping("/send-email")
+    public ResponseEntity<ResponseWrapper> sendSupportEmail(@RequestParam("name") String name,
+                                                            @RequestParam(value = "email", required = false) String email,
+                                                            @RequestParam("subject") String subject,
+                                                            @RequestParam("message") String message) {
+        if (email != null) {
+            emailService.sendSupportEmail(name, email, subject, message);
+        } else {
+            emailService.sendSupportEmail(name, subject, message);
+        }
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Email was sent successfully")
+                .build());
+    }
 }

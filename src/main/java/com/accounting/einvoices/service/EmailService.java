@@ -12,6 +12,9 @@ public interface EmailService {
 
     CompletableFuture<byte[]> generatePdfFromHtmlTemplate(String templateName, Map<String, Object> model) throws IOException;
 
+    void sendSupportEmail(String name, String email, String subject, String message);
+    void sendSupportEmail(String name, String subject, String message);
+
     void sendGeneratedInvoicePdf(String invNo);
 
     void sendForgotPasswordEmail(String email);

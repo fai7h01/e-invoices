@@ -6,10 +6,7 @@ import com.accounting.einvoices.entity.ForgotPasswordToken;
 import com.accounting.einvoices.entity.VerificationToken;
 import com.accounting.einvoices.repository.ForgotPasswordTokenRepository;
 import com.accounting.einvoices.repository.VerificationTokenRepository;
-import com.accounting.einvoices.service.EmailService;
-import com.accounting.einvoices.service.InvoiceProductService;
-import com.accounting.einvoices.service.InvoiceService;
-import com.accounting.einvoices.service.UserService;
+import com.accounting.einvoices.service.*;
 import com.itextpdf.html2pdf.HtmlConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,9 +44,10 @@ public class EmailServiceImpl implements EmailService {
     private final InvoiceProductService invoiceProductService;
     private final ForgotPasswordTokenRepository forgotPasswordTokenRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final KeycloakService keycloakService;
 
     public EmailServiceImpl(JavaMailSender emailSender, TemplateEngine templateEngine, UserService userService, InvoiceService invoiceService, InvoiceProductService invoiceProductService,
-                            ForgotPasswordTokenRepository forgotPasswordTokenRepository, VerificationTokenRepository verificationTokenRepository) {
+                            ForgotPasswordTokenRepository forgotPasswordTokenRepository, VerificationTokenRepository verificationTokenRepository, KeycloakService keycloakService) {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
         this.userService = userService;
@@ -57,6 +55,38 @@ public class EmailServiceImpl implements EmailService {
         this.invoiceProductService = invoiceProductService;
         this.forgotPasswordTokenRepository = forgotPasswordTokenRepository;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.keycloakService = keycloakService;
+    }
+
+    @Async("asyncTaskExecutor")
+    @Override
+    public void sendSupportEmail(String name, String email, String subject, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("support@invoicehub.space");
+        mail.setSubject(subject);
+        String messageDraft = """
+                Sender name: %s,
+                Sender email: %s,
+                Sender message: %s
+                """;
+        mail.setText(String.format(messageDraft, name, email, message));
+        emailSender.send(mail);
+    }
+
+    @Async("asyncTaskExecutor")
+    @Override
+    public void sendSupportEmail(String name, String subject, String message) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo("support@invoicehub.space");
+        mail.setSubject(subject);
+        String email = keycloakService.getLoggedInUser().getUsername();
+        String messageDraft = """
+                Sender name: %s,
+                Sender email: %s,
+                Sender message: %s
+                """;
+        mail.setText(String.format(messageDraft, name, email, message));
+        emailSender.send(mail);
     }
 
     @Async("asyncTaskExecutor")
