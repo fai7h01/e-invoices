@@ -1,13 +1,17 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.ai_analysis.SalesAnalysisDTO;
 import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
+import com.accounting.einvoices.service.AIReportingService;
 import com.accounting.einvoices.service.EmailService;
 import com.accounting.einvoices.service.InvoiceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Slf4j
 @RestController
@@ -16,12 +20,40 @@ public class AssistantController {
 
     private final InvoiceService invoiceService;
     private final EmailService emailService;
+    private final AIReportingService aiReportingService;
 
-    public AssistantController(InvoiceService invoiceService, EmailService emailService) {
+    public AssistantController(InvoiceService invoiceService, EmailService emailService, AIReportingService aiReportingService) {
         this.invoiceService = invoiceService;
         this.emailService = emailService;
+        this.aiReportingService = aiReportingService;
     }
 
+
+    @GetMapping("/sales-analysis/last-month")
+    public ResponseEntity<ResponseWrapper> getSalesAnalysisLastMonth() {
+        SalesAnalysisDTO salesAnalysis =
+                aiReportingService.getSalesAnalysis(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getMonthValue());
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Sales Analysis is successfully retrieved.")
+                .data(salesAnalysis)
+                .build());
+    }
+
+    @GetMapping("/sales-analysis/{year}/{startMonth}/{endMonth}")
+    public ResponseEntity<ResponseWrapper> getSalesAnalysis(@PathVariable("year") String year,
+                                                            @PathVariable("startMonth") String startMonth,
+                                                            @PathVariable("endMonth") String endMonth) {
+        SalesAnalysisDTO salesAnalysis =
+                aiReportingService.getSalesAnalysis(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth));
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Sales Analysis is successfully retrieved.")
+                .data(salesAnalysis)
+                .build());
+    }
 
     @PostMapping("/invoice/approve/{invNo}")
     public ResponseEntity<ResponseWrapper> approveInvoiceByInvNoAndCompanyTitle(@PathVariable("invNo") String invNo) {
