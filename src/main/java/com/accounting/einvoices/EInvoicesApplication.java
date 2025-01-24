@@ -40,9 +40,4 @@ public class EInvoicesApplication {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public String string() {
-        return new String();
-    }
-
 }

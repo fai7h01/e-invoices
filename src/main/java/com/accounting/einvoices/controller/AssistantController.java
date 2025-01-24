@@ -1,6 +1,7 @@
 package com.accounting.einvoices.controller;
 
 import com.accounting.einvoices.dto.InvoiceDTO;
+import com.accounting.einvoices.dto.ai_analysis.ClientAnalysisDTO;
 import com.accounting.einvoices.dto.ai_analysis.InvoiceAnalysisDTO;
 import com.accounting.einvoices.dto.ai_analysis.SalesAnalysisDTO;
 import com.accounting.einvoices.dto.response.wrapper.ResponseWrapper;
@@ -27,6 +28,17 @@ public class AssistantController {
         this.invoiceService = invoiceService;
         this.emailService = emailService;
         this.aiReportingService = aiReportingService;
+    }
+
+    @GetMapping("/client-analysis")
+    public ResponseEntity<ResponseWrapper> getInvoiceAnalysis() {
+        ClientAnalysisDTO clientAnalysis = aiReportingService.getClientAnalysis();
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Client Analysis is successfully retrieved.")
+                .data(clientAnalysis)
+                .build());
     }
 
 

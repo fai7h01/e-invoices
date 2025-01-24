@@ -27,7 +27,6 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
-@Profile("prod")
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Value("${app.front.base-url}")

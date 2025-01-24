@@ -195,7 +195,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDTO> findAllByClientId(Long id) {
         return invoiceRepository.findAllByClientVendorId(id).stream()
-                .map(invoice -> mapperUtil.convert(invoice, new InvoiceDTO()))
+                .map(invoice -> {
+                    InvoiceDTO dto = mapperUtil.convert(invoice, new InvoiceDTO());
+                    setPriceTaxTotal(dto);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

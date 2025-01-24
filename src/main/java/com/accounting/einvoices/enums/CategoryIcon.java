@@ -38,6 +38,7 @@ public enum CategoryIcon {
     Trash,
     Upload,
     User,
-    Wifi
+    Wifi,
+    PackageSearch;
 
 }

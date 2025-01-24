@@ -1,20 +1,22 @@
 package com.accounting.einvoices.service.impl;
 
+import com.accounting.einvoices.dto.ClientVendorDTO;
 import com.accounting.einvoices.dto.InvoiceDTO;
 import com.accounting.einvoices.dto.InvoiceProductDTO;
+import com.accounting.einvoices.dto.ai_analysis.ClientAnalysisDTO;
 import com.accounting.einvoices.dto.ai_analysis.InvoiceAnalysisDTO;
+import com.accounting.einvoices.dto.ai_analysis.ProductAnalysisDTO;
 import com.accounting.einvoices.dto.ai_analysis.SalesAnalysisDTO;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
-import com.accounting.einvoices.service.AIReportingService;
-import com.accounting.einvoices.service.InvoiceProductService;
-import com.accounting.einvoices.service.InvoiceService;
-import com.accounting.einvoices.service.ReportingService;
+import com.accounting.einvoices.service.*;
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,11 +29,13 @@ public class AIReportingServiceImpl implements AIReportingService {
     private final ReportingService reportingService;
     private final InvoiceService invoiceService;
     private final InvoiceProductService invoiceProductService;
+    private final ClientVendorService clientVendorService;
 
-    public AIReportingServiceImpl(ReportingService reportingService, InvoiceService invoiceService, InvoiceProductService invoiceProductService) {
+    public AIReportingServiceImpl(ReportingService reportingService, InvoiceService invoiceService, InvoiceProductService invoiceProductService, ClientVendorService clientVendorService) {
         this.reportingService = reportingService;
         this.invoiceService = invoiceService;
         this.invoiceProductService = invoiceProductService;
+        this.clientVendorService = clientVendorService;
     }
 
     @Override
@@ -57,7 +61,6 @@ public class AIReportingServiceImpl implements AIReportingService {
         InvoiceAnalysisDTO invoiceAnalysisDTO = new InvoiceAnalysisDTO();
 
         List<InvoiceDTO> invoices = invoiceService.findAllByDateOfIssue(year, startMonth, endMonth);
-        log.info("\n\n\n\n>>>>>>>> Invoices in analysis: {}", invoices);
 
         invoiceAnalysisDTO.setTotalInvoicesNumber(invoices.size());
         invoiceAnalysisDTO.setTotalApprovedInvoicesNumber((int) invoices.stream()
@@ -73,6 +76,72 @@ public class AIReportingServiceImpl implements AIReportingService {
         
         return invoiceAnalysisDTO;
     }
+
+
+
+    @Override
+    public ClientAnalysisDTO getClientAnalysis() {
+        ClientAnalysisDTO clientAnalysisDTO = new ClientAnalysisDTO();
+        clientAnalysisDTO.setTotalClientNumber(findTotalClientNumber());
+        clientAnalysisDTO.setClients(findAllClientData());
+        return clientAnalysisDTO;
+    }
+
+    private List<ClientAnalysisDTO.ClientData> findAllClientData() {
+        return clientVendorService.findAll()
+                .stream()
+                .map(this::createClientData)
+                .toList();
+    }
+
+    private ClientAnalysisDTO.ClientData createClientData(ClientVendorDTO clientDTO) {
+        ClientAnalysisDTO.ClientData clientData = new ClientAnalysisDTO.ClientData();
+        clientData.setClientName(clientDTO.getName());
+        clientData.setTotalInvoices(findTotalClientInvoicesNumber(clientDTO.getId()));
+        clientData.setAverageInvoiceValue(findClientAverageInvoiceValue(clientDTO.getId()));
+        clientData.setPaidInvoices(findClientPaidInvoicesNumber(clientDTO.getId()));
+        clientData.setOverDueInvoices(findClientOverDueInvoicesNumber(clientDTO.getId()));
+        return clientData;
+    }
+
+    private int findClientOverDueInvoicesNumber(Long clientId) {
+        return (int) invoiceService.findAllByClientId(clientId)
+                .stream()
+                .filter(invoiceDTO -> invoiceDTO.getDueDate().isBefore(LocalDateTime.now()))
+                .count();
+    }
+
+    private int findClientPaidInvoicesNumber(Long clientId) {
+        return (int) invoiceService.findAllByClientId(clientId)
+                .stream()
+                .filter(invoiceDTO -> invoiceDTO.getInvoiceStatus().equals(InvoiceStatus.APPROVED))
+                .count();
+    }
+
+    private BigDecimal findClientAverageInvoiceValue(Long clientId) {
+        int totalClientInvoicesNumber = findTotalClientInvoicesNumber(clientId);
+        BigDecimal totalInvoicesValue = invoiceService.findAllByClientId(clientId)
+                .stream()
+                .map(InvoiceDTO::getTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return totalInvoicesValue.divide(BigDecimal.valueOf(totalClientInvoicesNumber), RoundingMode.HALF_UP);
+    }
+
+    private int findTotalClientInvoicesNumber(Long clientId) {
+        return invoiceService.findAllByClientId(clientId).size();
+    }
+
+
+    private int findTotalClientNumber() {
+        return clientVendorService.findAll().size();
+    }
+
+
+
+
+
+
+
 
 
     private List<String> findInvoiceItems(InvoiceDTO invoiceDTO) {
