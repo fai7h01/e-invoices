@@ -34,13 +34,13 @@ public class AssistantController {
     public ResponseEntity<ResponseWrapper> getInvoiceAnalysis(@PathVariable("year") String year,
                                                               @PathVariable("startMonth") String startMonth,
                                                               @PathVariable("endMonth") String endMonth) {
-        InvoiceAnalysisDTO salesAnalysis =
+        InvoiceAnalysisDTO invoiceAnalysis =
                 aiReportingService.getInvoiceAnalysis(Integer.parseInt(year), Integer.parseInt(startMonth), Integer.parseInt(endMonth));
         return ResponseEntity.status(HttpStatus.OK).body(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
                 .message("Invoice Analysis is successfully retrieved.")
-                .data(salesAnalysis)
+                .data(invoiceAnalysis)
                 .build());
     }
 
