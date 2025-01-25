@@ -48,6 +48,7 @@ Additional Features:
  - 🌍 Multi-Currency Support: Handle international transactions effortlessly.
  - 🔍 Advanced Search & Filters: Easily find records by client, date, or amount.
 
+Explore our application and its full range of features by visiting: https://invoicehub.space
 --------------------------------------------------------------------------------------------------------------
 
 Technologies Used:
@@ -64,6 +65,5 @@ Screeshots:
 ![3](https://github.com/user-attachments/assets/2ab59dac-1215-40ee-af00-1e36d5d66d60)
 
 ![4](https://github.com/user-attachments/assets/e9b89050-ad1e-4708-9fc1-cb95aeaaf0bc)
--f9920b78ecf8)
 
 
