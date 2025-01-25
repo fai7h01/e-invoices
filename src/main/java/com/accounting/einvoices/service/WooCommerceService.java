@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface WooCommerceService {
 
+    boolean checkIfConnected(WooCommerceCredentialsDTO request);
+
     WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto);
 
     WooCommerceCredentialsDTO findByCompany(String title);

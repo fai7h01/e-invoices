@@ -11,12 +11,11 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AsyncConfig {
 
-
     @Bean(name = "asyncTaskExecutor")
     public Executor asyncTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(20);
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(50);
         executor.setQueueCapacity(150);
         executor.setThreadNamePrefix("AsyncTaskThread-");
         executor.setRejectedExecutionHandler((r, executor1) -> log.warn("Task rejected, thread pool is full and queue is also full"));

@@ -7,8 +7,6 @@ import com.accounting.einvoices.entity.WooCommerceCredentials;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.ProductStatus;
 import com.accounting.einvoices.exception.WooCommerceCredentialsAlreadyExistsException;
-import com.accounting.einvoices.exception.category.CategoryAlreadyExistsException;
-import com.accounting.einvoices.exception.product.ProductAlreadyExistsException;
 import com.accounting.einvoices.repository.WooCommerceRepository;
 import com.accounting.einvoices.service.*;
 import com.accounting.einvoices.util.BigDecimalUtil;
@@ -46,6 +44,17 @@ public class WooCommerceServiceImpl implements WooCommerceService {
     }
 
     @Override
+    public boolean checkIfConnected(WooCommerceCredentialsDTO request) {
+        try {
+            URI uri = URI.create(request.getBaseUrl());
+            List<WCProductResponse> response = wooCommerceClient.getProducts(uri, request.getConsumerKey(), request.getConsumerSecret());
+            return response != null;
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    @Override
     public WooCommerceCredentialsDTO saveCredentials(WooCommerceCredentialsDTO dto) {
         CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
         Optional<WooCommerceCredentials> found = wooCommerceRepository.findByCompanyTitle(loggedInCompany.getTitle());
@@ -75,6 +84,7 @@ public class WooCommerceServiceImpl implements WooCommerceService {
                 .orElseThrow(() -> new NotFoundException("Credentials not found"));
         return mapperUtil.convert(found, new WooCommerceCredentialsDTO());
     }
+
 
     @Override
     public List<ProductDTO> fetchProducts() {

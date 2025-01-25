@@ -33,15 +33,26 @@ public class WooController {
                 .build());
     }
 
+
     @PostMapping("/save/credentials")
     public ResponseEntity<ResponseWrapper> saveCredentials(@RequestBody WooCommerceCredentialsDTO request) {
-        WooCommerceCredentialsDTO saved = wooCommerceService.saveCredentials(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
-                .code(HttpStatus.CREATED.value())
-                .success(true)
-                .message("Woo-Commerce Credentials is saved..")
-                .data(saved)
-                .build());
+        boolean connection = wooCommerceService.checkIfConnected(request);
+        if (connection) {
+            WooCommerceCredentialsDTO saved = wooCommerceService.saveCredentials(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(ResponseWrapper.builder()
+                    .code(HttpStatus.CREATED.value())
+                    .success(true)
+                    .message("Woo-Commerce Credentials is saved.")
+                    .data(saved)
+                    .build());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseWrapper.builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .success(false)
+                    .message("Connection could not established.")
+                    .build());
+        }
+
     }
 
     @GetMapping("/list/products")
