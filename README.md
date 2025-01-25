@@ -34,19 +34,19 @@ Real-Time Sync:
     
 AI-Powered Assistant
 The AI Assistant is a game-changer, offering advanced tools to improve user efficiency:
-🤖 Invoicing Operations: Automates repetitive tasks and suggests optimizations.
-📈 Sales Analysis: Provides insights into sales trends and opportunities.
-📂 Invoice Categorization: Automatically classifies invoices for better organization.
-👥 Client & Product Analysis: Identifies high-value clients and popular products.
-💡 Business Suggestions: Delivers actionable recommendations to maximize income and reduce costs.
+ - 🤖 Invoicing Operations: Automates repetitive tasks and suggests optimizations.
+ - 📈 Sales Analysis: Provides insights into sales trends and opportunities.
+ - 📂 Invoice Categorization: Automatically classifies invoices for better organization.
+ - 👥 Client & Product Analysis: Identifies high-value clients and popular products.
+ - 💡 Business Suggestions: Delivers actionable recommendations to maximize income and reduce costs.
 
 Additional Features:
-🔒 Secure Authentication to protect user data.
-📧 Email Notifications: Automate sending invoices, reminders, and updates.
-📂 File Attachments: Attach receipts, contracts, and other documents to records.
-🖨️ PDF Generation: Generate PDFs for invoices and reports.
-🌍 Multi-Currency Support: Handle international transactions effortlessly.
-🔍 Advanced Search & Filters: Easily find records by client, date, or amount.
+ - 🔒 Secure Authentication to protect user data.
+ - 📧 Email Notifications: Automate sending invoices, reminders, and updates.
+ - 📂 File Attachments: Attach receipts, contracts, and other documents to records.
+ - 🖨️ PDF Generation: Generate PDFs for invoices and reports.
+ - 🌍 Multi-Currency Support: Handle international transactions effortlessly.
+ - 🔍 Advanced Search & Filters: Easily find records by client, date, or amount.
 
 --------------------------------------------------------------------------------------------------------------
 
