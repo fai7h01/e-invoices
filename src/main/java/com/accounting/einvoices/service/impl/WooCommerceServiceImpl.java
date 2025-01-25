@@ -135,6 +135,7 @@ public class WooCommerceServiceImpl implements WooCommerceService {
         productDTO.setCreatedAt(LocalDate.parse(wcProduct.getDateCreated().substring(0, 10)));
         productDTO.setStatus(ProductStatus.ACTIVE);
         CategoryDTO categoryDTO = new CategoryDTO();
+        log.info("Category from WOOO: {}",wcProduct.getCategories().get(0).getName());
         categoryDTO.setDescription(wcProduct.getCategories().get(0).getName());
         productDTO.setCategory(categoryDTO);
         return productDTO;
@@ -142,6 +143,7 @@ public class WooCommerceServiceImpl implements WooCommerceService {
 
     private void saveCategoryAndProduct(ProductDTO productDTO) {
         if (!categoryService.checkIfCategoryExists(productDTO.getCategory().getDescription())) {
+            log.info("Category to save: {}", productDTO.getCategory().getDescription());
             categoryService.save(productDTO.getCategory());
         }
         if (!productService.checkIfProductExists(productDTO.getName())) {
