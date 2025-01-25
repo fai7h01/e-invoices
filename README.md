@@ -61,7 +61,8 @@ Technologies Used:
 Screeshots:
 ![1](https://github.com/user-attachments/assets/89ded796-90fa-41b0-a0bd-7b33318021d7)
 ![2](https://github.com/user-attachments/assets/2935b7f6-ba29-4f71-adfe-f7829d776b0d)
-![3](https://github.com/user-attachments/assets/9efe122b-dab2-4531-8c39
+![3](https://github.com/user-attachments/assets/2ab59dac-1215-40ee-af00-1e36d5d66d60)
+
 ![4](https://github.com/user-attachments/assets/e9b89050-ad1e-4708-9fc1-cb95aeaaf0bc)
 -f9920b78ecf8)
 
