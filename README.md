@@ -4,31 +4,31 @@ A modern and efficient AI business management and accounting application, design
 accounting tasks and operations. Equipped with an AI Assistant, multi-user collaboration, role-based access-control, dynamic analytics and WooCommerce Integration. This app goes beyond traditional tools to offer smart recomendations and
 insights for better decision-making.
 
-Core Features:
+- Core Features:
   - Invoicing Management: Create, Update, and send invoices with attachments.
   - Accounting Functions: Track income, expenses and profit/loss. Generate detailed financial reports.
   - Products Management: Create or import products with seamless integration to WooCommerce, Shopify or Wix stores.
   - Business Management: Manage clients, vendors and employees. Track payments, due dates and outstanding balances.
-Dynamic Charts and Analytics:
+- Dynamic Charts and Analytics:
   - Product Sales Visualization: View daily product sales trends for each day of month. Identify top-selling products for better inventory and sales strategies.
   - Financial Summaries: Analyse income and expenses over a custom date range. Visualize cash flow trends for smarter financial planning.
   - Top Insights: Highlight top revenue-generating products or services. Drill into specific periods to explore detailed insights.
-Collaboration Features:
+- Collaboration Features:
   - Team Management: Add employees or partners to the application.
   - Share the same business environment with role-based access.
   - Assign permissions to control access to specific features or data.
-Role-Based Access Control:
-ADMIN:
+- Role-Based Access Control:
+ - ADMIN:
   - Full access to all features and data.
   - Manage team members, roles, and permissions.
   - Oversee financial summaries and analytics
-MANAGER:
+ - MANAGER:
   - Access business insights and specific operations (e.g., reviewing sales or approving invoices).
   - Contribute to strategic decision-making while having limited operational access.
-EMPLOYEE:
+ - EMPLOYEE:
   - Access specific features (e.g., creating invoices or updating client information) assigned by the admin.
   - Collaborate on daily operations
-Real-Time Sync:
+- Real-Time Sync:
   - Changes made by one user are immediately reflected for others.
   - Enables seamless collaboration across the team.
     
