@@ -18,14 +18,14 @@ insights for better decision-making.
   - Share the same business environment with role-based access.
   - Assign permissions to control access to specific features or data.
 - Role-Based Access Control:
- - ADMIN:
+- ADMIN:
   - Full access to all features and data.
   - Manage team members, roles, and permissions.
   - Oversee financial summaries and analytics
- - MANAGER:
+- MANAGER:
   - Access business insights and specific operations (e.g., reviewing sales or approving invoices).
   - Contribute to strategic decision-making while having limited operational access.
- - EMPLOYEE:
+- EMPLOYEE:
   - Access specific features (e.g., creating invoices or updating client information) assigned by the admin.
   - Collaborate on daily operations
 - Real-Time Sync:
