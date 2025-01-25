@@ -162,7 +162,7 @@
                       text-align: left;
                       border-bottom: 1px solid #e7e5e4;
                     "
-                                th:text="${invoiceProduct.productUnit}"
+                                th:text="${invoiceProduct.product.productUnit}"
                         ></td>
                         <td
                                 style="
@@ -258,7 +258,7 @@
                   "
                         >
                             <div style="display: flex; justify-content: space-between">
-                                <span style="color: #78716c">Subtotal:</span>
+                                <span style="color: #78716c">Subtotal: </span>
                                 <span
                                         style="color: #292524; font-weight: 700"
                                         th:text="${invoice.price}"
@@ -272,7 +272,7 @@
                   "
                         >
                             <div style="display: flex; justify-content: space-between">
-                                <span style="color: #78716c">Tax:</span>
+                                <span style="color: #78716c">Tax: </span>
                                 <span
                                         style="color: #292524; font-weight: 700"
                                         th:text="${invoice.tax}"
@@ -288,7 +288,7 @@
                   "
                         >
                             <div style="display: flex; justify-content: space-between">
-                                <span style="color: #fafaf9; font-weight: 700">Total:</span>
+                                <span style="color: #fafaf9; font-weight: 700">Total: </span>
                                 <span
                                         style="color: #fafaf9; font-weight: 700"
                                         th:text="${invoice.total}"

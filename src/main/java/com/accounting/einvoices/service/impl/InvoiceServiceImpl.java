@@ -74,7 +74,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceDTO findByInvNo(String invNo) {
         Long compId = companyService.getByLoggedInUser().getId();
         Invoice invoice = invoiceRepository.findByInvoiceNoAndCompanyId(invNo, compId).orElseThrow(() -> new InvoiceNotFoundException("Invoice not found."));
-        return mapperUtil.convert(invoice, new InvoiceDTO());
+        InvoiceDTO converted = mapperUtil.convert(invoice, new InvoiceDTO());
+        setPriceTaxTotal(converted);
+        return mapperUtil.convert(converted, new InvoiceDTO());
     }
 
 

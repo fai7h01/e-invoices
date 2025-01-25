@@ -62,6 +62,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendSupportEmail(String name, String email, String subject, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailSender);
         mail.setTo("support@invoicehub.space");
         mail.setSubject(subject);
         String messageDraft = """
@@ -77,6 +78,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendSupportEmail(String name, String subject, String message) {
         SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(mailSender);
         mail.setTo("support@invoicehub.space");
         mail.setSubject(subject);
         String email = keycloakService.getLoggedInUser().getUsername();
@@ -95,6 +97,7 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(mailSender);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text);
