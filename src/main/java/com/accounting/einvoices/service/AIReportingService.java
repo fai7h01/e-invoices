@@ -12,8 +12,7 @@ public interface AIReportingService {
     InvoiceAnalysisDTO getInvoiceAnalysis(int year, int startMonth, int endMonth);
 
     //get product analysis
-    //ProductAnalysisDTO getProductAnalysis();
+    ProductAnalysisDTO getProductAnalysis();
 
-    //get client analysis
     ClientAnalysisDTO getClientAnalysis();
 }

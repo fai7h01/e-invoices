@@ -77,6 +77,11 @@ public class AIReportingServiceImpl implements AIReportingService {
         return invoiceAnalysisDTO;
     }
 
+    @Override
+    public ProductAnalysisDTO getProductAnalysis() {
+
+        return null;
+    }
 
 
     @Override
