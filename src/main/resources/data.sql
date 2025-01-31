@@ -18,19 +18,19 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, '123 Main Str
 
 
 INSERT INTO companies(insert_date_time, insert_user_id, is_deleted, last_update_date_time,
-                      last_update_user_id, title, phone, website, email, address_id)
+                      last_update_user_id, title, phone, website, email, address_id, prompt_count)
 VALUES
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '+(12)-345-678', 'www.redtech.com', 'redtech@email.com', 1),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Blue Tech', '+(12)-456-789', 'www.bluetech.com', 'bluetech@email.com', 2),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Green Solutions', '+(12)-678-123', 'www.greensolutions.com', 'greensolutions@email.com', 3),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Yellow Innovations', '+(12)-234-567', 'www.yellowinnovations.com', 'yellow@email.com', 4),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Purple Corp', '+(12)-789-345', 'www.purplecorp.com', 'purple@email.com', 5),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Orange Enterprises', '+(12)-123-456', 'www.orangeenterprises.com', 'orange@email.com', 6);
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '+(12)-345-678', 'www.redtech.com', 'redtech@email.com', 1, 1),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Blue Tech', '+(12)-456-789', 'www.bluetech.com', 'bluetech@email.com', 2, 20),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Green Solutions', '+(12)-678-123', 'www.greensolutions.com', 'greensolutions@email.com', 3, 20),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Yellow Innovations', '+(12)-234-567', 'www.yellowinnovations.com', 'yellow@email.com', 4, 20),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Purple Corp', '+(12)-789-345', 'www.purplecorp.com', 'purple@email.com', 5, 20),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Orange Enterprises', '+(12)-123-456', 'www.orangeenterprises.com', 'orange@email.com', 6, 20);
 
 
 INSERT INTO users(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
                   first_name, last_name, username, password, enabled, phone, date_of_employment, role_id, company_id, user_status)
-VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'John', 'Reese', 'johnreese@email.com', 'Abc1', true, '9876543210', '2022-01-05' , 1, 1, 'Active'),
+VALUES ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Demo', 'Demo', 'demo@invoicehub.space', 'demodemo123.', true, '9876543210', '2022-01-05' , 1, 1, 'Active'),
 --        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Lionel', 'Fusco', 'lionelfusco@email.com', 'Abc1', true, '0987612345',  '2022-01-05' ,3, 1),
        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Teresa', 'Lisbon', 'teresalisbon@email.com', 'Abc1', true, '1234509876', '2022-01-05' , 2, 1, 'Active');
 --        ('2022-01-05 00:00:00', 1, '2022-01-05 00:00:00', 1, false, 'Samantha', 'Groves', 'samanthagroves@email.com', 'Abc1', true, '0192837465',  '2022-01-05' ,1, 2),
@@ -100,9 +100,9 @@ VALUES
 ('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Sofa', '3-seater, Grey', 100, 1, 499.99, '2025-01-05', 'UNIT', 'ACTIVE', 6, 'GEL'),
 
 -- Sports & Outdoors
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Football', 'Standard Size', 100, 3, 19.99, '2025-01-05', 'UNIT', 'ACTIVE', 7, 'GEL'),
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Yoga Mat', 'Non-slip', 100, 5, 29.99, '2025-01-05', 'UNIT', 'ACTIVE', 7, 'GEL'),
-('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Water Bottle', 'Stainless Steel', 100, 3, 13.99 , '2025-01-05', 'UNIT', 'ACTIVE', 7, 'GEL');
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Football', 'Standard Size', 100, 3, 19.99, '2025-01-05', 'UNIT', 'ACTIVE', 7, 'EUR'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Yoga Mat', 'Non-slip', 100, 5, 29.99, '2025-01-05', 'UNIT', 'ACTIVE', 7, 'EUR'),
+('2022-01-05 00:00:00',  1, '2022-01-05 00:00:00', 1, false, 'Water Bottle', 'Stainless Steel', 100, 3, 13.99 , '2025-01-05', 'UNIT', 'ACTIVE', 7, 'EUR');
 
 
 INSERT INTO invoices(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,

@@ -10,7 +10,6 @@ import com.accounting.einvoices.dto.ai_analysis.SalesAnalysisDTO;
 import com.accounting.einvoices.enums.Currency;
 import com.accounting.einvoices.enums.InvoiceStatus;
 import com.accounting.einvoices.service.*;
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -73,7 +72,6 @@ public class AIReportingServiceImpl implements AIReportingService {
                 .map(this::createInvoiceData)
                 .toList());
 
-        
         return invoiceAnalysisDTO;
     }
 
@@ -89,6 +87,7 @@ public class AIReportingServiceImpl implements AIReportingService {
         ClientAnalysisDTO clientAnalysisDTO = new ClientAnalysisDTO();
         clientAnalysisDTO.setTotalClientNumber(findTotalClientNumber());
         clientAnalysisDTO.setClients(findAllClientData());
+
         return clientAnalysisDTO;
     }
 
@@ -142,13 +141,6 @@ public class AIReportingServiceImpl implements AIReportingService {
     }
 
 
-
-
-
-
-
-
-
     private List<String> findInvoiceItems(InvoiceDTO invoiceDTO) {
         List<InvoiceProductDTO> invoiceProducts = invoiceProductService.findAllByInvoiceId(invoiceDTO.getId());
         return invoiceProducts.stream()
@@ -176,6 +168,7 @@ public class AIReportingServiceImpl implements AIReportingService {
         
         return invoiceData;
     }
+
 }
 
 
