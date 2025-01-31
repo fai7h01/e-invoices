@@ -64,6 +64,19 @@ public class RegisterController {
                 .data(status).build());
     }
 
+    @GetMapping("/send-email")
+    public ResponseEntity<ResponseWrapper> sendSupportEmail(@RequestParam("name") String name,
+                                                            @RequestParam("email") String email,
+                                                            @RequestParam("subject") String subject,
+                                                            @RequestParam("message") String message) {
+
+        emailService.sendSupportEmail(name, email, subject, message);
+        return ResponseEntity.ok(ResponseWrapper.builder()
+                .code(HttpStatus.OK.value())
+                .success(true)
+                .message("Email was sent successfully")
+                .build());
+    }
 
 
 }

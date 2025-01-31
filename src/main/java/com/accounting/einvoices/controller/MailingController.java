@@ -18,6 +18,7 @@ public class MailingController {
         this.emailService = emailService;
     }
 
+
     @GetMapping("/send-email/{invNo}")
     public ResponseEntity<ResponseWrapper> sendEmail(@PathVariable("invNo") String invNo) {
         emailService.sendGeneratedInvoicePdf(invNo);
@@ -30,14 +31,10 @@ public class MailingController {
 
     @GetMapping("/send-email")
     public ResponseEntity<ResponseWrapper> sendSupportEmail(@RequestParam("name") String name,
-                                                            @RequestParam(value = "email", required = false) String email,
                                                             @RequestParam("subject") String subject,
                                                             @RequestParam("message") String message) {
-        if (email != null) {
-            emailService.sendSupportEmail(name, email, subject, message);
-        } else {
-            emailService.sendSupportEmail(name, subject, message);
-        }
+
+        emailService.sendSupportEmail(name, subject, message);
         return ResponseEntity.ok(ResponseWrapper.builder()
                 .code(HttpStatus.OK.value())
                 .success(true)
