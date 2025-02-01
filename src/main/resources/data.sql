@@ -18,14 +18,14 @@ values ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, '123 Main Str
 
 
 INSERT INTO companies(insert_date_time, insert_user_id, is_deleted, last_update_date_time,
-                      last_update_user_id, title, phone, website, email, address_id, prompt_count)
+                      last_update_user_id, title, phone, website, email, address_id)
 VALUES
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '+(12)-345-678', 'www.redtech.com', 'redtech@email.com', 1, 1),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Blue Tech', '+(12)-456-789', 'www.bluetech.com', 'bluetech@email.com', 2, 20),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Green Solutions', '+(12)-678-123', 'www.greensolutions.com', 'greensolutions@email.com', 3, 20),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Yellow Innovations', '+(12)-234-567', 'www.yellowinnovations.com', 'yellow@email.com', 4, 20),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Purple Corp', '+(12)-789-345', 'www.purplecorp.com', 'purple@email.com', 5, 20),
-    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Orange Enterprises', '+(12)-123-456', 'www.orangeenterprises.com', 'orange@email.com', 6, 20);
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Red Tech', '+(12)-345-678', 'www.redtech.com', 'redtech@email.com', 1),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Blue Tech', '+(12)-456-789', 'www.bluetech.com', 'bluetech@email.com', 2),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Green Solutions', '+(12)-678-123', 'www.greensolutions.com', 'greensolutions@email.com', 3),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Yellow Innovations', '+(12)-234-567', 'www.yellowinnovations.com', 'yellow@email.com', 4),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Purple Corp', '+(12)-789-345', 'www.purplecorp.com', 'purple@email.com', 5),
+    ('2024-04-09 00:00:00', 1, false, '2024-04-09 00:00:00', 1, 'Orange Enterprises', '+(12)-123-456', 'www.orangeenterprises.com', 'orange@email.com', 6);
 
 
 INSERT INTO users(insert_date_time, insert_user_id, last_update_date_time, last_update_user_id, is_deleted,
