@@ -42,6 +42,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.cors().and().authorizeRequests()
                 .antMatchers("/api/v1/register/**").permitAll()
                 .antMatchers("/api/v1/password/**").permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/api/v1/clientVendor/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/category/**").hasAnyRole("Admin", "Manager", "Employee")
                 .antMatchers("/api/v1/company/**").hasAnyRole("Admin", "Manager", "Employee")

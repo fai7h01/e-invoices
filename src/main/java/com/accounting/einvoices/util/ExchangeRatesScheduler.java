@@ -18,17 +18,17 @@ public class ExchangeRatesScheduler {
         this.cacheManager = cacheManager;
     }
 
-    @Scheduled(fixedRate = 86_400_000)
-    public void refreshExchangeRatesCache() {
-
-        currencyExchangeService.exchangeRatesOf("GEL", 1L);
-        currencyExchangeService.exchangeRatesOf("USD", 1L);
-        currencyExchangeService.exchangeRatesOf("EUR", 1L);
-
-//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
-//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
-//        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", eurRates);
-
-        log.info("Exchange rates cache refreshed!");
-    }
+//    @Scheduled(fixedRate = 86_400_000)
+//    public void refreshExchangeRatesCache() {
+//
+//        currencyExchangeService.exchangeRatesOf("GEL", 1L);
+//        currencyExchangeService.exchangeRatesOf("USD", 1L);
+//        currencyExchangeService.exchangeRatesOf("EUR", 1L);
+//
+////        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", gelRates);
+////        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", usdRates);
+////        Objects.requireNonNull(cacheManager.getCache("exchangeRates")).put("rates", eurRates);
+//
+//        log.info("Exchange rates cache refreshed!");
+//    }
 }
