@@ -66,43 +66,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO save(UserDTO user) {
-        Optional<User> found = userRepository.findByUsername(user.getUsername());
-        if (found.isPresent()) throw new UserAlreadyExistsException(user.getUsername() + " is already exists in a system.");
+    public UserDTO save(UserDTO dto) {
+        Optional<User> found = userRepository.findByUsername(dto.getUsername());
+        if (found.isPresent()) throw new UserAlreadyExistsException(dto.getUsername() + " is already exists in a system.");
 
-        if (user.getRole() == null) {
+        if (dto.getRole() == null) {
             RoleDTO admin = roleService.findById(1L);
-            user.setRole(admin);
+            dto.setRole(admin);
         } else {
-            RoleDTO foundRole = roleService.findByDescription(user.getRole().getDescription());
-            user.getRole().setId(foundRole.getId());
+            RoleDTO foundRole = roleService.findByDescription(dto.getRole().getDescription());
+            dto.getRole().setId(foundRole.getId());
         }
 
-        if (user.getCompany() == null) {
+        if (dto.getCompany() == null) {
             CompanyDTO loggedInCompany = companyService.getByLoggedInUser();
-            user.setCompany(loggedInCompany);
+            dto.setCompany(loggedInCompany);
         } else {
-            CompanyDTO company = user.getCompany();
+            CompanyDTO company = dto.getCompany();
             CompanyDTO savedCompany = companyService.save(company);
-            user.getCompany().setId(savedCompany.getId());
+            dto.getCompany().setId(savedCompany.getId());
         }
 
-        User convertedUser = mapperUtil.convert(user, new User());
-        User saved = userRepository.save(convertedUser);
+        var convertedUser = mapperUtil.convert(dto, new User());
+        var savedUser = userRepository.save(convertedUser);
         log.info("\n\n>>User saved in database!");
-        keycloakService.userCreate(mapperUtil.convert(saved, new UserDTO()));
-        return mapperUtil.convert(saved, new UserDTO());
+        keycloakService.userCreate(mapperUtil.convert(savedUser, new UserDTO()));
+        return mapperUtil.convert(savedUser, new UserDTO());
     }
 
     @Override
-    public UserDTO update(Long id, UserDTO user) {
+    public UserDTO update(Long id, UserDTO dto) {
         var foundUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
-        user.setId(id);
-        user.getCompany().setId(foundUser.getCompany().getId());
-        user.setEnabled(true);
+        dto.setId(id);
+        dto.getCompany().setId(foundUser.getCompany().getId());
+        dto.setEnabled(true);
 
-        User userToUpdate = mapperUtil.convert(user, new User());
-        User updatedUser = userRepository.save(userToUpdate);
+        var userToUpdate = mapperUtil.convert(dto, new User());
+        var updatedUser = userRepository.save(userToUpdate);
         keycloakService.userUpdate(mapperUtil.convert(updatedUser, new UserDTO()));
         return mapperUtil.convert(updatedUser, new UserDTO());
     }
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         Optional<User> foundUser = userRepository.findById(id);
         if (foundUser.isPresent()){
-            User user = foundUser.get();
+            var user = foundUser.get();
             keycloakService.userDelete(user.getUsername());
             user.setUsername(user.getId() + "-" + user.getUsername());
             user.setIsDeleted(true);
