@@ -45,23 +45,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> findAll() {
-        UserDTO loggedInUser = keycloakService.getLoggedInUser();
-        List<User> users = userRepository.findAllByCompanyId(loggedInUser.getCompany().getId());
+        var loggedInUserDto = keycloakService.getLoggedInUser();
+        List<User> users = userRepository.findAllByCompanyId(loggedInUserDto.getCompany().getId());
         return users.stream()
-                .filter(user -> !user.getId().equals(loggedInUser.getId()))
+                .filter(user -> !user.getId().equals(loggedInUserDto.getId()))
                 .map(user -> mapperUtil.convert(user, new UserDTO()))
                 .toList();
     }
 
     @Override
     public UserDTO findByUsername(String username) {
-        User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        var foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         return mapperUtil.convert(foundUser, new UserDTO());
     }
 
     @Override
     public UserDTO findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
+        var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
         return mapperUtil.convert(user, new UserDTO( ));
     }
 
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO update(Long id, UserDTO user) {
-        User foundUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
+        var foundUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found."));
         user.setId(id);
         user.getCompany().setId(foundUser.getCompany().getId());
         user.setEnabled(true);
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPassword(String username, ForgotPasswordDTO forgotPasswordDTO) {
-        UserDTO dto = this.findByUsername(username);
+        var dto = this.findByUsername(username);
         dto.setPassword(forgotPasswordDTO.getPassword());
         keycloakService.userUpdate(dto);
         userRepository.save(mapperUtil.convert(dto, new User()));
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateStatus(String username) {
-        User found = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        var found = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         found.setUserStatus(UserStatus.Active);
         userRepository.save(found);
         keycloakService.verifyUser(found.getUsername());
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkUserStatus(String username) {
-        User foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
+        var foundUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found."));
         return foundUser.getUserStatus().equals(UserStatus.Active);
     }
 
