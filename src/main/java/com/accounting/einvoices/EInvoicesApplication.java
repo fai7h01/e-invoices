@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.concurrent.Executor;
 
 @Slf4j
-@Profile("prod")
 @EnableCaching
 @EnableScheduling
 @EnableFeignClients

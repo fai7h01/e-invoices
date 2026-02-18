@@ -1,0 +1,101 @@
+services:
+  invoicehub-service:
+    build:
+      context: .
+      dockerfile: Dockerfile # Use the local Dockerfile to build the image
+    image: invoicehub-service:latest
+    container_name: invoicehub-service
+    ports:
+      - "10001:10001"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-invoicehub:5432/invoicehub
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=9tRQF5H2TsNM
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      - postgres-invoicehub
+    networks:
+      - invoicehub-network
+
+  keycloak-invoicehub:
+    build:
+      context: ./keycloak-docker
+      dockerfile: Dockerfile
+    container_name: keycloak-invoicehub
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-invoicehub
+      DB_DATABASE: keycloak
+      DB_USER: admin
+      DB_SCHEMA: public
+      DB_PASSWORD: 9tRQF5H2TsNM
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    networks:
+      - invoicehub-network
+    depends_on:
+      - postgres-invoicehub
+
+
+  postgres-invoicehub:
+    image: pgvector/pgvector:pg17
+    container_name: postgres-invoicehub
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 9tRQF5H2TsNM
+      POSTGRES_DB: invoicehub
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-multiple-dbs.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - invoicehub-network
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  # pgAdmin (Postgres Client)
+  pgadmin-invoicehub:
+    image: dpage/pgadmin4
+    container_name: pgadmin-invoicehub
+    environment:
+      PGADMIN_DEFAULT_EMAIL: devops@olanna.ai
+      PGADMIN_DEFAULT_PASSWORD: A48hb6WNdW2D
+    ports:
+      - "5050:80"  # Expose pgAdmin on port 5050
+    restart: unless-stopped
+    depends_on:
+      - postgres-invoicehub
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - invoicehub-network
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+
+networks:
+  invoicehub-network:
+    external: true
+
+volumes:
+  postgres-data:
